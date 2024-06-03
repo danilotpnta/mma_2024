@@ -15,11 +15,17 @@ conda env create -f environment.yml
 
 ```
 
-(WIP)
+It can then be activated with:
+
+```sh
+
+conda activate mma_2024
+
+```
 
 ### **Data**
 
-(WIP)
+The data is automatically downloaded when running the code, meaning that nothing needs to be done relating to this!
 
 
 ## **Running**
@@ -28,6 +34,6 @@ To run the code, you use the following:
 
 ```sh
 
-python src/main.py
+python main.py
 
 ```

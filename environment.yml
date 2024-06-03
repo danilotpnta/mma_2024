@@ -7,9 +7,9 @@ dependencies:
   - pandas
   - scikit-learn
   - umap-learn
-  - wget
   - pip
   - pip:
+    - wget
     - plotly==5.20.0
     - dash==2.16.1
     - dash-bootstrap-components
@@ -19,3 +19,4 @@ dependencies:
     - dash-core-components
     - dash-holoniq-wordcloud
     - git+https://github.com/openai/CLIP.git
+    - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
