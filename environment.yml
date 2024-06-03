@@ -1,0 +1,21 @@
+name: mma_2024
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8  
+  - pandas
+  - scikit-learn
+  - umap-learn
+  - wget
+  - pip
+  - pip:
+    - plotly==5.20.0
+    - dash==2.16.1
+    - dash-bootstrap-components
+    - dash-ag-grid
+    - wordcloud
+    - dash-image-gallery
+    - dash-core-components
+    - dash-holoniq-wordcloud
+    - git+https://github.com/openai/CLIP.git
