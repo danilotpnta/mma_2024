@@ -37,3 +37,5 @@ To run the code, you use the following:
 python src/main.py
 
 ```
+
+After the Dash server is running, open http://127.0.0.1:8050/ on your browser.
