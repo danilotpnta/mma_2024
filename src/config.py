@@ -18,11 +18,11 @@ DEFAULT_LEFT_WIDGET = "table"
 
 MAX_GRAPH_NODES = 12
 
-# dataset extraction configuration
+# Dataset extraction configuration
 DATASET_SAMPLE_SIZE = 1000  # number of images in the CUB-200-2011 dataset is 11788, that is the max value for this parameter
 
 
-# path configuration
+# Path configuration
 ROOT_DIR = Path(__file__).parent.parent
 DATASET_DIR = os.path.join(ROOT_DIR, "dataset")
 DATA_DIR = os.path.join(DATASET_DIR, "data")

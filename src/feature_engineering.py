@@ -3,9 +3,9 @@ import torch
 import numpy
 import pandas
 import PIL.Image
-from src import config
 from umap import UMAP
 from tqdm import tqdm
+from src import config
 from sklearn.manifold import TSNE
 
 

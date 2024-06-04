@@ -1,9 +1,11 @@
+# To handle importing from `src`
 import os
 import sys
 
 dirpath = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(dirpath)
 
+# The rest of the code
 from dash import Dash, dcc
 from src import config
 from src.Dataset import Dataset
