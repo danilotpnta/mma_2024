@@ -1,8 +1,8 @@
+import os
 import sys
 
-# appending a path
-sys.path.append("C:\\Users\\Gregory Go\\.github\\mma2024")
-
+dirpath = os.path.dirname(os.path.dirname(__file__))
+sys.path.append(dirpath)
 
 from dash import Dash, dcc
 from src import config
@@ -20,19 +20,20 @@ from src.widgets import (
 from src.widgets.table import create_table
 import dash_bootstrap_components as dbc
 
-# import src.callbacks.table
-import src.callbacks.scatterplot
-import src.callbacks.projection_radio_buttons
-import src.callbacks.heatmap
-import src.callbacks.wordcloud
-import src.callbacks.histogram
-import src.callbacks.gallery
-import src.callbacks.deselect_button
-import src.callbacks.help_button
-import src.callbacks.graph
+import callbacks.table
+import callbacks.scatterplot
+import callbacks.projection_radio_buttons
+import callbacks.heatmap
+import callbacks.wordcloud
+import callbacks.histogram
+import callbacks.gallery
+import callbacks.deselect_button
+import callbacks.help_button
+import callbacks.graph
 
 
 def run_ui():
+
     external_stylesheets = [dbc.themes.BOOTSTRAP]
     app = Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -98,6 +99,7 @@ def run_ui():
 
 
 def main():
+
     if not Dataset.files_exist():
         print(
             "File",
@@ -123,4 +125,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()

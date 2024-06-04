@@ -34,6 +34,6 @@ To run the code, you use the following:
 
 ```sh
 
-python main.py
+python src/main.py
 
 ```
