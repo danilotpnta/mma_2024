@@ -6,6 +6,7 @@ from src.Dataset import Dataset
 
 
 def create_graph(selected_rows=None):
+    
     graph_figure = draw_graph(selected_rows)
     return dcc.Graph(
         id="graph",

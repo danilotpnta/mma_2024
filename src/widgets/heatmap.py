@@ -5,6 +5,7 @@ from src.Dataset import Dataset
 
 
 def create_heatmap(data_selected=None):
+
     heatmap_figure = draw_heatmap_figure(data_selected)
     return html.Div(
         [

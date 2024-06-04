@@ -3,10 +3,12 @@ from dash import html
 
 
 def create_table():
+
     return html.Div([create_table_grid()], className="stretchy-widget", id="table")
 
 
 def create_table_grid():
+
     return dash_ag_grid.AgGrid(
         columnDefs=[
             {"field": "class_name"},
