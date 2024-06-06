@@ -1,6 +1,6 @@
 import os
 import pandas
-from src.dataloaders import cub_loader
+from src.dataloaders import cub_loader, fma_loader
 from src import config, feature_engineering
 
 
@@ -45,6 +45,7 @@ class Dataset:
 
     @staticmethod
     def download():
-        cub_loader.load()
+        # cub_loader.load()
+        fma_loader.load()
         feature_engineering.generate_projection_data()
         cub_loader.cleanup()
