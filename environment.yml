@@ -12,6 +12,7 @@ dependencies:
     - wget
     - plotly==5.20.0
     - dash==2.16.1
+    - torch
     - dash-bootstrap-components
     - dash-ag-grid
     - wordcloud
