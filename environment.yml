@@ -1,12 +1,9 @@
-name: mma_2024
+name: mma_2024_fma # adds FMA dependencies 
 channels:
   - conda-forge
   - defaults
 dependencies:
   - python=3.8  
-  - pandas
-  - scikit-learn
-  - umap-learn
   - pip
   - pip:
     - wget
@@ -22,3 +19,20 @@ dependencies:
     - git+https://github.com/openai/CLIP.git
     - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
     - pydub #convert mp3 to wav
+    
+    # FMA dependencies
+    - jupyter
+    - numpy
+    - matplotlib
+    - seaborn
+    - tensorflow
+    - keras
+    - librosa
+    - audioread
+    - pydot
+    - tqdm
+    - python-dotenv
+    - pandas
+    - scikit-learn
+    - umap-learn
+    - mutagen
