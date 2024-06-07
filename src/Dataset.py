@@ -1,7 +1,8 @@
 import os
 import pandas
 from src.dataloaders import cub_loader, fma_loader
-from src import config, feature_engineering
+from src import config
+from src.utils import feature_engineering
 
 
 class Dataset:
