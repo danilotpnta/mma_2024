@@ -81,7 +81,7 @@ def load():
             print(f"Extracting data from {download_path} to {final_path}")
             extract_dataset(download_path, final_path)
     else:
-        print("Dataset already downloaded and extracted, skipping this step.")
+        print("Dataset already downloaded and unzipped, skipping this step.")
 
     # Convert MP3 files to WAV
     dataset_converted = os.path.isdir(wav_dir)
