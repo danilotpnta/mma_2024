@@ -1,4 +1,4 @@
-name: mma_2024_fma # adds FMA dependencies 
+name: mma_2024 # adds FMA dependencies 
 channels:
   - conda-forge
   - defaults
