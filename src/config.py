@@ -27,7 +27,18 @@ ROOT_DIR = Path(__file__).parent.parent
 DATASET_DIR = os.path.join(ROOT_DIR, "dataset")
 DATA_DIR = os.path.join(DATASET_DIR, "data")
 DOWNLOADS_DIR = os.path.join(DATASET_DIR, "downloads")
+
+# Others
 DATASET_PATH = os.path.join(DATA_DIR, "dataset.csv")
 IMAGES_DIR = os.path.join(DATA_DIR, "images")
 AUGMENTED_DATASET_PATH = os.path.join(DATA_DIR, "augmented_dataset.csv")
 ATTRIBUTE_DATA_PATH = os.path.join(DATA_DIR, "image_attributes.csv")
+
+# FMA
+AUDIO_DIR = os.path.join(DATA_DIR, "fma_small_wav")
+AUDIO_METADATA_DIR = os.path.join(DATA_DIR, "fma_metadata")
+
+TRACKS_PATH = os.path.join(AUDIO_METADATA_DIR, "tracks.csv")
+FEATURES_PATH = os.path.join(AUDIO_METADATA_DIR, "features.csv")
+ECHONEST_PATH = os.path.join(AUDIO_METADATA_DIR, "echonest.csv")
+
