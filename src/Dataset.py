@@ -43,7 +43,17 @@ class Dataset:
             and os.path.isdir(config.IMAGES_DIR)
             and os.path.isfile(config.ATTRIBUTE_DATA_PATH)
         )
-
+    
+    @staticmethod
+    def fma_files_exist():
+        mp3_dir = os.path.join(config.DATA_DIR, "fma_small")
+        wav_dir = os.path.join(config.DATA_DIR, "fma_small_wav")
+        return (
+            os.path.isdir(mp3_dir) 
+            and os.path.isdir(wav_dir) 
+            and os.path.isdir(os.path.join(config.DATA_DIR, "fma_metadata"))
+        )
+    
     @staticmethod
     def download():
         # cub_loader.load()

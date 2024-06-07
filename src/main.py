@@ -114,6 +114,10 @@ def main():
         )
         print("Creating dataset.")
         Dataset.download()
+    
+    if not Dataset.fma_files_exist():
+        print("FMA Dataset missing. \nCreating dataset.")
+        Dataset.download()
 
     Dataset.load()
 
