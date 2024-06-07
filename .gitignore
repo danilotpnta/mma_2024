@@ -37,3 +37,4 @@ rad.json
 # Test results file
 TestResults.xml
 .DS_Store
+__pycache__/
