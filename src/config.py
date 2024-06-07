@@ -41,4 +41,3 @@ AUDIO_METADATA_DIR = os.path.join(DATA_DIR, "fma_metadata")
 TRACKS_PATH = os.path.join(AUDIO_METADATA_DIR, "tracks.csv")
 FEATURES_PATH = os.path.join(AUDIO_METADATA_DIR, "features.csv")
 ECHONEST_PATH = os.path.join(AUDIO_METADATA_DIR, "echonest.csv")
-

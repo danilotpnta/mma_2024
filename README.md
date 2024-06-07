@@ -27,6 +27,8 @@ conda activate mma_2024
 
 The data is automatically downloaded when running the code, meaning that nothing needs to be done relating to this!
 
+_Note:_ The dataset used ([FMA](https://github.com/mdeff/fma), the small version) is ~7 GB large. This process may take a while.
+
 
 ## **Running**
 

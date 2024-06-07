@@ -17,8 +17,7 @@ dependencies:
     - dash-core-components
     - dash-holoniq-wordcloud
     - git+https://github.com/openai/CLIP.git
-    - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
-    - pydub #convert mp3 to wav
+    - pydub # To convert .mp3 to .wav
     
     # FMA dependencies
     - jupyter
@@ -36,3 +35,5 @@ dependencies:
     - scikit-learn
     - umap-learn
     - mutagen
+    
+    - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
