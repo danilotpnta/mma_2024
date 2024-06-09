@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-# ui configuration
+# UI configuration
 IMAGE_GALLERY_SIZE = 24
 IMAGE_GALLERY_ROW_SIZE = 4
 
