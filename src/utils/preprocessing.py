@@ -12,10 +12,8 @@ tracks = audio_utils.load(config.TRACKS_PATH)
 features = audio_utils.load(config.FEATURES_PATH)
 echonest = audio_utils.load(config.ECHONEST_PATH)
 
-
 subset = tracks.index[tracks['set', 'subset'] <= 'small']
 tracks = tracks.loc[subset]
-
 
 train = tracks.index[tracks['set', 'split'] == 'training']
 val = tracks.index[tracks['set', 'split'] == 'validation']

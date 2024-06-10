@@ -289,8 +289,30 @@ def load(filepath):
 
         return tracks
 
+def get_wav_paths(AUDIO_DIR, data):
+    wav_track_paths = []
+    for tid in data:
+        wav_track_paths.append(get_audio_path(AUDIO_DIR, tid))
+        
+    return wav_track_paths
 
 def get_audio_path(audio_dir, track_id):
+    """
+    Return the path to the WAV given the directory where the audio is stored
+    and the track ID.
+
+    Examples
+    --------
+    >>> import utils
+    >>> AUDIO_DIR = os.environ.get('AUDIO_DIR')
+    >>> utils.get_audio_path(AUDIO_DIR, 2)
+    '../data/fma_small/000/000002.mp3'
+
+    """
+    tid_str = "{:06d}".format(track_id)
+    return os.path.join(audio_dir, tid_str[:3], tid_str + ".wav")
+
+def get_audio_path_original(audio_dir, track_id):
     """
     Return the path to the mp3 given the directory where the audio is stored
     and the track ID.
