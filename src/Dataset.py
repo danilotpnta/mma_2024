@@ -56,7 +56,7 @@ class Dataset:
 
     @staticmethod
     def download():
-        # cub_loader.load()
+        cub_loader.load()
         fma_loader.load()
         feature_engineering.generate_projection_data()
-        # cub_loader.cleanup()
+        cub_loader.cleanup()
