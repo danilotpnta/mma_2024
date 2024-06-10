@@ -39,3 +39,13 @@ TestResults.xml
 .DS_Store
 __pycache__/
 conversion_errors.log
+lightning_logs/version_0/events.out.tfevents.1718042640.sp-byods-145-109-22-161.wireless.uva.nl.68045.0
+lightning_logs/version_0/hparams.yaml
+lightning_logs/version_1/events.out.tfevents.1718043090.sp-byods-145-109-22-161.wireless.uva.nl.69533.0
+lightning_logs/version_1/hparams.yaml
+lightning_logs/version_2/events.out.tfevents.1718043300.sp-byods-145-109-22-161.wireless.uva.nl.70048.0
+lightning_logs/version_2/hparams.yaml
+lightning_logs/version_3/events.out.tfevents.1718043474.sp-byods-145-109-22-161.wireless.uva.nl.70336.0
+lightning_logs/version_3/hparams.yaml
+lightning_logs/version_4/events.out.tfevents.1718043597.sp-byods-145-109-22-161.wireless.uva.nl.70573.0
+lightning_logs/version_4/hparams.yaml
