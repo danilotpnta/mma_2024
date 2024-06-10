@@ -21,7 +21,6 @@ MAX_GRAPH_NODES = 12
 # Dataset extraction configuration
 DATASET_SAMPLE_SIZE = 1000  # number of images in the CUB-200-2011 dataset is 11788, that is the max value for this parameter
 
-
 # Path configuration
 ROOT_DIR = Path(__file__).parent.parent
 DATASET_DIR = os.path.join(ROOT_DIR, "dataset")
@@ -35,9 +34,17 @@ AUGMENTED_DATASET_PATH = os.path.join(DATA_DIR, "augmented_dataset.csv")
 ATTRIBUTE_DATA_PATH = os.path.join(DATA_DIR, "image_attributes.csv")
 
 # FMA
+NUM_CLASSES = 8 # for FMA Small 
 AUDIO_DIR = os.path.join(DATA_DIR, "fma_small_wav")
 AUDIO_METADATA_DIR = os.path.join(DATA_DIR, "fma_metadata")
 
 TRACKS_PATH = os.path.join(AUDIO_METADATA_DIR, "tracks.csv")
 FEATURES_PATH = os.path.join(AUDIO_METADATA_DIR, "features.csv")
 ECHONEST_PATH = os.path.join(AUDIO_METADATA_DIR, "echonest.csv")
+
+# Train
+CHECKPOINT_DIR = os.path.join(ROOT_DIR, "checkpoints")
+BATCH_SIZE: int = 32
+EPOCHS: int = 10
+LEARNING_RATE = 0.001
+
