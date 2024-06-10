@@ -18,6 +18,8 @@ dependencies:
     - dash-holoniq-wordcloud
     - git+https://github.com/openai/CLIP.git
     - pydub # To convert .mp3 to .wav
+    - lightning[pytorch-extra]
+    - tensorboard
     
     # FMA dependencies
     - jupyter
