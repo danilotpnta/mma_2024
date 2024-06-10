@@ -290,11 +290,17 @@ def load(filepath):
         return tracks
 
 def get_wav_paths(AUDIO_DIR, data):
-    wav_track_paths = []
-    for tid in data:
-        wav_track_paths.append(get_audio_path(AUDIO_DIR, tid))
+    
+    train = data['train']
+    val = data['val']
+    test = data['test']
+
+    train_wav_paths = [get_audio_path(AUDIO_DIR, tid) for tid in train]
+    val_wav_paths = [get_audio_path(AUDIO_DIR, tid) for tid in val]
+    test_wav_paths = [get_audio_path(AUDIO_DIR, tid) for tid in test]
+
+    return train_wav_paths, val_wav_paths, test_wav_paths
         
-    return wav_track_paths
 
 def get_audio_path(audio_dir, track_id):
     """
