@@ -2,13 +2,13 @@ import lightning as L
 from lightning.pytorch.cli import LightningCLI
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 
-from models.fcn_classifier import GenreFCN
+from src.models.w2v_genre_classifier import W2V_GenreClassifier
+from utils.data_module import GenreDataModule
 
 def cli_main():
     
     early_stopping = EarlyStopping(monitor='val_loss', patience=3, verbose=True, mode='min')
-    cli = LightningCLI(GenreFCN, DataPlaceholder, trainer_defaults={"callbacks": [early_stopping]})
-
+    cli = LightningCLI(W2V_GenreClassifier, GenreDataModule, trainer_defaults={"callbacks": [early_stopping]})
 
 
 if __name__ == "__main__":
