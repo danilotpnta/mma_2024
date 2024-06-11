@@ -1,12 +1,15 @@
 import torch
 import torch.nn as nn
-from torchvggish import vggish, vggish_input
+import numpy as np
 import pytorch_lightning as pl
+from torchvggish import vggish as VGGish
+from torchmetrics import Accuracy 
+
 
 class VGGish_GenreClassifier(pl.LightningModule):
     def __init__(self):
         super(VGGish_GenreClassifier, self).__init__()
-        self.vggish = vggish()
+        self.vggish = VGGish()
         self.vggish.eval()  # Set to eval mode
         self.dropout = nn.Dropout(0.3)
         self.fc1 = nn.Linear(128, 128)
@@ -17,22 +20,25 @@ class VGGish_GenreClassifier(pl.LightningModule):
         with torch.no_grad():  # Freeze VGGish feature extraction
             x = self.vggish(x)
         x = self.dropout(x)
-        x = self.fc1(x)
-        x = torch.relu(x)
-        x = self.dropout(x)
+        x = nn.functional.relu(self.fc1(x))
         x = self.fc2(x)
         return x
     
     def loss(self, preds, labels):
-        return nn.functional.cross_entropy(preds, labels)
+        return nn.functional.cross_entropy(preds, labels.float())
 
     def step(self, batch):
         inputs, labels = batch
-        inputs = vggish_input.wavfile_to_examples(inputs)
-        print(inputs, labels)
+
+        # Forward pass
         outputs = self(inputs)
+
+        # Compute loss
         loss = self.loss(outputs, labels)
+        print("loss: ", loss)
+
         return loss
+
 
     def training_step(self, batch, batch_idx):
         loss = self.step(batch)
@@ -47,7 +53,18 @@ class VGGish_GenreClassifier(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         loss = self.step(batch)
         self.log('test_loss', loss)
-        return {"test_loss": loss}
+
+        inputs, labels = batch
+
+        # Forward pass
+        outputs = self(inputs)
+
+        accuracy = Accuracy(task="multiclass", num_classes=8)
+
+        acc = accuracy(outputs, labels)
+        self.log('accuracy', acc)
+
+        return {"test_loss": loss, 'accuracy': acc}
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
