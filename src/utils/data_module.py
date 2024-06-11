@@ -1,7 +1,36 @@
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader, Dataset
+import librosa
+import torch
+import numpy as np
 from . import preprocessing, audio_utils
 import config
+
+def preprocess_wav(file_path):
+    # Load WAV file
+    y, sr = librosa.load(file_path, sr=None)
+
+    # Ensure the audio is mono
+    if len(y.shape) > 1:
+        y = np.mean(y, axis=1)
+    
+    # Resample to 16kHz if necessary
+    if sr != 16000:
+        y = librosa.resample(y, orig_sr=sr, target_sr=16000)
+
+    # Convert to log-mel spectrogram
+    mel_spec = librosa.feature.melspectrogram(y=y, sr=16000, n_mels=64, fmax=8000)
+    log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
+
+    # Ensure the shape is (1, 96, 64)
+    if log_mel_spec.shape[1] < 96:
+        pad_width = 96 - log_mel_spec.shape[1]
+        log_mel_spec = np.pad(log_mel_spec, pad_width=((0, 0), (0, pad_width)), mode='constant')
+    else:
+        log_mel_spec = log_mel_spec[:, :96]
+
+    log_mel_spec = log_mel_spec[np.newaxis, :, :]  # Add channel dimension
+    return torch.tensor(log_mel_spec, dtype=torch.float32)
 
 class AudioDataset(Dataset):
     def __init__(self, file_list, labels):
@@ -12,9 +41,20 @@ class AudioDataset(Dataset):
         return len(self.file_list)
 
     def __getitem__(self, idx):
-        audio = self.file_list[idx]
+        audio_path = self.file_list[idx]
         label = self.labels[idx]
-        return audio, label
+        mel_spec = preprocess_wav(audio_path)
+        if idx == 133297:
+            print("133297", audio_path, label)
+
+        elif idx == 108925:
+            print("108925", audio_path, label)
+
+        elif idx == 99134:
+            print("099134", audio_path, label)
+
+
+        return mel_spec, label
 
 class GenreDataModule(pl.LightningDataModule):
     def __init__(self, batch_size=32):
