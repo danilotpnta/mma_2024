@@ -1,11 +1,45 @@
 import logging
 from pydub import AudioSegment
+from mutagen.mp4 import MP4
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 
-
 # Catch corrupted files into a txt file
+
 logging.basicConfig(filename="conversion_errors.log", level=logging.ERROR)
+
+def convert_m4a_to_wav(input_filename, output_filename):
+    try:
+        # Load the M4A file
+        audio = AudioSegment.from_file(input_filename, format="m4a")
+
+        # Export the audio to WAV format
+        audio.export(output_filename, format="wav")
+
+        # Load the M4A metadata
+        m4a_audio = MP4(input_filename)
+        m4a_tags = m4a_audio.tags
+
+        # Load the WAV file
+        wav_audio = WAVE(output_filename)
+
+        # Transfer compatible metadata from M4A to WAV
+        if m4a_tags:
+            for tag, value in m4a_tags.items():
+                try:
+                    wav_audio[tag] = value
+                except Exception as e:
+                    # Handle incompatible tags
+                    print(f"Skipping tag {tag} due to error: {str(e)}")
+
+        # Save the WAV file with metadata
+        wav_audio.save()
+
+    except Exception as e:
+        # Log only the input file path and error message
+        error_message = f"Error converting {input_filename}: {str(e)}"
+        print(error_message)
+        logging.error(error_message)
 
 
 def convert_mp3_to_wav(input_filename, output_filename):
