@@ -44,7 +44,7 @@ ECHONEST_PATH = os.path.join(AUDIO_METADATA_DIR, "echonest.csv")
 
 # Train
 CHECKPOINT_DIR = os.path.join(ROOT_DIR, "checkpoints")
-BATCH_SIZE: int = 32
+BATCH_SIZE: int = 8
 EPOCHS: int = 10
 LEARNING_RATE = 0.001
 
