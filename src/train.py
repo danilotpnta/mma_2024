@@ -3,7 +3,7 @@ import argparse
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 from utils.data_module import GenreDataModule
-from src.models.w2v_genre_classifier import W2V_GenreClassifier
+from models.w2v_genre_classifier import W2V_GenreClassifier
 from models.vgg_genre_classifier import VGGish_GenreClassifier
 from transformers import AutoConfig
 import config
