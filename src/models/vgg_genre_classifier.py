@@ -25,13 +25,18 @@ class VGGish_GenreClassifier(pl.LightningModule):
         return x
     
     def loss(self, preds, labels):
-        return nn.functional.cross_entropy(preds, labels.float())
+        return nn.CrossEntropyLoss()(preds, labels)
 
     def step(self, batch):
         inputs, labels = batch
 
+        labels = torch.argmax(labels, dim=1)
+        # print(labels.shape)
+        # print(labels)
         # Forward pass
         outputs = self(inputs)
+        # print(outputs.shape)
+        # print(outputs)
 
         # Compute loss
         loss = self.loss(outputs, labels)
@@ -55,9 +60,10 @@ class VGGish_GenreClassifier(pl.LightningModule):
         self.log('test_loss', loss)
 
         inputs, labels = batch
+        # print(inputs.s)
 
         # Forward pass
-        outputs = self(inputs)
+        outputs = torch.nn.functional.softmax(outputs, dim=1)
 
         accuracy = Accuracy(task="multiclass", num_classes=8)
 
