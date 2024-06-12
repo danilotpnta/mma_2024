@@ -62,6 +62,8 @@ class VGGish_GenreClassifier(pl.LightningModule):
         inputs, labels = batch
         # print(inputs.s)
 
+        outputs = self(inputs)
+
         # Forward pass
         outputs = torch.nn.functional.softmax(outputs, dim=1)
 
