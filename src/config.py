@@ -33,6 +33,8 @@ IMAGES_DIR = os.path.join(DATA_DIR, "images")
 AUGMENTED_DATASET_PATH = os.path.join(DATA_DIR, "augmented_dataset.csv")
 ATTRIBUTE_DATA_PATH = os.path.join(DATA_DIR, "image_attributes.csv")
 
+SAMPLE_DATASET_PATH = os.path.join(DATASET_DIR, "sample_data/first_100.csv")
+
 # FMA
 NUM_CLASSES = 8 # for FMA Small 
 AUDIO_DIR = os.path.join(DATA_DIR, "fma_small_wav")
@@ -47,4 +49,3 @@ CHECKPOINT_DIR = os.path.join(ROOT_DIR, "checkpoints")
 BATCH_SIZE: int = 32
 EPOCHS: int = 10
 LEARNING_RATE = 0.001
-

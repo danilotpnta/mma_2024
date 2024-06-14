@@ -6,128 +6,77 @@ dirpath = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(dirpath)
 
 # The rest of the code
-from dash import Dash, dcc
+from dash import Dash, dcc, callback, Input, Output
 from src import config
 from src.Dataset import Dataset
-from src.widgets import (
-    projection_radio_buttons,
-    gallery,
-    scatterplot,
-    wordcloud,
-    graph,
-    heatmap,
-    histogram,
-    help_popup,
-)
-from src.widgets.table import create_table
+
 import dash_bootstrap_components as dbc
 
-import callbacks.table
-import callbacks.scatterplot
-import callbacks.projection_radio_buttons
-import callbacks.heatmap
-import callbacks.wordcloud
-import callbacks.histogram
-import callbacks.gallery
-import callbacks.deselect_button
-import callbacks.help_button
-import callbacks.graph
 
+from src.widgets import (
+    genre_histogram,
+    scatterplot_3d,
+    projection_radio_buttons,
+    tempo_histogram,
+    gallery,
+    track_player
+)
 
-def run_ui():
+import src.callbacks.projection_radio_buttons
+import src.callbacks.track_player
+import src.callbacks.scatterplot_3d
 
+def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
-    app = Dash(__name__, external_stylesheets=external_stylesheets)
+    app = Dash(__name__, external_stylesheets=external_stylesheets,
+    assets_folder='assets')
 
-    help_popup_widget = help_popup.create_help_popup()
-    projection_radio_buttons_widget = (
-        projection_radio_buttons.create_projection_radio_buttons()
-    )
-    table_widget = create_table()
-    scatterplot_widget = scatterplot.create_scatterplot(config.DEFAULT_PROJECTION)
-    wordcloud_widget = wordcloud.create_wordcloud()
-    gallery_widget = gallery.create_gallery()
-    graph_widget = graph.create_graph()
-    heatmap_widget = heatmap.create_heatmap()
-    histogram_widget = histogram.create_histogram()
+    projection_radio_buttons_widget = (projection_radio_buttons.create_projection_radio_buttons())
 
-    right_tab = dcc.Tabs(
-        [
-            dcc.Tab(label="wordcloud", children=wordcloud_widget),
-            dcc.Tab(label="sample images", children=gallery_widget),
-            dcc.Tab(label="histogram", children=histogram_widget),
-            dcc.Tab(label="graph", children=graph_widget),
-            dcc.Tab(label="heatmap", children=[heatmap_widget]),
-        ]
-    )
+    scatterplot_widget = scatterplot_3d.create_scatterplot(config.DEFAULT_PROJECTION)
+
+    genre_dist = genre_histogram.create_histogram()
+    tempo_dist = tempo_histogram.create_histogram()
+
+    track_player_widget = track_player.create_track_player()
+
+    # gallery_widget = gallery.create_gallery()
+
+    right_tab = dcc.Tabs([
+        dcc.Tab(label='genre distribution', children=genre_dist),
+        dcc.Tab(label='tempo distribution', children=tempo_dist)
+    ])
 
     app.layout = dbc.Container(
         [
-            help_popup_widget,
-            dbc.Stack(
-                [
-                    projection_radio_buttons_widget,
-                    dbc.Button(
-                        "Deselect everything",
-                        id="deselect-button",
-                        class_name="btn btn-outline-primary ms-auto header-button",
-                    ),
-                    dbc.Button(
-                        "Help",
-                        id="help-button",
-                        class_name="btn btn-outline-primary header-button",
-                    ),
-                ],
-                id="header",
-                direction="horizontal",
-            ),
-            dbc.Row(
-                [
+            projection_radio_buttons_widget,
+            dbc.Row([
                     dbc.Col(scatterplot_widget, width=6, className="main-col"),
-                    dbc.Col(right_tab, width=6, className="main-col"),
-                ],
-                className="top-row",
-                justify="between",
+                    dbc.Col(right_tab, width=6, className="main-col")
+                ], 
+                className='top-row', justify='between'
             ),
             dbc.Row(
-                [dbc.Col(table_widget, className="main-col")], className="bottom-row"
-            ),
+                dbc.Col([track_player_widget]
+                )
+            )
         ],
-        fluid=True,
-        id="container",
+        fluid=True, id="container"
     )
 
-    app.run(debug=True, use_reloader=False)
-
+    app.run(debug=True, use_reloader=True)
 
 def main():
 
     if not Dataset.files_exist():
-        print(
-            "File",
-            config.AUGMENTED_DATASET_PATH,
-            "missing or file",
-            config.ATTRIBUTE_DATA_PATH,
-            "missing or directory",
-            config.IMAGES_DIR,
-            "missing",
-        )
+        print("File", config.SAMPLE_DATASET_PATH, "missing")
         print("Creating dataset.")
-        Dataset.download()
-    
-    if not Dataset.fma_files_exist():
-        print("FMA Dataset missing. \nCreating dataset.")
         Dataset.download()
 
     Dataset.load()
 
-    if len(Dataset.get()) != config.DATASET_SAMPLE_SIZE:
-        print("Sample size changed in the configuration. Recalculating features.")
-        Dataset.download()
-        Dataset.load()
-
     print("Starting Dash")
-    run_ui()
+    run_dashboard()
 
 
 if __name__ == "__main__":
