@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 
+IMAGE_GALLERY_SIZE = 8
+IMAGE_GALLERY_ROW_SIZE = 4
+
 DEFAULT_PROJECTION = "UMAP"
 
 # Path configuration

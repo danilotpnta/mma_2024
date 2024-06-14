@@ -2,13 +2,15 @@ from dash import Dash, dcc, html, Output, Input, callback
 import dash_bootstrap_components as dbc
 from Dataset import Dataset
 import config
+from utils.similar_tracks import get_similar_tracks
 
 from widgets import (
     projection_radio_buttons,
     scatterplot_3d,
     genre_histogram,
     tempo_histogram,
-    track_table
+    track_table,
+    gallery
 )
 
 import callbacks.scatterplot_3d
@@ -29,6 +31,8 @@ def run_dashboard():
     selected_track_label = html.Div(id='selected-track-title')
     track_table_widget = track_table.create_track_table()
 
+    gallery_widget = gallery.create_gallery()
+
     right_tab = dcc.Tabs([
         dcc.Tab(label='genre distribution', children=genre_dist),
         dcc.Tab(label='tempo distribution', children=tempo_dist)
@@ -40,8 +44,10 @@ def run_dashboard():
             dbc.Col(scatterplot_widget, width=6, className="main-col"),
             dbc.Col(right_tab, width=6, className="main-col")
         ]),
-        selected_track_label,
-        track_table_widget
+        dbc.Row([
+            dbc.Col(track_table_widget),
+            dbc.Col(gallery_widget)
+        ])
         ], fluid=True, id="container")
     
     

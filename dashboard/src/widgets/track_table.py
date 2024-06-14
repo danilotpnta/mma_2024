@@ -6,10 +6,10 @@ def create_track_table():
 
     album_cover = html.Img(id='album-cover', src='assets/plain_cover.jpg')
 
-    track_title = html.Div(id='track-title', children='')
-    artist = html.Div(id='artist', children='')
-    genre = html.Div(id='genre', children='')
-    tempo = html.Div(id='tempo', children='')
+    track_title = html.Div([html.H4('Title:'), html.Div(id='track-title', children='')])
+    artist = html.Div([html.H4('Artist:'),html.Div(id='artist', children='')])
+    genre = html.Div([html.H4('Genre:'), html.Div(id='genre', children='')])
+    tempo = html.Div([html.H4('Genre:'), html.Div(id='tempo', children='')])
 
     row = dbc.Row([
         dbc.Col(album_cover, width=4),
