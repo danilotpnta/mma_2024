@@ -41,4 +41,13 @@ dependencies:
     - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
     - pytorch-lightning
     - transformers 
-    - torchvggish
+    - ffmpeg-python 
+    - scipy 
+    - threadpoolctl 
+    - regex 
+    - msgpack
+    - datasets
+    - evaluate
+    - datasets
+    - statsmodels
+    - accelerate -U
