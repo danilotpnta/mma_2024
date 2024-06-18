@@ -18,7 +18,7 @@ def create_scatterplot_figure(projection):
     else:
         raise Exception('Projection not found')
     
-    fig = plotly.express.scatter(data_frame=Dataset.get(), x=x_col, y=y_col)
+    fig = plotly.express.scatter(data_frame=Dataset.get(), x=x_col, y=y_col, color='genre')
     fig.update_traces(
         customdata=Dataset.get().index, 
         marker={'color': config.SCATTERPLOT_COLOR},

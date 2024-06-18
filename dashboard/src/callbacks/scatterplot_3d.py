@@ -11,8 +11,9 @@ from utils.similar_tracks import get_similar_tracks
      Output('tempo', 'children'),
      Output("gallery", "children"),
      Output("gallery-card-header", "children")],
-    [Input('scatterplot-3D', 'clickData')])
-def update_selected_track(clickData):
+    [Input('scatterplot-3D', 'clickData'),
+     Input('projection-radio-buttons', 'value')])
+def update_selected_track(clickData, radio_button_value):
     if clickData is None:
         return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!'
     else:
@@ -27,8 +28,10 @@ def update_selected_track(clickData):
         artist = selected_track['artist']
         genre = selected_track['genre']
         tempo = selected_track['tempo']
+        print(tempo)
 
-        similar_tracks_ids = get_similar_tracks(track_id)
+        similar_tracks_ids = get_similar_tracks(track_id, projection=radio_button_value)
+        print(similar_tracks_ids)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
 
         return album_cover, track_title, artist, genre, tempo, gallery_children, f'Tracks similar to {track_title} by {artist}'
