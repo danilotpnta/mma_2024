@@ -67,3 +67,5 @@ lightning_logs/version_25/hparams.yaml
 lightning_logs/version_26/events.out.tfevents.1718111305.sp-byods-145-109-13-62.wireless.uva.nl.97142.0
 lightning_logs/version_26/hparams.yaml
 joined.mp3
+dataset__/data/gtzan/
+dataset_/downloads/gtzan.zip
