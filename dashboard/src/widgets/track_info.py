@@ -4,22 +4,28 @@ import dash_bootstrap_components as dbc
 
 def create_track_info():
 
-    album_cover = html.Img(id='album-cover', style={'max-width': '90%'}, src='')
+    album_cover = html.Img(id='album-cover',
+                            style={'width': '100%', 'height': 'auto'},
+                            src='', className='border border-dark ')
 
-    track_title = dbc.Row([html.H4('Title:'), html.Div(id='track-title', children='')])
-    artist = dbc.Row([html.H4('Artist:'),html.Div(id='artist', children='')])
-    genre = dbc.Row([html.H4('Genre:'), html.Div(id='genre', children='')])
-    tempo = dbc.Row([html.H4('Genre:'), html.Div(id='tempo', children='')])
+    track_title = html.Tr([html.Td('Title'), html.Td(id='track-title', children='')])
+    artist = html.Tr([html.Td('Artist'), html.Td(id='artist', children='')])
+    genre = html.Tr([html.Td('Genre'), html.Td(id='genre', children='')])
+    tempo = html.Tr([html.Td('Tempo (bpm)'), html.Td(id='tempo', children='')])
+
+    table_body = [html.Tbody([track_title, artist, genre, tempo])]
 
     row = dbc.Row([
-        dbc.Col(album_cover, width=8),
-        dbc.Col([
-            html.H3("Track Info"),
-            track_title,
-            artist,
-            genre,
-            tempo
-        ], width=1)
+        dbc.Col(album_cover, width={"size": 2, 'offset': 1}),
+        dbc.Col(
+            dbc.Table(
+                table_body,
+                bordered=True,
+                hover=True,
+                responsive=False,
+                striped=True,
+            ), width={"size": 8}
+        )
     ])
     
     return row

@@ -36,35 +36,42 @@ def run_dashboard():
 
 
     gallery_widget = gallery.create_gallery()
+
     view_3d = dbc.Col([
         scatterplot_3d_widget,
         track_info_widget
-    ], width=6, align='center', class_name="main-col")
-    
+    ], align='center', class_name="main-col")
+
     view_2d = dbc.Col([
         scatterplot_2d_widget,
         track_table_widget
-    ], width=6, align='center', class_name="main-col")
+    ], align='center', class_name="main-col")
 
-    left_tab = dcc.Tabs([
-        dcc.Tab(label='3-D plot view', children=view_3d),
-        dcc.Tab(label='2-D plot view', children=view_2d),
-    ])
-
-    right_tab = dcc.Tabs([
-        dcc.Tab(label='genre distribution', children=genre_dist),
-        dcc.Tab(label='tempo distribution', children=tempo_dist)
-    ])
-
-    app.layout = dbc.Container([
-        projection_radio_buttons_widget,
-        dbc.Row([
-            dbc.Col(left_tab, width=6, className="main-col"),
-            dbc.Col(right_tab, width=6, className="main-col")
-        ], className='top-row', justify='between'),
-        dbc.Row([
-            dbc.Col(gallery_widget)
-        ])
+    app.layout = dbc.Container(
+        [
+            projection_radio_buttons_widget,
+            dbc.Row([
+                dbc.Col(
+                    dcc.Tabs(
+                        [
+                            dcc.Tab(label='3-D plot view', children=view_3d),
+                            dcc.Tab(label='2-D plot view', children=view_2d)
+                        ]
+                    ),
+                    width=6, className="main-col"
+                ),
+                dbc.Col(
+                    [
+                        dcc.Tabs(
+                            [
+                                dcc.Tab(label='genre distribution', children=genre_dist),
+                                dcc.Tab(label='tempo distribution', children=tempo_dist)
+                            ]
+                        ),
+                        gallery_widget]
+                    , width=6, className="main-col"
+                )
+            ], className='top-row', justify='between')
         ], fluid=True, id="container")
     
     
