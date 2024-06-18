@@ -13,14 +13,14 @@ from utils.similar_tracks import get_similar_tracks
     [Input('scatterplot-3D', 'clickData')])
 def update_selected_track(clickData):
     if clickData is None:
-        return "No track selected", 'src/assets/plain_cover.jpg', '', '', '', ''
+        return 'assets/album_cover.png', '', '', '', '', ''
     else:
         track_id = clickData['points'][0]['customdata'][0]
         d = Dataset.get()
         selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
         
         album_cover = selected_track['album_cover']
-        album_cover = 'assets/plain_cover.jpg'
+        album_cover = 'assets/album_cover.png'
         
         track_title = selected_track['track_title']
         artist = selected_track['artist']

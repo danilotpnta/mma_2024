@@ -1,25 +1,33 @@
-from Dataset import Dataset
+import dash_ag_grid
 from dash import dcc, html
-import dash_bootstrap_components as dbc
 
-def create_track_table():
+from Dataset import Dataset
 
-    album_cover = html.Img(id='album-cover', src='assets/plain_cover.jpg')
+def create_table():
+    return html.Div([
+        create_table_grid()
+    ],
+        className='stretchy-widget',
+        id='table'
+    )
 
-    track_title = html.Div([html.H4('Title:'), html.Div(id='track-title', children='')])
-    artist = html.Div([html.H4('Artist:'),html.Div(id='artist', children='')])
-    genre = html.Div([html.H4('Genre:'), html.Div(id='genre', children='')])
-    tempo = html.Div([html.H4('Genre:'), html.Div(id='tempo', children='')])
-
-    row = dbc.Row([
-        dbc.Col(album_cover, width=4),
-        dbc.Col([
-            html.H3("Track Info"),
-            track_title,
-            artist,
-            genre,
-            tempo
-        ], width=8)
-    ])
-    
-    return row
+def create_table_grid():
+    return dash_ag_grid.AgGrid(
+        columnDefs=[
+            {"field": "class_name"},
+            {"field": "count_in_selection"},
+            {"field": "total_count", }
+        ],
+        rowData=[],
+        columnSize="responsiveSizeToFit",
+        dashGridOptions={
+            "pagination": False,
+            "paginationAutoPageSize": True,
+            "suppressCellFocus": True,
+            "rowSelection": "multiple",
+        },
+        defaultColDef={"filter": "agTextColumnFilter"},
+        className='stretchy-widget ag-theme-alpine',
+        style={'width': '', 'height': ''},
+        id='grid'
+    )

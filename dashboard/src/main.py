@@ -7,9 +7,11 @@ from utils.similar_tracks import get_similar_tracks
 from widgets import (
     projection_radio_buttons,
     scatterplot_3d,
+    scatterplot_2d,
+    track_info,
+    track_table,
     genre_histogram,
     tempo_histogram,
-    track_table,
     gallery
 )
 
@@ -23,15 +25,31 @@ def run_dashboard():
 
     projection_radio_buttons_widget = (projection_radio_buttons.create_projection_radio_buttons())
 
-    scatterplot_widget = scatterplot_3d.create_scatterplot(config.DEFAULT_PROJECTION)
+    scatterplot_3d_widget = scatterplot_3d.create_scatterplot(config.DEFAULT_PROJECTION)
+    scatterplot_2d_widget = scatterplot_2d.create_scatterplot(config.DEFAULT_PROJECTION)
 
     genre_dist = genre_histogram.create_histogram()
     tempo_dist = tempo_histogram.create_histogram()
 
-    selected_track_label = html.Div(id='selected-track-title')
-    track_table_widget = track_table.create_track_table()
+    track_info_widget = track_info.create_track_info()
+    track_table_widget = track_table.create_table()
+
 
     gallery_widget = gallery.create_gallery()
+    view_3d = dbc.Col([
+        scatterplot_3d_widget,
+        track_info_widget
+    ], width=6, align='center', class_name="main-col")
+    
+    view_2d = dbc.Col([
+        scatterplot_2d_widget,
+        track_table_widget
+    ], width=6, align='center', class_name="main-col")
+
+    left_tab = dcc.Tabs([
+        dcc.Tab(label='3-D plot view', children=view_3d),
+        dcc.Tab(label='2-D plot view', children=view_2d),
+    ])
 
     right_tab = dcc.Tabs([
         dcc.Tab(label='genre distribution', children=genre_dist),
@@ -41,11 +59,10 @@ def run_dashboard():
     app.layout = dbc.Container([
         projection_radio_buttons_widget,
         dbc.Row([
-            dbc.Col(scatterplot_widget, width=6, className="main-col"),
+            dbc.Col(left_tab, width=6, className="main-col"),
             dbc.Col(right_tab, width=6, className="main-col")
-        ]),
+        ], className='top-row', justify='between'),
         dbc.Row([
-            dbc.Col(track_table_widget),
             dbc.Col(gallery_widget)
         ])
         ], fluid=True, id="container")

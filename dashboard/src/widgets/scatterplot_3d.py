@@ -24,6 +24,11 @@ def create_scatterplot(projection):
     return dcc.Graph(
         figure=create_scatterplot_figure(projection),
         id="scatterplot-3D",
-        className="stretchy-widget border-widget",
-        responsive=True
+        className="stretchy-widget border-widget ",
+        responsive=True,
+        config={
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['autoscale'],
+            'displayModeBar': True,
+        }
     )
