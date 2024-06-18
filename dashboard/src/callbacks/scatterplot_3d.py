@@ -9,11 +9,12 @@ from utils.similar_tracks import get_similar_tracks
      Output('artist', 'children'),
      Output('genre', 'children'),
      Output('tempo', 'children'),
-     Output("gallery", "children")],
+     Output("gallery", "children"),
+     Output("gallery-card-header", "children")],
     [Input('scatterplot-3D', 'clickData')])
 def update_selected_track(clickData):
     if clickData is None:
-        return 'assets/album_cover.png', '', '', '', '', ''
+        return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!'
     else:
         track_id = clickData['points'][0]['customdata'][0]
         d = Dataset.get()
@@ -30,4 +31,4 @@ def update_selected_track(clickData):
         similar_tracks_ids = get_similar_tracks(track_id)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
 
-        return album_cover, track_title, artist, genre, tempo, gallery_children
+        return album_cover, track_title, artist, genre, tempo, gallery_children, f'Tracks similar to {track_title} by {artist}'

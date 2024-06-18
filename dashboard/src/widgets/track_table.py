@@ -14,9 +14,9 @@ def create_table():
 def create_table_grid():
     return dash_ag_grid.AgGrid(
         columnDefs=[
-            {"field": "class_name"},
-            {"field": "count_in_selection"},
-            {"field": "total_count", }
+            {"field": "track_title", 'headerName': "Track Title"},
+            {"field": "artist", 'headerName': "Artist"},
+            {"field": "genre", 'headerName': "Genre"}
         ],
         rowData=[],
         columnSize="responsiveSizeToFit",
@@ -28,6 +28,6 @@ def create_table_grid():
         },
         defaultColDef={"filter": "agTextColumnFilter"},
         className='stretchy-widget ag-theme-alpine',
-        style={'width': '', 'height': ''},
+        # style={'width': '', 'height': ''},
         id='grid'
     )

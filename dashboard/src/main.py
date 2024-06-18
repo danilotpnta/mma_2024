@@ -16,6 +16,7 @@ from widgets import (
 )
 
 import callbacks.scatterplot_3d
+import callbacks.scatterplot_2d
 import callbacks.projection_radio_buttons
 
 
@@ -36,15 +37,18 @@ def run_dashboard():
 
 
     gallery_widget = gallery.create_gallery()
-    view_3d = dbc.Col([
+
+    view_3d = dbc.Stack([
         scatterplot_3d_widget,
+        html.Hr(),
         track_info_widget
-    ], width=6, align='center', class_name="main-col")
+    ], gap=3)
     
-    view_2d = dbc.Col([
+    view_2d = dbc.Stack([
         scatterplot_2d_widget,
+        html.Hr(),
         track_table_widget
-    ], width=6, align='center', class_name="main-col")
+    ], gap=3)
 
     left_tab = dcc.Tabs([
         dcc.Tab(label='3-D plot view', children=view_3d),
@@ -55,16 +59,25 @@ def run_dashboard():
         dcc.Tab(label='genre distribution', children=genre_dist),
         dcc.Tab(label='tempo distribution', children=tempo_dist)
     ])
+    
+    gallery_comp = dbc.Card(
+        [
+            dbc.CardHeader("No tracks selected yet!", id='gallery-card-header'),
+            dbc.CardBody([gallery_widget])
+        ]
+    )
+    
+    right_component_wrapper = dbc.Stack([
+        right_tab,
+        gallery_comp
+    ])
 
     app.layout = dbc.Container([
         projection_radio_buttons_widget,
         dbc.Row([
-            dbc.Col(left_tab, width=6, className="main-col"),
-            dbc.Col(right_tab, width=6, className="main-col")
-        ], className='top-row', justify='between'),
-        dbc.Row([
-            dbc.Col(gallery_widget)
-        ])
+            dbc.Col(left_tab, className='shadow-sm p-3 mb-5 bg-white rounded'),
+            dbc.Col(right_component_wrapper, className='shadow-sm p-3 mb-5 bg-white rounded')
+        ], className='top-row'),
         ], fluid=True, id="container")
     
     
