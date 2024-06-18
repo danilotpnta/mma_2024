@@ -48,3 +48,6 @@ BATCH_SIZE: int = 8
 EPOCHS: int = 10
 LEARNING_RATE = 0.001
 
+# GTZAN
+GTZAN_DIR = os.path.join(DATA_DIR, "gtzan")
+

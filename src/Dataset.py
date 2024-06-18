@@ -1,8 +1,8 @@
 import os
 import pandas
-from src.dataloaders import cub_loader, fma_loader
+from src.dataloaders import cub_loader, gtzan_loader
 from src import config
-from src.utils import feature_engineering
+from src.utils import feature_engineering,feature_engineering_
 
 
 class Dataset:
@@ -53,6 +53,8 @@ class Dataset:
 
     @staticmethod
     def download():
-        # cub_loader.load()
+        cub_loader.load()
         feature_engineering.generate_projection_data()
-        # cub_loader.cleanup()
+        feature_engineering_.generate_projection_data()
+        cub_loader.cleanup()
+        gtzan_loader.load()
