@@ -69,6 +69,7 @@ def run_dashboard():
     
     right_component_wrapper = dbc.Stack([
         right_tab,
+        html.Hr(),
         gallery_comp
     ])
 

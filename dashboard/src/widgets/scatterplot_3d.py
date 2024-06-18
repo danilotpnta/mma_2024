@@ -25,7 +25,6 @@ def create_scatterplot(projection):
         figure=create_scatterplot_figure(projection),
         id="scatterplot-3D",
         className="stretchy-widget border-widget border",
-        responsive=True,
         config={
             'displaylogo': False,
             'modeBarButtonsToRemove': ['autoscale'],

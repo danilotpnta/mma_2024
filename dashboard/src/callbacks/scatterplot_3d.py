@@ -28,10 +28,8 @@ def update_selected_track(clickData, radio_button_value):
         artist = selected_track['artist']
         genre = selected_track['genre']
         tempo = selected_track['tempo']
-        print(tempo)
 
         similar_tracks_ids = get_similar_tracks(track_id, projection=radio_button_value)
-        print(similar_tracks_ids)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
 
         return album_cover, track_title, artist, genre, tempo, gallery_children, f'Tracks similar to {track_title} by {artist}'
