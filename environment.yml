@@ -21,7 +21,7 @@ dependencies:
     - lightning[pytorch-extra]
     - tensorboard
     
-    # FMA dependencies
+    # GTZAN dependencies
     - jupyter
     - numpy
     - matplotlib
@@ -49,4 +49,4 @@ dependencies:
     - evaluate
     - datasets
     - statsmodels
-    - accelerate -U
+    - accelerate
