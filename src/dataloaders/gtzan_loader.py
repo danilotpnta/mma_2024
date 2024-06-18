@@ -5,14 +5,14 @@ import shutil
 import zipfile
 from tqdm import tqdm
 from pathlib import Path
-from config import DATASET_DIR, DATA_DIR, DOWNLOADS_DIR
+from src import config
 
 DATASET_URLS = {
     "gtzan": "https://huggingface.co/datasets/danilotpnta/GTZAN_genre_classification/resolve/main/gtzan.zip",
 }
 
 DOWNLOAD_PATHS = {
-    "gtzan": DOWNLOADS_DIR / "gtzan.zip",
+    "gtzan": os.path.join(config.DOWNLOADS_DIR, "gtzan.zip"),
 }
 
 def download_url(url, output_path):
@@ -35,32 +35,32 @@ def extract_zip(file_path, extract_path):
             zip_ref.extract(member, extract_path)
 
 def load():
-    print("Loading GTZAN dataset!")
     
-    # Ensure directories exist
-    DATASET_DIR.mkdir(parents=True, exist_ok=True)
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
-
+    print("Loading dataset GTZAN...")
     download_path = DOWNLOAD_PATHS["gtzan"]
     url = DATASET_URLS["gtzan"]
 
     # Check if the dataset is already downloaded and extracted
-    dataset_extracted = DATA_DIR.is_dir() and any(DATA_DIR.iterdir())
+    dataset_extracted = os.path.isdir(config.GTZAN_DIR) and not os.listdir(config.GTZAN_DIR) == []
 
     if not dataset_extracted:
-        # Clean up existing data
-        shutil.rmtree(DATA_DIR, ignore_errors=True)
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+        # Ensure directories exist
+        # if not os.path.isdir(config.DATASET_DIR):
+        #     os.mkdir(config.DATASET_DIR)
+        # shutil.rmtree(config.DATA_DIR, ignore_errors=True)
+        # os.mkdir(config.DATA_DIR)
+        # if not os.path.isdir(config.DOWNLOADS_DIR):
+        #     os.mkdir(config.DOWNLOADS_DIR)
+        
         # Download the dataset
         download_url(url, download_path)
 
         # Extract the dataset
-        extract_zip(download_path, DATA_DIR)
+        extract_zip(download_path, config.DATA_DIR)
 
         # Remove the zip file after extraction
-        os.remove(download_path)
+        # os.remove(download_path)
 
     else:
         print("Dataset already downloaded and unzipped, skipping step...")
