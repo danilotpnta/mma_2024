@@ -102,29 +102,29 @@ def run_ui():
 
 def main():
 
-    if not Dataset.files_exist():
-        print(
-            "File",
-            config.AUGMENTED_DATASET_PATH,
-            "missing or file",
-            config.ATTRIBUTE_DATA_PATH,
-            "missing or directory",
-            config.IMAGES_DIR,
-            "missing",
-        )
+    # if not Dataset.files_exist():
+    #     print(
+    #         "File",
+    #         config.AUGMENTED_DATASET_PATH,
+    #         "missing or file",
+    #         config.ATTRIBUTE_DATA_PATH,
+    #         "missing or directory",
+    #         config.IMAGES_DIR,
+    #         "missing",
+    #     )
+    #     print("Creating dataset.")
+    #     Dataset.download()
+
+    if not Dataset.gtzan_files_exist():
         print("Creating dataset.")
         Dataset.download()
     
-    if not Dataset.fma_files_exist():
-        print("FMA Dataset missing. \nCreating dataset.")
-        Dataset.download()
-
     Dataset.load()
 
-    if len(Dataset.get()) != config.DATASET_SAMPLE_SIZE:
-        print("Sample size changed in the configuration. Recalculating features.")
-        Dataset.download()
-        Dataset.load()
+    # if len(Dataset.get()) != config.DATASET_SAMPLE_SIZE:
+    #     print("Sample size changed in the configuration. Recalculating features.")
+    #     Dataset.download()
+    #     Dataset.load()
 
     print("Starting Dash")
     run_ui()
