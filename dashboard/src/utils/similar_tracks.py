@@ -9,6 +9,7 @@ def get_similar_tracks(track_id, projection = 'UMAP'):
         x, y, z = d.loc[d['id'] == track_id, ['x_umap', 'y_umap', 'z_umap']].values[0]
     elif projection == 't-SNE':
         x, y, z = d.loc[d['id'] == track_id, ['x_tsne', 'y_tsne', 'z_tsne']].values[0]
+        projection = 'tsne'
     else:
         raise Exception("Projection not found")
     
