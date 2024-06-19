@@ -18,8 +18,9 @@ def create_scatterplot_figure(projection):
     else:
         raise Exception('Projection not found')
     
-    fig = plotly.express.scatter(data_frame=Dataset.get(), x=x_col, y=y_col, color='genre')
-    fig.update_traces(customdata=Dataset.get().index,
+    data = Dataset.get()
+    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data='id')
+    fig.update_traces(
         unselected_marker_opacity=0.60)
 
     fig.update_layout(dragmode='select')
@@ -31,7 +32,7 @@ def create_scatterplot(projection):
             figure=create_scatterplot_figure(projection),
             id='scatterplot-2D',
             className='stretchy-widget border-widget border',
-            responsive=True,
+            # responsive=True,
             config={
                 'displaylogo': False,
                 'modeBarButtonsToRemove': ['autoscale'],
@@ -39,11 +40,12 @@ def create_scatterplot(projection):
             }
         )
 
-def get_data_selected_on_scatterplot(scatterplot_fig):
-    scatterplot_fig_data = scatterplot_fig['data'][0]
-    if 'selectedpoints' in scatterplot_fig_data:
-        selected_image_ids = list(map(scatterplot_fig_data['customdata'].__getitem__, scatterplot_fig_data['selectedpoints']))
-        data_selected = Dataset.get().loc[selected_image_ids]
+def get_data_selected_on_scatterplot(selected_data):
+    all_data = Dataset.get()
+    if selected_data['points']:
+        print(selected_data['points'])
+        selected_point_ids = [i['customdata'][0] for i in selected_data['points']]
+        data_selected = all_data.loc[all_data['id'].isin(selected_point_ids)]
     else:
         data_selected = Dataset.get()
 
