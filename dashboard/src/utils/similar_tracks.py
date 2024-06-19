@@ -16,7 +16,7 @@ def get_similar_tracks(track_id, projection = 'UMAP'):
     else:
         raise Exception("Projection not found")
 
-    d['distance'] = np.sqrt((d[f'x_{proj}'] - x)**2 + (d[f'y_{proj}'] - y)**2 + (d[f'z_{projection}'] - z)**2)
+    d['distance'] = np.sqrt((d[f'x_{proj}'] - x)**2 + (d[f'y_{proj}'] - y)**2 + (d[f'z_{proj}'] - z)**2)
 
     similar_tracks = d.sort_values('distance').head(config.IMAGE_GALLERY_SIZE+1)['id'].to_list()
     similar_tracks.remove(track_id)

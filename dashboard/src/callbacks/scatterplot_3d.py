@@ -31,5 +31,6 @@ def update_selected_track(clickData, radio_button_value):
 
         similar_tracks_ids = get_similar_tracks(track_id, projection=radio_button_value)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
+        gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(track_title + ' - ' + artist)])
 
-        return album_cover, track_title, artist, genre, tempo, gallery_children, f'Tracks similar to {track_title} by {artist}'
+        return album_cover, track_title, artist, genre, tempo, gallery_children, gallery_card_header

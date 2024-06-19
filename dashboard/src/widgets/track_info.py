@@ -8,23 +8,25 @@ def create_track_info():
                             style={'width': '100%', 'height': 'auto'},
                             src='', className='border border-dark ')
 
-    track_title = html.Tr([html.Td('Title'), html.Td(id='track-title', children='')])
-    artist = html.Tr([html.Td('Artist'), html.Td(id='artist', children='')])
-    genre = html.Tr([html.Td('Genre'), html.Td(id='genre', children='')])
-    tempo = html.Tr([html.Td('Tempo (bpm)'), html.Td(id='tempo', children='')])
+    track_title = html.Tr([html.Td(html.Strong('Title'), style={'width': '40%'}), html.Td(id='track-title', children='')])
+    artist = html.Tr([html.Td(html.Strong('Artist')), html.Td(id='artist', children='')])
+    genre = html.Tr([html.Td(html.Strong('Genre')), html.Td(id='genre', children='')])
+    tempo = html.Tr([html.Td(html.Strong('Tempo (bpm)')), html.Td(id='tempo', children='')])
+    key = html.Tr([html.Td(html.Strong('Key')), html.Td(children='A#')])
+    loudness = html.Tr([html.Td(html.Strong('Loudness')), html.Td(children='40 dB')])
 
-    table_body = [html.Tbody([track_title, artist, genre, tempo])]
+    table_body = [html.Tbody([track_title, artist, genre, tempo, key, loudness])]
 
     row = dbc.Row([
-        dbc.Col(album_cover, width={"size": 2, 'offset': 1}),
+        dbc.Col(album_cover, width={"size": 2, 'offset': 2}),
         dbc.Col(
             dbc.Table(
                 table_body,
-                bordered=True,
                 hover=True,
                 responsive=False,
                 striped=True,
-            ), width={"size": 8}
+                className='table'
+            ), width={"size": 6}
         )
     ])
     
