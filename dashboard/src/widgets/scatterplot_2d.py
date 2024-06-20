@@ -3,15 +3,14 @@ from Dataset import Dataset
 import plotly.express 
 import config
 
-def highlight_markers_on_scatterplot(scatterplot, sample_ids):
-    # if sample_ids:
-    #     colors = Dataset.get()['class_id'].map(lambda x: config.SCATTERPLOT_SELECTED_COLOR if x in class_ids else config.SCATTERPLOT_COLOR)
-    # else:
-    #     colors = config.SCATTERPLOT_COLOR
-    pass
-    # scatterplot['data'][0]['marker'] = {'color': colors}
+def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
+    if sample_ids:
+        condition = list(Dataset.get()['id'].map(lambda x: 4 if x in sample_ids else 1))
+    else:
+        condition = []
+    return create_scatterplot_figure(radio_button_value, condition)
 
-def create_scatterplot_figure(projection):
+def create_scatterplot_figure(projection, symbol_condition=[]):
     if projection == 't-SNE':
         x_col, y_col = 'x_tsne', 'y_tsne'
     elif projection == 'UMAP':
@@ -20,11 +19,17 @@ def create_scatterplot_figure(projection):
         raise Exception('Projection not found')
     
     data = Dataset.get()
-    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
+    
+    if len(symbol_condition) > 0:
+        data['symbol'] = symbol_condition
+        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='symbol', labels={"genre": "Genre"})
+    else:
+        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
+    
+    fig.update_layout(dragmode='select')
     fig.update_traces(
         unselected_marker_opacity=0.60)
 
-    fig.update_layout(dragmode='select')
 
     return fig
 

@@ -13,8 +13,5 @@ def tempo_hist_is_clicked(data_selected, figure):
     print("Tempo hist clicked")
 
     d = Dataset.get()
-    print(data_selected['points'][0]['x'])
-    print(figure["data"][0]["x"])
-    figure["data"][0]["marker"]["color"] = ["red" if c == data_selected['points'][0]['x'] else "blue" for c in figure["data"][0]["x"]]
-    
+    figure["data"][0]["marker"]["color"] = ["red" if i == data_selected['points'][0]['binNumber'] else "blue" for i in range(figure['data'][0]['nbinsx'])]
     return figure

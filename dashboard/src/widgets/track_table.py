@@ -14,10 +14,10 @@ def create_table():
 def create_table_grid():
     return dash_ag_grid.AgGrid(
         columnDefs=[
-            {"field": "track_title", 'headerName': "Track Title"},
+            {"field": "title", 'headerName': "Track Title"},
             {"field": "artist", 'headerName': "Artist"},
             {"field": "genre", 'headerName': "Genre"},
-            {"field": "tempo", 'headerName': "Tempo (bpm)"},
+            {"field": "tempo", 'headerName': "Tempo (bpm)", 'valueFormatter': {"function":"d3.format(',.2f')(params.value)"}},
             {"field": "key", 'headerName': "Key"},
             {"field": "loudness", 'headerName': "Loudness (dB)"}
         ],

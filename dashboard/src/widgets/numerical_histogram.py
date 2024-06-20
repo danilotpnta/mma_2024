@@ -20,6 +20,11 @@ def create_histogram(selected_category, nbins):
 
 
 def draw_histogram(selected_category, nbins):
+    if selected_category == 'tempo':
+        xaxis_title_text='tempo (bpm)'
+    elif selected_category == 'loudness':
+        xaxis_title_text='loudness (dB)'
+
     df = Dataset.get()
     
     # Plotting with Plotly Express
@@ -38,7 +43,7 @@ def draw_histogram(selected_category, nbins):
             title=dict(text="frequency", standoff=10),
             tickfont=dict(size=12)
         ),
-        xaxis_title_text='tempo (bpm)', # xaxis label
+        xaxis_title_text=xaxis_title_text, # xaxis label
         bargap=0.2, # gap between bars of adjacent location coordinates
         margin=dict(l=60, r=60, t=10, b=40)
     )

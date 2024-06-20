@@ -62,8 +62,8 @@ def run_dashboard():
     right_tab = dcc.Tabs([
         dcc.Tab(label='genre distribution', children=genre_dist),
         dcc.Tab(label='tempo distribution', children=tempo_dist),
-        dcc.Tab(label='tempo distribution', children=key_dist),
-        dcc.Tab(label='tempo distribution', children=loudness_dist)
+        dcc.Tab(label='key distribution', children=key_dist),
+        dcc.Tab(label='loudness distribution', children=loudness_dist)
     ])
     
     gallery_comp = dbc.Card(
