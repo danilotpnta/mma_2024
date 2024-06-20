@@ -16,7 +16,10 @@ def create_table_grid():
         columnDefs=[
             {"field": "track_title", 'headerName': "Track Title"},
             {"field": "artist", 'headerName': "Artist"},
-            {"field": "genre", 'headerName': "Genre"}
+            {"field": "genre", 'headerName': "Genre"},
+            {"field": "tempo", 'headerName': "Tempo (bpm)"},
+            {"field": "key", 'headerName': "Key"},
+            {"field": "loudness", 'headerName': "Loudness (dB)"}
         ],
         rowData=[],
         columnSize="responsiveSizeToFit",

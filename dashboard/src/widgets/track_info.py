@@ -6,7 +6,7 @@ def create_track_info():
 
     album_cover = html.Img(id='album-cover',
                             style={'width': '100%', 'height': 'auto'},
-                            src='', className='border border-dark ')
+                            src='', className='border border-dark rounded')
 
     track_title = html.Tr([html.Td(html.Strong('Title'), style={'width': '40%'}), html.Td(id='track-title', children='')])
     artist = html.Tr([html.Td(html.Strong('Artist')), html.Td(id='artist', children='')])
