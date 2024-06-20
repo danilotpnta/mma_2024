@@ -10,8 +10,8 @@ from widgets import (
     scatterplot_2d,
     track_info,
     track_table,
-    genre_histogram,
-    tempo_histogram,
+    categorical_histogram,
+    numerical_histogram,
     gallery
 )
 
@@ -29,8 +29,11 @@ def run_dashboard():
     scatterplot_3d_widget = scatterplot_3d.create_scatterplot(config.DEFAULT_PROJECTION)
     scatterplot_2d_widget = scatterplot_2d.create_scatterplot(config.DEFAULT_PROJECTION)
 
-    genre_dist = genre_histogram.create_histogram()
-    tempo_dist = tempo_histogram.create_histogram()
+    
+    genre_dist = categorical_histogram.create_histogram('genre')
+    tempo_dist = numerical_histogram.create_histogram('tempo', nbins=30)
+    key_dist = categorical_histogram.create_histogram('key')
+    loudness_dist = numerical_histogram.create_histogram('loudness', nbins=20)
 
     track_info_widget = track_info.create_track_info()
     track_table_widget = track_table.create_table()
@@ -57,7 +60,9 @@ def run_dashboard():
 
     right_tab = dcc.Tabs([
         dcc.Tab(label='genre distribution', children=genre_dist),
-        dcc.Tab(label='tempo distribution', children=tempo_dist)
+        dcc.Tab(label='tempo distribution', children=tempo_dist),
+        dcc.Tab(label='tempo distribution', children=key_dist),
+        dcc.Tab(label='tempo distribution', children=loudness_dist)
     ])
     
     gallery_comp = dbc.Card(

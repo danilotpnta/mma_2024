@@ -12,6 +12,7 @@ class Dataset:
     @staticmethod
     def load():
         Dataset.data = pandas.read_csv(config.DATASET_PATH)
+        Dataset.data = Dataset.data.sample(frac=0.1)
 
     @staticmethod
     def get():
