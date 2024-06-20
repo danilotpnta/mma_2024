@@ -6,6 +6,7 @@ import zipfile
 from tqdm import tqdm
 from pathlib import Path
 from src import config
+import pandas as pd
 
 DATASET_URLS = {
     "gtzan": "https://huggingface.co/datasets/danilotpnta/GTZAN_genre_classification/resolve/main/gtzan.zip",
@@ -33,6 +34,24 @@ def extract_zip(file_path, extract_path):
     with zipfile.ZipFile(file_path, 'r') as zip_ref:
         for member in tqdm(zip_ref.infolist(), desc='Extracting dataset'):
             zip_ref.extract(member, extract_path)
+
+def create_csv(features_dir):
+
+    columns_to_keep = ['filename', 'tempo', 'label']
+    data = pd.read_csv(features_dir, usecols=columns_to_keep) 
+    
+    file_paths = {}
+    # save in a new column the filepath from each song
+    for root, dirs, files in os.walk(config.GTZAN_GENRES_DIR):
+        for file in files:
+            if file.endswith('.wav'):
+                audio_path = os.path.join(root, file)
+                file_name = os.path.splitext(file)[0]
+                print(file_name)
+                file_paths[file_name] = audio_path
+            
+
+    return data
 
 def load():
     
@@ -65,6 +84,9 @@ def load():
     else:
         print("Dataset already downloaded and unzipped, skipping step...")
 
+    create_csv(config.GTZAN_GENRES_PATH).to_csv(config.GTZAN_DATASET_PATH, index=False)
+    
+    print("Writing dataset to", config.GTZAN_GENRE_DIR)
     print("Finished loading datasets!")
 
 if __name__ == "__main__":

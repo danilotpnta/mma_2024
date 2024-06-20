@@ -33,6 +33,7 @@ import callbacks.deselect_button
 import callbacks.help_button
 import callbacks.graph
 
+from src.utils import key_extractor
 
 def run_ui():
 
@@ -129,7 +130,10 @@ def main():
     print("Starting Dash")
     run_ui()
 
+def main2():
+    key_extractor.extract_keys()
 
 if __name__ == "__main__":
 
-    main()
+    # main()
+    main2()

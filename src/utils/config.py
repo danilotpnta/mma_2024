@@ -51,6 +51,3 @@ LEARNING_RATE = 0.001
 # GTZAN
 GTZAN_DIR = os.path.join(DATA_DIR, "gtzan")
 GTZAN_GENRES_DIR = os.path.join(GTZAN_DIR, "genres")
-GTZAN_GENRES_PATH = os.path.join(GTZAN_GENRES_DIR, "features_30_sec.csv")
-GTZAN_DATASET_PATH = os.path.join(GTZAN_GENRES_DIR, "gtzan_dataset.csv")
-
