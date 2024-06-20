@@ -8,7 +8,7 @@ def create_histogram(selected_category='genre'):
     histogram = draw_histogram(selected_category)
     return html.Div([
         dcc.Graph(figure=histogram,
-                  responsive=True,
+                #   responsive=True,
                   config={
                       'displaylogo': False,
                       'displayModeBar': False

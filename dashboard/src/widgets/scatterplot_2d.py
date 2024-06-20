@@ -3,12 +3,13 @@ from Dataset import Dataset
 import plotly.express 
 import config
 
-def highlight_class_on_scatterplot(scatterplot, class_ids):
-    if class_ids:
-        colors = Dataset.get()['class_id'].map(lambda x: config.SCATTERPLOT_SELECTED_COLOR if x in class_ids else config.SCATTERPLOT_COLOR)
-    else:
-        colors = config.SCATTERPLOT_COLOR
-    scatterplot['data'][0]['marker'] = {'color': colors}
+def highlight_markers_on_scatterplot(scatterplot, sample_ids):
+    # if sample_ids:
+    #     colors = Dataset.get()['class_id'].map(lambda x: config.SCATTERPLOT_SELECTED_COLOR if x in class_ids else config.SCATTERPLOT_COLOR)
+    # else:
+    #     colors = config.SCATTERPLOT_COLOR
+    pass
+    # scatterplot['data'][0]['marker'] = {'color': colors}
 
 def create_scatterplot_figure(projection):
     if projection == 't-SNE':
@@ -42,8 +43,7 @@ def create_scatterplot(projection):
 
 def get_data_selected_on_scatterplot(selected_data):
     all_data = Dataset.get()
-    if selected_data['points']:
-        print(selected_data['points'])
+    if selected_data:
         selected_point_ids = [i['customdata'][0] for i in selected_data['points']]
         data_selected = all_data.loc[all_data['id'].isin(selected_point_ids)]
     else:

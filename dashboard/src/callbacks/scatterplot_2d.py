@@ -12,6 +12,6 @@ def scatterplot_is_selected(scatterplot_fig, data_selected):
     print('Scatterplot is selected')
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[['track_title', 'artist', 'genre']].to_dict('records')
-    scatterplot_2d.highlight_class_on_scatterplot(scatterplot_fig, None)
+    scatterplot_2d.highlight_markers_on_scatterplot(scatterplot_fig, None)
 
     return table_rows

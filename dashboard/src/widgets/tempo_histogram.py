@@ -8,7 +8,6 @@ def create_histogram(nbins=20):
     histogram = draw_histogram(nbins)
     return html.Div([
         dcc.Graph(figure=histogram,
-                  responsive=True,
                   config={
                       'displaylogo': False,
                       'displayModeBar': False

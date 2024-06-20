@@ -18,7 +18,8 @@ from widgets import (
 import callbacks.scatterplot_3d
 import callbacks.scatterplot_2d
 import callbacks.projection_radio_buttons
-
+import callbacks.genre_histogram
+import callbacks.tempo_histogram
 
 def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
