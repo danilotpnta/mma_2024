@@ -19,7 +19,7 @@ def create_scatterplot_figure(projection):
         raise Exception('Projection not found')
     
     data = Dataset.get()
-    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data='id')
+    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
     fig.update_traces(
         unselected_marker_opacity=0.60)
 
