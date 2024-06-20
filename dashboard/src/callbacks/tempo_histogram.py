@@ -4,7 +4,7 @@ from Dataset import Dataset
 
 
 @callback(
-    Output("tempo_histogram", "figure"),
+    Output("tempo_histogram", "figure", allow_duplicate=True),
     Input("tempo_histogram", "clickData"),
     State("tempo_histogram", "figure"),
     prevent_initial_call=True

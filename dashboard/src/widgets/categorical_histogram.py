@@ -3,7 +3,6 @@ import plotly.graph_objects as go
 from dash import html, dcc
 from Dataset import Dataset
 
-
 def create_histogram(selected_category='genre'):
     histogram = draw_histogram(selected_category)
     return html.Div([
@@ -20,15 +19,31 @@ def create_histogram(selected_category='genre'):
     ], className='border-widget stretchy-widget histogram-container')
 
 
-def draw_histogram(selected_category):
-    category_column = Dataset.get()[selected_category]
-
-    # Grouping and counting occurrences
-    class_counts = category_column.value_counts().reset_index()
+def count_occurences(dataframe, selected_category):
+    class_counts = dataframe[selected_category].value_counts().reset_index()
     class_counts.columns = [selected_category, 'count']
+    return class_counts
 
-    # Plotting with Plotly Express
-    fig = px.histogram(class_counts, x=selected_category, y='count')
+def draw_histogram(selected_category, sample_ids=[]):
+    dataframe = Dataset.get()
+    class_counts = count_occurences(dataframe, selected_category)
+    
+    if len(sample_ids):
+        stacked_bar_counts = count_occurences(dataframe[dataframe['id'].isin(sample_ids)], selected_category)['count']
+        class_counts['condition'] = stacked_bar_counts
+        class_counts = class_counts.fillna(0)
+        # fig = px.histogram(class_counts, x=selected_category, y='count', color='condition')
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['count'], name='Total'))
+        fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['condition'], name='Selection'))
+        fig.update_layout(barmode='overlay')
+        fig.update_layout(legend=dict(
+            yanchor="top",
+            xanchor="right",
+            x=0.99
+        ))
+    else:
+        fig = px.histogram(class_counts, x=selected_category, y='count')
 
     fig.update_layout(
         xaxis=dict(

@@ -16,6 +16,7 @@ from PIL import Image
     [Input('scatterplot-3D', 'clickData'),
      Input('projection-radio-buttons', 'value')])
 def update_selected_track(clickData, radio_button_value):
+    print("Update selected track")
     if clickData is None:
         return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!'
     else:

@@ -2,6 +2,7 @@ from dash import dcc
 from Dataset import Dataset
 import plotly.express 
 import config
+import pandas as pd
 
 def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
     if sample_ids:
@@ -10,7 +11,7 @@ def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
         condition = []
     return create_scatterplot_figure(radio_button_value, condition)
 
-def create_scatterplot_figure(projection, symbol_condition=[]):
+def create_scatterplot_figure(projection, condition=[]):
     if projection == 't-SNE':
         x_col, y_col = 'x_tsne', 'y_tsne'
     elif projection == 'UMAP':
@@ -20,13 +21,14 @@ def create_scatterplot_figure(projection, symbol_condition=[]):
     
     data = Dataset.get()
     
-    if len(symbol_condition) > 0:
-        data['symbol'] = symbol_condition
-        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='symbol', labels={"genre": "Genre"})
+    if len(condition) > 0:
+        data['condition'] = condition
+        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='condition', labels={"genre": "Genre"})
     else:
         fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
     
     fig.update_layout(dragmode='select')
+    fig.update_layout(legend=dict(itemsizing='constant'))
     fig.update_traces(
         unselected_marker_opacity=0.60)
 
@@ -38,7 +40,6 @@ def create_scatterplot(projection):
             figure=create_scatterplot_figure(projection),
             id='scatterplot-2D',
             className='stretchy-widget border-widget border',
-            # responsive=True,
             config={
                 'displaylogo': False,
                 'modeBarButtonsToRemove': ['autoscale'],
@@ -47,11 +48,12 @@ def create_scatterplot(projection):
         )
 
 def get_data_selected_on_scatterplot(selected_data):
+    import plotly
     all_data = Dataset.get()
     if selected_data:
         selected_point_ids = [i['customdata'][0] for i in selected_data['points']]
         data_selected = all_data.loc[all_data['id'].isin(selected_point_ids)]
     else:
-        data_selected = Dataset.get()
+        data_selected = pd.DataFrame(columns=all_data.columns)
 
     return data_selected

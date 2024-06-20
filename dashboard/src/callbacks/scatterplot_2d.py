@@ -1,24 +1,26 @@
 from dash import Dash, html, Output, Input, callback, State
 from Dataset import Dataset
 from widgets import scatterplot_2d
-from widgets import gallery
+from widgets import gallery, categorical_histogram
 import config
 from utils.similar_tracks import get_similar_tracks
 from PIL import Image
 
 @callback(
     Output("grid", "rowData"),
+    Output("genre_histogram", "figure", allow_duplicate=True),
     State('scatterplot-2D', 'figure'),
+    State('genre_histogram', 'figure'),
     Input("scatterplot-2D", "selectedData"),
     prevent_initial_call=True
 )
-def scatterplot_is_selected(scatterplot_fig, data_selected):
+def scatterplot_is_selected(scatterplot_fig, genre_hist, data_selected):
     print('Scatterplot is selected')
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
-    # scatterplot_2d.highlight_markers_on_scatterplot(scatterplot_fig, None)
-
-    return table_rows
+    genre_histogram = categorical_histogram.draw_histogram('genre', data_selected['id'])
+    genre_histogram['data'][0].update({'marker': genre_hist['data'][0]["marker"]})
+    return table_rows, genre_histogram
 
 @callback(
     [Output('album-cover', 'src', allow_duplicate=True),
@@ -33,8 +35,9 @@ def scatterplot_is_selected(scatterplot_fig, data_selected):
      Input('projection-radio-buttons', 'value')],
     prevent_initial_call=True)
 def update_selected_track(clickData, radio_button_value):
+    print("Update selected track")
     if clickData is None:
-        return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!'
+        return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', []
     else:
         track_id = clickData['points'][0]['customdata'][0]
         d = Dataset.get()
