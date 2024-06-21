@@ -14,7 +14,7 @@ from PIL import Image
     Input("scatterplot-2D", "selectedData"),
     prevent_initial_call=True
 )
-def scatterplot_is_selected(scatterplot_fig, genre_hist, data_selected, restyleData):
+def scatterplot_is_selected(scatterplot_fig, genre_hist, data_selected):
     print('Scatterplot is selected')
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
@@ -54,7 +54,7 @@ def update_selected_track(clickData, radio_button_value):
         genre = selected_track['genre']
         tempo = f"{selected_track['tempo']:.2f}"
 
-        similar_tracks_ids = get_similar_tracks(track_id, projection=radio_button_value)
+        similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
         gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(f'{track_title} - {artist}')])
     
