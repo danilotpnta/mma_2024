@@ -12,9 +12,9 @@ def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
     return create_scatterplot_figure(radio_button_value, condition)
 
 def create_scatterplot_figure(projection, condition=[]):
-    if projection == 't-SNE':
+    if projection == 'tsne':
         x_col, y_col = 'x_tsne', 'y_tsne'
-    elif projection == 'UMAP':
+    elif projection == 'umap':
         x_col, y_col = 'x_umap', 'y_umap'
     else:
         raise Exception('Projection not found')
@@ -48,7 +48,6 @@ def create_scatterplot(projection):
         )
 
 def get_data_selected_on_scatterplot(selected_data):
-    import plotly
     all_data = Dataset.get()
     if selected_data:
         selected_point_ids = [i['customdata'][0] for i in selected_data['points']]

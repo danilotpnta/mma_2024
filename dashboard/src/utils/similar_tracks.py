@@ -2,17 +2,13 @@ from Dataset import Dataset
 import numpy as np
 import config
 
-def get_similar_tracks(track_id, projection = 'UMAP'):
+def get_similar_tracks(track_id, proj):
     d = Dataset.get()
 
-    proj = None
-
-    if projection == 'UMAP':
+    if proj == 'umap':
         x, y, z = d.loc[d['id'] == track_id, ['x_umap', 'y_umap', 'z_umap']].values[0]
-        proj = 'umap'
-    elif projection == 't-SNE':
+    elif proj == 'tsne':
         x, y, z = d.loc[d['id'] == track_id, ['x_tsne', 'y_tsne', 'z_tsne']].values[0]
-        proj = 'tsne'
     else:
         raise Exception("Projection not found")
 

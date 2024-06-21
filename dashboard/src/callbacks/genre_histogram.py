@@ -22,6 +22,5 @@ def genre_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatte
     # figure_hist['data'][0].update({"marker": {"color":["red" if c == clicked_category else "blue" for c in figure_hist["data"][0]["x"]]}})
     figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c == clicked_category else "" for c in figure_hist["data"][0]["x"]]}}})
     figure_scatter_2d = scatterplot_2d.highlight_markers_on_scatterplot(set(selected_rows['id']), radio_button_value)
-    print(figure_scatter_2d)
     figure_scatter_3d = scatterplot_3d.highlight_markers_on_scatterplot(set(selected_rows['id']), radio_button_value)
     return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d

@@ -12,10 +12,10 @@ def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
 
 def create_scatterplot_figure(projection, condition=[]):
 
-    if projection == "t-SNE":
+    if projection == "tsne":
         x_col, y_col, z_col = "x_tsne", "y_tsne", "z_tsne"
 
-    elif projection == "UMAP":
+    elif projection == "umap":
         x_col, y_col, z_col = "x_umap", "y_umap", "z_umap"
 
     else:
