@@ -33,7 +33,7 @@ def update_selected_track(clickData, radio_button_value):
         track_title = selected_track['title']
         artist = selected_track['artist']
         genre = selected_track['genre']
-        tempo = selected_track['tempo']
+        tempo = f"{selected_track['tempo']:.2f}"
 
         similar_tracks_ids = get_similar_tracks(track_id, projection=radio_button_value)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)

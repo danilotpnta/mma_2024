@@ -14,7 +14,7 @@ from PIL import Image
     Input("scatterplot-2D", "selectedData"),
     prevent_initial_call=True
 )
-def scatterplot_is_selected(scatterplot_fig, genre_hist, data_selected):
+def scatterplot_is_selected(scatterplot_fig, genre_hist, data_selected, restyleData):
     print('Scatterplot is selected')
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
