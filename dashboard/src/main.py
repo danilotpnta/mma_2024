@@ -1,6 +1,7 @@
 from dash import Dash, dcc, html, Output, Input, callback
 import dash_bootstrap_components as dbc
 from Dataset import Dataset
+from Collection import Collection
 import config
 from utils.similar_tracks import get_similar_tracks
 
@@ -98,6 +99,7 @@ def main():
         Dataset.download()
 
     Dataset.load()
+    Collection.load()
 
     print("Starting Dash")
     run_dashboard()
