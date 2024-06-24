@@ -3,15 +3,9 @@ from Dataset import Dataset
 import plotly.express 
 import config
 import pandas as pd
+import plotly.graph_objects as go
 
-def highlight_markers_on_scatterplot(sample_ids, radio_button_value):
-    if sample_ids:
-        condition = list(Dataset.get()['id'].map(lambda x: 4 if x in sample_ids else 1))
-    else:
-        condition = []
-    return create_scatterplot_figure(radio_button_value, condition)
-
-def create_scatterplot_figure(projection, condition=[]):
+def create_scatterplot_figure(projection, sample_ids=[]):
     if projection == 'tsne':
         x_col, y_col = 'x_tsne', 'y_tsne'
     elif projection == 'umap':
@@ -20,19 +14,19 @@ def create_scatterplot_figure(projection, condition=[]):
         raise Exception('Projection not found')
     
     data = Dataset.get()
+
+    data['marker_size'] = 10
+
+    if len(sample_ids) > 0:
+        # data.loc[data['id'].isin(sample_ids), 'marker_size'] = 14
+        data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 5
+
+    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='marker_size', size_max=8)
     
-    if len(condition) > 0:
-        data['condition'] = condition
-        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='condition', labels={"genre": "Genre"})
-    else:
-        fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
-        fig.update_traces(marker=dict(size=14))
     
     fig.update_layout(dragmode='select')
     fig.update_layout(legend=dict(itemsizing='constant'))
-    fig.update_traces(
-        unselected_marker_opacity=0.60)
-
+    fig.update_traces(marker=dict(opacity=1, line=dict(width=0)))
 
     return fig
 

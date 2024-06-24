@@ -13,7 +13,8 @@ from widgets import (
     track_table,
     categorical_histogram,
     numerical_histogram,
-    gallery
+    gallery,
+    filter_view
 )
 
 import callbacks.scatterplot_3d
@@ -38,6 +39,7 @@ def run_dashboard():
 
     track_info_widget = track_info.create_track_info()
     track_table_widget = track_table.create_table()
+    filter_view_widget =  filter_view.create_filter_view([('genre', 'rock')])
 
 
     gallery_widget = gallery.create_gallery()
@@ -75,6 +77,7 @@ def run_dashboard():
     
     right_component_wrapper = dbc.Stack([
         right_tab,
+        filter_view_widget,
         html.Hr(),
         gallery_comp
     ])

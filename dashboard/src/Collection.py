@@ -6,7 +6,8 @@ class Collection:
     data = None
     plot_2d_selection = None
     feature_selection = None
-
+    filters: List[Tuple[str, str]] = []
+    
 
     @staticmethod
     def load():
@@ -49,4 +50,12 @@ class Collection:
     @staticmethod
     def get_plot_2d_selection():
         return Collection.data.loc[list(Collection.plot_2d_selection)]
+    
+    @staticmethod
+    def get_plot_2d_selection_ids():
+        return Collection.get_plot_2d_selection().index.tolist()
+    
+    @staticmethod
+    def get_feature_selection_ids():
+        return Collection.get_feature_selection().index.tolist()
     
