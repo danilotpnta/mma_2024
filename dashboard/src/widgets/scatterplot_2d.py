@@ -5,6 +5,7 @@ import config
 import pandas as pd
 import plotly.graph_objects as go
 
+
 def create_scatterplot_figure(projection, sample_ids=[]):
     if projection == 'tsne':
         x_col, y_col = 'x_tsne', 'y_tsne'
@@ -18,7 +19,6 @@ def create_scatterplot_figure(projection, sample_ids=[]):
     data['marker_size'] = 10
 
     if len(sample_ids) > 0:
-        # data.loc[data['id'].isin(sample_ids), 'marker_size'] = 14
         data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 5
 
     fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='marker_size', size_max=8)

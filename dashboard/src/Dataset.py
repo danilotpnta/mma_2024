@@ -11,8 +11,10 @@ class Dataset:
 
     @staticmethod
     def load():
-        Dataset.data = pandas.read_csv(config.DATASET_PATH)
-        Dataset.data = Dataset.data.sample(frac=0.1)
+        Dataset.data = pandas.read_csv(config.DATASET_PATH).sample(frac=0.1, random_state=42)
+        Dataset.data.reset_index(drop=True, inplace=True)
+        Dataset.data.drop(columns=['id'], inplace=True)
+        Dataset.data['id'] = Dataset.data.index
 
     @staticmethod
     def get():

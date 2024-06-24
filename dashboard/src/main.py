@@ -39,7 +39,7 @@ def run_dashboard():
 
     track_info_widget = track_info.create_track_info()
     track_table_widget = track_table.create_table()
-    filter_view_widget =  filter_view.create_filter_view([('genre', 'rock')])
+    filter_view_widget =  filter_view.create_filter_view()
 
 
     gallery_widget = gallery.create_gallery()
@@ -108,5 +108,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()

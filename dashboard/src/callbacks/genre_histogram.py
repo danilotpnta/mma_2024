@@ -8,8 +8,8 @@ from Collection import Collection
     [Output("genre_histogram", "figure", allow_duplicate=True),
     #  Output("tempo_histogram", "figure", allow_duplicate=True),
     Output("scatterplot-2D", "figure", allow_duplicate=True),
-    Output("scatterplot-3D", "figure", allow_duplicate=True)
-    Outputs("filter-view", "children")],
+    Output("scatterplot-3D", "figure", allow_duplicate=True),
+    Output("filter-view", "children")],
     Input("genre_histogram", "clickData"),
     State("genre_histogram", "figure"),
     State("projection-radio-buttons", "value"),
