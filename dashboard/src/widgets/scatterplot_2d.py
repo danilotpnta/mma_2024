@@ -26,6 +26,7 @@ def create_scatterplot_figure(projection, condition=[]):
         fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='condition', labels={"genre": "Genre"})
     else:
         fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'])
+        fig.update_traces(marker=dict(size=14))
     
     fig.update_layout(dragmode='select')
     fig.update_layout(legend=dict(itemsizing='constant'))

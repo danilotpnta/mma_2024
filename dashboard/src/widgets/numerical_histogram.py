@@ -22,13 +22,27 @@ def create_histogram(selected_category, nbins):
 def draw_histogram(selected_category, nbins):
     if selected_category == 'tempo':
         xaxis_title_text='tempo (bpm)'
+        binsize = 5
     elif selected_category == 'loudness':
         xaxis_title_text='loudness (dB)'
+        binsize = 2
 
     df = Dataset.get()
     
     # Plotting with Plotly Express
     fig = px.histogram(df, x=selected_category, nbins=nbins)
+    # data = df[selected_category]
+    # fig = go.Figure()
+    # fig.add_trace(go.Histogram(
+    #     x=data,
+    #     histnorm='percent',
+    #     name='control',
+    #     xbins=dict(
+    #         start=data.min(),
+    #         end=data.max(),
+    #         size=binsize
+    #     ),
+    # ))
 
     fig.update_layout(
         xaxis=dict(
