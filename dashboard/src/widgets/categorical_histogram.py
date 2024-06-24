@@ -20,22 +20,20 @@ def create_histogram(selected_category='genre'):
     ], className='border-widget stretchy-widget histogram-container')
 
 
-def count_occurences(dataframe, selected_category):
-    class_counts = dataframe[selected_category].value_counts()
-    class_counts = class_counts.reindex(dataframe[selected_category].unique(), fill_value=0)
+def count_occurences(df, selected_category):
+    class_counts = df[selected_category].value_counts()
+    class_counts = class_counts.reindex(df[selected_category].unique(), fill_value=0)
     class_counts = class_counts.to_frame()
     class_counts[selected_category] = class_counts.index
     return class_counts 
 
 def draw_histogram(selected_category, sample_ids=[]):
-    dataframe = Dataset.get()
-    class_counts = count_occurences(dataframe, selected_category)
+    df = Dataset.get()
+    class_counts = count_occurences(df, selected_category)
     if len(sample_ids):
-        stacked_bar_counts = count_occurences(dataframe[dataframe['id'].isin(sample_ids)], selected_category)['count']
+        stacked_bar_counts = count_occurences(df[df['id'].isin(sample_ids)], selected_category)['count']
         class_counts['condition'] = stacked_bar_counts
-        class_counts = class_counts.fillna(0.1)
-        print(class_counts)
-        # fig = px.histogram(class_counts, x=selected_category, y='count', color='condition')
+        class_counts = class_counts.fillna(0)
         fig = go.Figure()
         fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['count'], name='Total'))
         fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['condition'], name='Selection'))
@@ -48,7 +46,9 @@ def draw_histogram(selected_category, sample_ids=[]):
     else:
         fig = px.histogram(class_counts, x=selected_category, y='count')
 
+    fig.update_traces(hovertemplate='Count: %{y}<extra></extra>')
     fig.update_layout(
+        hovermode="x unified",
         xaxis=dict(
             tickangle=340,
             automargin=False, 
