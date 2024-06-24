@@ -46,7 +46,9 @@ def draw_histogram(selected_category, sample_ids=[]):
     else:
         fig = px.histogram(class_counts, x=selected_category, y='count')
 
+    fig.update_traces(hovertemplate='Count: %{y}<extra></extra>')
     fig.update_layout(
+        hovermode="x unified",
         xaxis=dict(
             tickangle=340,
             automargin=False, 

@@ -19,32 +19,38 @@ def create_histogram(selected_category, nbins):
     ], className='border-widget stretchy-widget histogram-container')
 
 
-def draw_histogram(selected_category, nbins):
+def draw_histogram(selected_category, nbins, sample_ids=[]):
     if selected_category == 'tempo':
         xaxis_title_text='tempo (bpm)'
-        binsize = 5
+        bin_size = 10
     elif selected_category == 'loudness':
         xaxis_title_text='loudness (dB)'
-        binsize = 2
+        bin_size = 2
 
     df = Dataset.get()
     
-    # Plotting with Plotly Express
-    fig = px.histogram(df, x=selected_category, nbins=nbins)
-    # data = df[selected_category]
-    # fig = go.Figure()
-    # fig.add_trace(go.Histogram(
-    #     x=data,
-    #     histnorm='percent',
-    #     name='control',
-    #     xbins=dict(
-    #         start=data.min(),
-    #         end=data.max(),
-    #         size=binsize
-    #     ),
-    # ))
-
+    if len(sample_ids):
+        fig = go.Figure()
+        fig.add_trace(go.Histogram(x=df[selected_category], nbinsx=nbins, name='Total'))
+        fig.add_trace(go.Histogram(x=df[df['id'].isin(sample_ids)][selected_category], nbinsx=nbins, name='Selection'))
+        fig.update_layout(barmode='overlay')
+        fig.update_layout(legend=dict(
+            yanchor="top",
+            xanchor="right",
+            x=0.99
+        ))
+    else:
+        fig = px.histogram(df, x=selected_category, nbins=nbins)
+    
+    fig.update_traces(hovertemplate='Count: %{y}<extra></extra>',
+        xbins=dict( # bins used for histogram
+        start=df[selected_category].min(),
+        end=df[selected_category].max(),
+        size=bin_size
+    ))
+    fig.update_traces()
     fig.update_layout(
+        hovermode="x unified",
         xaxis=dict(
             tickangle=340, 
             automargin=False, 
