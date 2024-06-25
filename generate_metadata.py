@@ -66,22 +66,24 @@ def generate_metadata(folder: str):
                     cover_path = os.path.join(dir_img, file)
                     cover_path = sub(".wav", ".jpg", cover_path)
 
-                    # Downloading
-                    if cover_link != "Not Found":
-                        response = requests.get(cover_link)
-                        if response.status_code == 200:
+                    # Downloading (only if the file doesn't exist already)
+                    if not os.path.isfile(cover_path):
 
-                            with open(cover_path, "wb") as f:
-                                f.write(response.content)
+                        if cover_link != "Not Found":
+                            response = requests.get(cover_link)
+                            if response.status_code == 200:
+
+                                with open(cover_path, "wb") as f:
+                                    f.write(response.content)
+
+                            else:
+                                print(
+                                    f"Failed to download image. Status code: {response.status_code}"
+                                )
+                                cover_path = default_img
 
                         else:
-                            print(
-                                f"Failed to download image. Status code: {response.status_code}"
-                            )
                             cover_path = default_img
-
-                    else:
-                        cover_path = default_img
 
                     # Loudness in dB
                     rms = librosa.feature.rms(y=y)

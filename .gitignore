@@ -5,6 +5,7 @@
 
 # Data folder
 dashboard/data/gtzan/genres_original
+dashboard/data/rnd_songs
 
 # Cache folders
 .alcache/

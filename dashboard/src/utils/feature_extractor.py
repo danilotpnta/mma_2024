@@ -13,19 +13,45 @@ from transformers import (
 
 
 # Function to get the embeddings from an audio file
-def get_embeddings(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Clf"):
+def get_embeddings(
+    file_path: str,
+    model_name: str = "danilotpnta/HuBERT-Genre-Clf",
+    duration: int = 30,
+    target_sr: int = 16000,
+):
 
     feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
     model = HubertForSequenceClassification.from_pretrained(model_name)
 
     try:
         # Load audio
-        audio, _ = torchaudio.load(file_path)
+        audio, sample_rate = torchaudio.load(file_path)
+
+        # Resample the audio if not 16000
+        if sample_rate != target_sr:
+            audio = torchaudio.functional.resample(
+                audio, orig_freq=sample_rate, new_freq=target_sr
+            )
+
+        # Convert audio to mono
+        if audio.shape[0] > 1:
+            audio = torch.mean(audio, dim=0, keepdim=True)
+
+        # Get ideal duration
+        num_samples = sample_rate * duration
+
+        # Adjust the audio length to be exactly `duration` seconds
+        if audio.shape[1] > num_samples:
+            audio = audio[:, :num_samples]
+
+        else:
+            padding = num_samples - audio.shape[1]
+            audio = torch.nn.functional.pad(audio, (0, padding))
 
         # Process the audio file
         inputs = feature_extractor(
             audio.squeeze().numpy(),
-            sampling_rate=16000,
+            sampling_rate=target_sr,
             return_tensors="pt",
             padding=True,
         )
@@ -51,6 +77,15 @@ def get_embeddings(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-C
 
     except Exception as e:
         return None, str(e)
+
+
+# To deal with NaNs
+def clean_embeddings(embeddings):
+    # Replace NaN or infinite values with zeros or some other value
+    if np.any(np.isnan(embeddings)) or np.any(np.isinf(embeddings)):
+        print("Found NaNs or infinite values in embeddings. Replacing them with zeros.")
+        embeddings = np.nan_to_num(embeddings, nan=0.0, posinf=0.0, neginf=0.0)
+    return embeddings
 
 
 def get_projections_tsne(
@@ -128,14 +163,14 @@ def get_all_projections(
         if error_msg is not None:
             print(f"Error with file {filepath}: {error_msg}")
             embeddings.append(np.zeros(768))  # Placeholder for invalid embeddings
+
         else:
             embeddings.append(embedding)
 
     embeddings = np.array(embeddings)
 
-    # Check for NaN or infinite values in the entire embedding matrix
-    if np.any(np.isnan(embeddings)) or np.any(np.isinf(embeddings)):
-        raise ValueError("Embedding matrix contains NaN or infinite values")
+    # Clean embeddings
+    embeddings = clean_embeddings(embeddings)
 
     print("Getting the t-SNE projections...")
     df_tsne = get_projections_tsne(embeddings)
