@@ -85,6 +85,7 @@ def clean_embeddings(embeddings):
     if np.any(np.isnan(embeddings)) or np.any(np.isinf(embeddings)):
         print("Found NaNs or infinite values in embeddings. Replacing them with zeros.")
         embeddings = np.nan_to_num(embeddings, nan=0.0, posinf=0.0, neginf=0.0)
+
     return embeddings
 
 
@@ -206,9 +207,12 @@ def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Cl
     predictions = pipe(file_path)[:3]
 
     folder_name = Path(file_path).parts[-2].lower()
+
+    # If the folder names contain the supported genre names (i.e., in GTZAN), then use that
     if folder_name in genre_list:
         genre = folder_name
 
+    # Otherwise just use the predictions
     else:
         genre = predictions[0]["label"]
 
