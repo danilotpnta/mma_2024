@@ -23,12 +23,30 @@ conda activate mma_2024
 
 ```
 
+Alternatively, you can use a virtual environment instead through the following commands:
+
+```sh
+
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+```
+
 ### **Data**
 
-The data is automatically downloaded when running the code, meaning that nothing needs to be done relating to this!
+The GTZAN dataset is currently only available on [Kaggle](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification), meaning that an account is required to download it. Once downloaded, extract all the files in the `Data` folder to `dashboard/data/gtzan`. The dataset is ~1 GB large. 
 
-_Note:_ The dataset used ([FMA](https://github.com/mdeff/fma), the small version) is ~7 GB large. This process may take a while.
+Alternatively, we have prepared a script which automatically does this (though you still need to setup a Kaggle account and API to use this method):
 
+
+```sh
+
+python download_gtzan.py
+
+```
+
+In principle, any audio dataset can be used, as long as it is located in the `dashboard/data/[your_dataset_name]` folder and all files are in `.wav` (the sampling rate and lengths are automatically adjusted).
 
 ## **Running**
 
