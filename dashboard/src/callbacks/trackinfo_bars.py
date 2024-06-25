@@ -6,5 +6,5 @@ clientside_callback(
     ClientsideFunction(namespace='clientside', function_name='resize_track_info_bars'),
     Output('invisible-store', 'data'),
     Input('scatterplot-3D', 'clickData'),
-    State('invisible-store', 'data'),
+    State('invisible-store', 'data')
 )

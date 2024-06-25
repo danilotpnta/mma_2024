@@ -19,7 +19,8 @@ def create_table_grid():
             {"field": "genre", 'headerName': "Genre"},
             {"field": "tempo", 'headerName': "Tempo (bpm)", 'valueFormatter': {"function":"d3.format(',.2f')(params.value)"}},
             {"field": "key", 'headerName': "Key"},
-            {"field": "loudness", 'headerName': "Loudness (dB)"}
+            {"field": "loudness", 'headerName': "Loudness (dB)"},
+            {"field": "id", 'headerName': "sample_id", "suppressToolPanel": "True", "hide": "True"}
         ],
         rowData=[],
         columnSize="responsiveSizeToFit",

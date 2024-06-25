@@ -19,7 +19,7 @@ def scatterplot_is_selected(data_selected, scatterplot_fig, histograms):#genre_h
     print('Scatterplot is selected')
 
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
-    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
+    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness', 'id']].to_dict('records')
     
     hist_dict = {feature_key_from_state_string(k): v for k, v in callback_context.states.items() if 'scatter' not in k}
 
@@ -43,7 +43,6 @@ def scatterplot_is_selected(data_selected, scatterplot_fig, histograms):#genre_h
     [Output('album-cover', 'src', allow_duplicate=True),
      Output('track-title', 'children', allow_duplicate=True),
      Output('artist', 'children', allow_duplicate=True),
-    #  Output('genre', 'children', allow_duplicate=True),
      Output('tempo', 'children', allow_duplicate=True),
      Output("gallery", "children", allow_duplicate=True),
      Output("gallery-card-header", "children", allow_duplicate=True),
@@ -68,7 +67,6 @@ def update_selected_track(clickData, radio_button_value):
         
         track_title = selected_track['title']
         artist = selected_track['artist']
-        genre = selected_track['genre']
         tempo = f"{selected_track['tempo']:.2f}"
 
         similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)

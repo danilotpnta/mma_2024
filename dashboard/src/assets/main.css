@@ -5,8 +5,6 @@
 }
 
 .wraap .cool {    
-    /* background: #eee; */
-    /* width: 50%; */
     -webkit-transition: all .5s;
     transition: all .5s;
 }
@@ -21,7 +19,7 @@
 }
 
 div.wraap > div:hover {
-    width: 80%;    
+    width: 90%;
 }
 
 .genre_1 {

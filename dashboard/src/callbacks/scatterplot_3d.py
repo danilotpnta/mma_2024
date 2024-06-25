@@ -9,7 +9,6 @@ from PIL import Image
     [Output('album-cover', 'src'),
      Output('track-title', 'children'),
      Output('artist', 'children'),
-    #  Output('genre', 'children'),
      Output('tempo', 'children'),
      Output("gallery", "children"),
      Output("gallery-card-header", "children")],
@@ -32,7 +31,6 @@ def update_selected_track(clickData, radio_button_value):
         
         track_title = selected_track['title']
         artist = selected_track['artist']
-        genre = selected_track['genre']
         tempo = f"{selected_track['tempo']:.2f}"
 
         similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
