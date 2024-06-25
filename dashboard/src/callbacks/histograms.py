@@ -5,6 +5,27 @@ import numpy as np
 from Collection import Collection
 
 # Categorical Histograms
+def histogram_callback(hist_type, feature, data_selected, figure_hist, radio_button_value, scatterplot_2d_old):
+    print(f"{feature} hist is clicked")
+    
+    if hist_type == 'categorical':
+        clicked_category = data_selected['points'][0]['x']
+        indices = None
+        data_aggr = figure_hist["data"][0]["x"]
+    elif hist_type == 'numerical':
+        clicked_category = data_selected['points'][0]['binNumber']
+        indices = data_selected['points'][0]['pointNumbers']
+        data_aggr = range(figure_hist['data'][0]['nbinsx'])
+    
+    clicked_categories, selected_ids = Collection.update_filter(feature, clicked_category, indices)
+    figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c in clicked_categories else "" for c in data_aggr]}}})
+    figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
+    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
+
+    f_view = filter_view.create_filter_view(Collection.filters)
+
+    return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d, f_view
+
 
 @callback(
     [Output("genre_histogram", "figure", allow_duplicate=True),
@@ -18,20 +39,7 @@ from Collection import Collection
     prevent_initial_call=True
 )
 def genre_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatterplot_2d_old):
-    print("Genre hist clicked")
-    clicked_category = data_selected['points'][0]['x']
-    Collection.add_filter('genre', clicked_category)
-    selected_ids = Collection.get_filter_selection_ids()
-    print(f'Length of selected ids after selecting a genre: {len(selected_ids)}')
-
-    # figure_hist['data'][0].update({"marker": {"color":["red" if c == clicked_category else "blue" for c in figure_hist["data"][0]["x"]]}})
-    figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c == clicked_category else "" for c in figure_hist["data"][0]["x"]]}}})
-    figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-
-    f_view = filter_view.create_filter_view(Collection.filters)
-
-    return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d, f_view
+    return histogram_callback('categorical', 'genre', data_selected, figure_hist, radio_button_value, scatterplot_2d_old)
 
 
 @callback(
@@ -46,22 +54,8 @@ def genre_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatte
     prevent_initial_call=True
 )
 def key_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatterplot_2d_old):
-    print("key hist clicked")
-    clicked_category = data_selected['points'][0]['x']
+    return histogram_callback('categorical', 'key', data_selected, figure_hist, radio_button_value, scatterplot_2d_old)
 
-    Collection.add_filter('key', clicked_category)
-    selected_ids = Collection.get_filter_selection_ids()
-    print(f'Length of selected ids after selecting a key: {len(selected_ids)}')
-
-    figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c == clicked_category else "" for c in figure_hist["data"][0]["x"]]}}})
-    figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-
-    f_view = filter_view.create_filter_view(Collection.filters)
-    return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d, f_view
-
-
-# Numerical Histograms
 
 @callback(
     [Output("tempo_histogram", "figure", allow_duplicate=True),
@@ -75,22 +69,7 @@ def key_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatterp
     prevent_initial_call=True
 )
 def tempo_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatterplot_2d_old):
-    print("Tempo hist clicked")
-
-    indices = data_selected['points'][0]['pointNumbers']
-    category = data_selected['points'][0]['x']
-    Collection.add_filter('tempo', category, indices=indices)
-    selected_ids = Collection.get_filter_selection_ids()
-
-    print(f'Length of selected ids after selecting a tempo: {len(selected_ids)}')
-    
-    figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c == category else "" for c in range(figure_hist['data'][0]['nbinsx'])]}}})
-    figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-
-    f_view = filter_view.create_filter_view(Collection.filters)
-
-    return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d, f_view
+    return histogram_callback('numerical', 'tempo', data_selected, figure_hist, radio_button_value, scatterplot_2d_old)
 
 
 @callback(
@@ -105,19 +84,4 @@ def tempo_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatte
     prevent_initial_call=True
 )
 def loudness_hist_is_clicked(data_selected, figure_hist, radio_button_value, scatterplot_2d_old):
-    print("loudness hist clicked")
-
-    indices = data_selected['points'][0]['pointNumbers']
-    category = data_selected['points'][0]['x']
-    Collection.add_filter('loudness', category, indices=indices)
-    selected_ids = Collection.get_filter_selection_ids()
-
-    print(f'Length of selected ids after selecting a loudness: {len(selected_ids)}')
-    
-    figure_hist['data'][0].update({"marker": {"pattern": {"shape": ["x" if c == category else "" for c in range(figure_hist['data'][0]['nbinsx'])]}}})
-    figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-
-    f_view = filter_view.create_filter_view(Collection.filters)
-
-    return figure_hist, {'data': figure_scatter_2d['data'], 'layout': scatterplot_2d_old['layout']}, figure_scatter_3d, f_view
+    return histogram_callback('numerical', 'loudness', data_selected, figure_hist, radio_button_value, scatterplot_2d_old)
