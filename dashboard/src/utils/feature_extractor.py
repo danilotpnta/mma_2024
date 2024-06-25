@@ -38,7 +38,7 @@ def get_embeddings(
             audio = torch.mean(audio, dim=0, keepdim=True)
 
         # Get ideal duration
-        num_samples = sample_rate * duration
+        num_samples = target_sr * duration
 
         # Adjust the audio length to be exactly `duration` seconds
         if audio.shape[1] > num_samples:
