@@ -1,46 +1,43 @@
-from dash import Dash, html, Output, Input, callback, State
+from dash import Dash, html, Output, Input, callback, State, ALL, callback_context
 from Dataset import Dataset
 from widgets import scatterplot_2d
 from widgets import gallery, categorical_histogram, numerical_histogram
 import config
 from utils.similar_tracks import get_similar_tracks
 from PIL import Image
+from utils.utils import feature_key_from_state_string
 
 @callback(
     Output("grid", "rowData"),
-    Output("genre_histogram", "figure", allow_duplicate=True),
-    Output("tempo_histogram", "figure", allow_duplicate=True),
-    Output("key_histogram", "figure", allow_duplicate=True),
-    Output("loudness_histogram", "figure", allow_duplicate=True),
+    Output({"type": 'histogram', 'feature': ALL}, "figure"),
     Input("scatterplot-2D", "selectedData"),
     State('scatterplot-2D', 'figure'),
-    State('genre_histogram', 'figure'),
-    State('tempo_histogram', 'figure'),
-    State('key_histogram', 'figure'),
-    State('loudness_histogram', 'figure'),
+    State({"type": 'histogram', 'feature': ALL}, "figure"),
     prevent_initial_call=True
 )
-def scatterplot_is_selected(data_selected, scatterplot_fig, genre_hist, tempo_hist, key_hist, loudness_hist):
+def scatterplot_is_selected(data_selected, scatterplot_fig, histograms):#genre_hist, key_hist, tempo_hist, loudness_hist):
     print('Scatterplot is selected')
+
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
     
+    hist_dict = {feature_key_from_state_string(k): v for k, v in callback_context.states.items() if 'scatter' not in k}
+
     genre_histogram = categorical_histogram.draw_histogram('genre', data_selected['id'])
-    genre_histogram['data'][0].update({'marker': genre_hist['data'][0]["marker"]})
+    genre_histogram['data'][0].update({'marker': hist_dict['genre']['data'][0]["marker"]})
     
     key_histogram = categorical_histogram.draw_histogram('key', data_selected['id'])
-    key_histogram['data'][0].update({'marker': key_hist['data'][0]["marker"]})
+    key_histogram['data'][0].update({'marker': hist_dict['key']['data'][0]["marker"]})
     
-    print(tempo_hist)
-    tempo_nbins = tempo_hist['data'][0]['nbinsx']
+    tempo_nbins = hist_dict['tempo']['data'][0]['nbinsx']
     tempo_histogram = numerical_histogram.draw_histogram('tempo', tempo_nbins, data_selected['id'])
-    tempo_histogram['data'][0].update({'marker': tempo_hist['data'][0]["marker"]})
+    tempo_histogram['data'][0].update({'marker': hist_dict['tempo']['data'][0]["marker"]})
     
-    loudness_nbins = loudness_hist['data'][0]['nbinsx']
+    loudness_nbins = hist_dict['loudness']['data'][0]['nbinsx']
     loudness_histogram = numerical_histogram.draw_histogram('loudness', loudness_nbins, data_selected['id'])
-    loudness_histogram['data'][0].update({'marker': loudness_hist['data'][0]["marker"]})
+    loudness_histogram['data'][0].update({'marker': hist_dict['loudness']['data'][0]["marker"]})
     
-    return table_rows, genre_histogram, tempo_histogram, key_histogram, loudness_histogram
+    return table_rows, [genre_histogram, tempo_histogram, key_histogram, loudness_histogram]
 
 @callback(
     [Output('album-cover', 'src', allow_duplicate=True),

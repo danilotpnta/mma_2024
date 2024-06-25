@@ -17,5 +17,5 @@ def create_filter_view(filters: List[Tuple[str, str]]=[]):
         className='filter-button') for feature, value in filters
         ]
     
-    filter_view = html.Div(children=buttons, id='filter-view', className='d-flex gap-2')
+    filter_view = html.Div(children=buttons, id='filter-view', className='d-flex flex-wrap gap-2')
     return filter_view

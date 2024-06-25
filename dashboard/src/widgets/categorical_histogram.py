@@ -13,7 +13,12 @@ def create_histogram(selected_category='genre'):
                       'displaylogo': False,
                       'displayModeBar': False
                   },
-                  id=f'{selected_category}_histogram',
+                  id={
+                      'type': 'histogram',
+                      'feature': selected_category,
+                    #   'hist_type': 'categorical'
+                  },
+                    # id=f'{selected_category}_histogram',
                   clear_on_unhover=True),
         dcc.Tooltip(id=f"{selected_category}_histogram-tooltip",
                     loading_text="LOADING"),
