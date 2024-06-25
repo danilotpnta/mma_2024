@@ -27,7 +27,7 @@ def create_gallery_children(track_ids):
                 image = open('src/assets/album_cover.png', 'rb').read()
             class_name = d.loc[d['id'] == track_ids[i + j], 'title'].values[0]
             html_card = html.A([
-                    html.Img(src=encode_image(image),className='gallery-image rounded border border-dark', style={'max-width': '60%'}),
+                    html.Img(src=encode_image(image),className='gallery-image rounded border border-dark', style={'maxWidth': '60%'}),
                     html.Div(class_name, className='gallery-text')
                 ], id={'type': 'gallery-card', 'index': class_name}, className='gallery-card'
             )

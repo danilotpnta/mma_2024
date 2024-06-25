@@ -21,6 +21,7 @@ import callbacks.scatterplot_3d
 import callbacks.scatterplot_2d
 import callbacks.projection_radio_buttons
 import callbacks.histograms
+import callbacks.trackinfo_bars
 
 def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
@@ -79,7 +80,8 @@ def run_dashboard():
         right_tab,
         filter_view_widget,
         html.Hr(),
-        gallery_comp
+        gallery_comp,
+        dcc.Store(id='invisible-store')
     ])
 
     app.layout = dbc.Container([

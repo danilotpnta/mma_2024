@@ -35,7 +35,6 @@ def hist_is_clicked(data_selected, _, radio_button_value, scatterplot_2d_old):
         indices = None
         data_aggr = hist_dict[feature]["data"][0]["x"]
     elif hist_type == 'numerical':
-        print(data_selected['points'][0])
         clicked_category = data_selected['points'][0]['binNumber']
         indices = data_selected['points'][0]['pointNumbers']
         data_aggr = range(hist_dict[feature]['data'][0]['nbinsx'])
