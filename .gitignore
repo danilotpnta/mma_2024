@@ -4,7 +4,7 @@
 .vscode/
 
 # Data folder
-dataset
+dashboard/data/gtzan/genres_original
 
 # Cache folders
 .alcache/

@@ -6,39 +6,30 @@ dependencies:
   - python=3.8  
   - pip
   - pip:
+    # Base dependencies
     - wget
     - plotly==5.20.0
     - dash==2.16.1
-    - torch
     - dash-bootstrap-components
     - dash-ag-grid
     - wordcloud
     - dash-image-gallery
     - dash-core-components
     - dash-holoniq-wordcloud
-    - git+https://github.com/openai/CLIP.git
-    - pydub # To convert .mp3 to .wav
-    - lightning[pytorch-extra]
-    - tensorboard
     
-    # FMA dependencies
+    # Audio Processing dependencies
+    - torch
+    - torchaudio
+    - shazamio
     - jupyter
     - numpy
     - matplotlib
-    - seaborn
-    - tensorflow
-    - keras
     - librosa
-    - audioread
-    - pydot
     - tqdm
     - python-dotenv
     - pandas
     - scikit-learn
     - umap-learn
-    - mutagen
-    - resampy # for VGGish
     - setuptools<70.0.0 # There's a change with setuptools which makes the latest version incompatible with CLIP for the time being
     - pytorch-lightning
-    - transformers 
-    - torchvggish
+    - transformers
