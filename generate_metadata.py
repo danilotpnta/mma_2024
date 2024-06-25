@@ -44,7 +44,7 @@ def generate_metadata(folder: str):
 
     df_dict = {}
     for dir_path, _, files in os.walk(dir_wav):
-        for file in files[:1]:
+        for file in files:
             if file.endswith(".wav"):
 
                 # Get the filepath
