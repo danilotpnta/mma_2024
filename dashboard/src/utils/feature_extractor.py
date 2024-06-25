@@ -13,7 +13,6 @@ from transformers import (
 
 
 # Function to get the embeddings from an audio file
-# Function to get the embeddings from an audio file
 def get_embeddings(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Clf"):
 
     feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
@@ -179,3 +178,30 @@ def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Cl
         genre = predictions[0]["label"]
 
     return genre, predictions
+
+
+# For testing and data refinement
+if __name__ == "__main__":
+
+    import ast
+
+    path = "metadata.csv"
+    df = pd.read_csv(path)
+
+    df["embeddings"] = df["embeddings"].apply(lambda x: np.array(ast.literal_eval(x)))
+
+    embeddings = []
+    for embed in list(df["embeddings"]):
+        embeddings.append(embed)
+
+    embeddings = np.array(embeddings)
+    df_tsne = get_projections_tsne(embeddings)
+    df_umap = get_projections_umap(embeddings)
+
+    xt, yt, zt = df_tsne["c1"], df_tsne["c2"], df_tsne["c3"]
+    xu, yu, zu = df_umap["c1"], df_umap["c2"], df_umap["c3"]
+
+    df["x_tsne"], df["y_tsne"], df["z_tsne"] = list(xt), list(yt), list(zt)
+    df["x_umap"], df["y_umap"], df["z_umap"] = list(xu), list(yu), list(zu)
+
+    df.to_csv("metadata_new.csv")
