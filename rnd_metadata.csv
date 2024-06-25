@@ -1,0 +1,11 @@
+filename,genre,title,artist,tempo,keys,loudness,embeddings,pred_genres,sorted_pred_genres
+blues_rnd.wav,blues,Cross Road Blues,Robert Johnson,,,,,,
+classical_rnd.wav,classical,Symphony No. 5,Beethoven,,,,,,
+country_rnd.wav,country,Killing Time,Clint Black,,,,,,
+disco_rnd.wav,disco,Le Freak,Chic,,,,,,
+hiphop_rnd.wav,hiphop,Lose Yourself,Eminem,,,,,,
+jazz_rnd.wav,jazz,Take Five,Dave Brubeck,,,,,,
+metal_rnd,metal,Iron Man,Black Sabbath,,,,,,
+pop_rnd,pop,Love On Top,Beyoncé,,,,,,
+reggae_rnd,reggae,Bad Boys,Inner Circle,,,,,,
+rock_rnd,rock,Bohemian Rhapsody,Queen,,,,,,
