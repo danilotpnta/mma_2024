@@ -18,3 +18,4 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 # DATASET_PATH = os.path.join(DATA_DIR, "dataset.csv")
 DATASET_PATH = os.path.join(DATA_DIR, "gtzan/metadata_aug.csv")
 
+PROSONO_LOGO = "assets/ProSono.png"
