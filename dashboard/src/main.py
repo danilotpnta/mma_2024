@@ -17,10 +17,11 @@ from widgets import (
     filter_view
 )
 
-import callbacks.scatterplot_3d
-import callbacks.scatterplot_2d
+# import callbacks.scatterplot_3d
+# import callbacks.scatterplot_2d
 import callbacks.projection_radio_buttons
 import callbacks.histograms
+import callbacks.scatterplots
 import callbacks.trackinfo_bars
 import callbacks.track_table
 
