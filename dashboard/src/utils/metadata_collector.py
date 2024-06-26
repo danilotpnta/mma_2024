@@ -1,11 +1,18 @@
 import os
 import asyncio
-from shazamio import Shazam
+from shazamio import Shazam, HTTPClient
+from aiohttp_retry import ExponentialRetry
 
 
 async def async_get_metadata(filename: str):
 
-    shazam = Shazam()
+    shazam = Shazam(
+        http_client=HTTPClient(
+            retry_options=ExponentialRetry(
+                attempts=12, max_timeout=204.8, statuses={500, 502, 503, 504, 429}
+            ),  # Workaround to Shazam API call limits
+        ),
+    )
     out = await shazam.recognize(filename)
     return out
 
