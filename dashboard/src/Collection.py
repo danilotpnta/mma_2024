@@ -9,7 +9,7 @@ class Collection:
     tempo_selection = None
     key_selection = None
     loudness_selection = None
-    filters: List[Tuple[str, str]] = []
+    filters: List[Tuple[str, str]] = None
     
 
     @staticmethod
@@ -20,6 +20,7 @@ class Collection:
         Collection.tempo_selection = set()
         Collection.key_selection = set()
         Collection.loudness_selection = set()
+        Collection.filters = []
 
 
     @staticmethod
@@ -127,6 +128,7 @@ class Collection:
                 result = result & Collection.loudness_selection
 
         return list(result)
+
     
     @staticmethod
     def get_total_selection_ids():

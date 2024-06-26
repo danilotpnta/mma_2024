@@ -6,6 +6,7 @@ import config
 from utils.similar_tracks import get_similar_tracks
 from PIL import Image
 from utils.utils import feature_key_from_state_string
+import plotly.graph_objs as go
 
 @callback(
     Output("grid", "rowData"),
@@ -46,14 +47,16 @@ def scatterplot_is_selected(data_selected, scatterplot_fig, histograms):#genre_h
      Output('tempo', 'children', allow_duplicate=True),
      Output("gallery", "children", allow_duplicate=True),
      Output("gallery-card-header", "children", allow_duplicate=True),
-     Output("grid", "rowData", allow_duplicate=True)],
+     Output("grid", "rowData", allow_duplicate=True),
+     Output('scatterplot-2D', 'figure')],
     [Input('scatterplot-2D', 'clickData'),
-     Input('projection-radio-buttons', 'value')],
+     Input('projection-radio-buttons', 'value'),
+     Input('scatterplot-2D', 'figure')],
     prevent_initial_call=True)
-def update_selected_track(clickData, radio_button_value):
+def update_selected_track(clickData, radio_button_value, current_figure):
     print("Update selected track 2D")
     if clickData is None:
-        return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!', []
+        return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!', [], current_figure
     else:
         track_id = clickData['points'][0]['customdata'][0]
         d = Dataset.get()
@@ -72,5 +75,13 @@ def update_selected_track(clickData, radio_button_value):
         similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
         gallery_children = gallery.create_gallery_children(similar_tracks_ids)
         gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(f'{track_title} - {artist}')])
+
+        new_figure = go.Figure(data=current_figure['data'], layout=current_figure['layout'])
+
+        for genre in new_figure.data:
+            if [track_id] in genre.customdata:
+                genre.marker.symbol = ['x' if i[0] == track_id else 'circle' for i in genre.customdata]
+            else:
+                genre.marker.symbol = 'circle'
     
-        return album_cover, track_title, artist, tempo, gallery_children, gallery_card_header, [selected_track]
+        return album_cover, track_title, artist, tempo, gallery_children, gallery_card_header, [selected_track], new_figure
