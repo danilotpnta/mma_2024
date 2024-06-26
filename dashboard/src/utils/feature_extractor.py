@@ -10,6 +10,7 @@ from transformers import (
     Wav2Vec2FeatureExtractor,
     HubertForSequenceClassification,
 )
+from transformers.utils import logging
 
 
 # Function to get the embeddings from an audio file
@@ -19,6 +20,9 @@ def get_embeddings(
     duration: int = 30,
     target_sr: int = 16000,
 ):
+
+    # Disable HuggingFace warnings
+    logging.set_verbosity_error()
 
     feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
     model = HubertForSequenceClassification.from_pretrained(model_name)
@@ -83,6 +87,7 @@ def get_embeddings(
 def clean_embeddings(embeddings):
     # Replace NaN or infinite values with zeros or some other value
     if np.any(np.isnan(embeddings)) or np.any(np.isinf(embeddings)):
+
         print("Found NaNs or infinite values in embeddings. Replacing them with zeros.")
         embeddings = np.nan_to_num(embeddings, nan=0.0, posinf=0.0, neginf=0.0)
 
@@ -186,6 +191,9 @@ def get_all_projections(
 
 
 def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Clf"):
+
+    # Disable HuggingFace warnings
+    logging.set_verbosity_error()
 
     pipe = pipeline("audio-classification", model=model_name)
 

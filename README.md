@@ -35,7 +35,7 @@ pip install -r requirements.txt
 
 ### **Data**
 
-The GTZAN dataset is currently only available on [Kaggle](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification), meaning that an account is required to download it. Once downloaded, extract all the files in the `Data` folder to `dashboard/data/gtzan`. The dataset is ~1 GB large. 
+The GTZAN dataset is currently only available on [Kaggle](https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification), meaning that an account is required to download it. Once downloaded, extract all the files in the `Data` folder to `dashboard/data/gtzan`. The dataset is ~1 GB large, and has been preprocessed for convenience. 
 
 Alternatively, we have prepared a script which automatically does this (though you still need to setup a Kaggle account and API to use this method):
 
@@ -47,6 +47,17 @@ python download_gtzan.py
 ```
 
 In principle, any audio dataset can be used, as long as it is located in the `dashboard/data/[your_dataset_name]` folder and all files are in `.wav` (the sampling rate and lengths are automatically adjusted).
+
+To generate the metadata automatically, run the following:
+
+```sh
+
+python generate_metadata.py --data_loc [YOUR_FOLDER_HERE] # Folder containing the .wav files in `dashboard/data`
+
+```
+
+_Note:_ This process is quite slow and can take a long time depending on how large the dataset in question is.
+
 
 ## **Running**
 
