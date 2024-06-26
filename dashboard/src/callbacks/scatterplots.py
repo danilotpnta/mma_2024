@@ -53,7 +53,7 @@ for dim in ['2D', '3D']:
         Output(f'scatterplot-2D', 'figure', allow_duplicate=True),
         Output(f'scatterplot-3D', 'figure', allow_duplicate=True),],
         [Input(f'scatterplot-{dim}', 'clickData'),
-        Input('projection-radio-buttons', 'value'),
+        State('projection-radio-buttons', 'value'),
         State(f'scatterplot-2D', 'figure'),
         State(f'scatterplot-3D', 'figure')],
         prevent_initial_call=True)
@@ -66,7 +66,7 @@ for dim in ['2D', '3D']:
             d = Dataset.get()
             selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
             
-            album_cover_path = f"{config.ROOT_DIR}/{selected_track['album_cover_path']}"
+            album_cover_path = f"{config.ROOT_DIR}/{selected_track['filename'].replace('wav', 'png')}"
             try:
                 album_cover = Image.open(album_cover_path)
             except:
@@ -89,6 +89,8 @@ for dim in ['2D', '3D']:
                         genre.marker.symbol = ['x' if i[0] == track_id else 'circle' for i in genre.customdata]
                     else:
                         genre.marker.symbol = 'circle'
+                        
+                new_figure['layout']['uirevision'] = True
                 new_figures.append(new_figure)
         
             return album_cover, track_title, artist, tempo, gallery_children, gallery_card_header, [selected_track], *new_figures

@@ -19,7 +19,7 @@ def create_gallery_children(track_ids):
         for j in range(config.IMAGE_GALLERY_ROW_SIZE):
             if i + j >= len(track_ids):
                 break
-            album_cover_path = d.loc[d['id'] == track_ids[i + j], 'album_cover_path'].values[0]
+            album_cover_path = d.loc[d['id'] == track_ids[i + j], 'filename'].map(lambda x: x.replace('wav', 'png')).values[0]
             try:
                 image = open(album_cover_path, 'rb').read()
             except:

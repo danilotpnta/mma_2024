@@ -1,7 +1,7 @@
 import os
 import pandas
 import config
-
+import ast
 
 class Dataset:
 
@@ -15,6 +15,7 @@ class Dataset:
         Dataset.data.reset_index(drop=True, inplace=True)
         Dataset.data.drop(columns=['id'], inplace=True)
         Dataset.data['id'] = Dataset.data.index
+        Dataset.data['key'] = Dataset.data['keys'].map(lambda x: list(ast.literal_eval(x).keys())[0])
 
     @staticmethod
     def get():

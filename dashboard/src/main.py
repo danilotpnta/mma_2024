@@ -84,7 +84,8 @@ def run_dashboard():
         filter_view_widget,
         html.Hr(),
         gallery_comp,
-        dcc.Store(id='invisible-store')
+        dcc.Store(id='invisible-store'),
+        dcc.Store(id='song-data')
     ])
 
     app.layout = dbc.Container([
