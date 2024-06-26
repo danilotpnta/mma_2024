@@ -117,7 +117,7 @@ def generate_metadata(folder: str):
     dir_wav = os.path.join("dashboard/data", folder)
     dir_img = os.path.join(dir_wav, "images")
     save_loc = os.path.join(dir_wav, f"metadata_{folder}.csv")
-    default_img = "data/plain_cover.jpg"  # In case an image can't be downloaded
+    default_img = "data/album_cover.jpg"  # In case an image can't be downloaded
 
     # Creating the image directory
     Path(dir_img).mkdir(parents=True, exist_ok=True)
