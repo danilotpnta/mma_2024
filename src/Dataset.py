@@ -4,6 +4,7 @@ import ast
 from src.dataloaders import gtzan_loader
 from src import config
 
+
 class Dataset:
 
     data = None
@@ -12,12 +13,7 @@ class Dataset:
 
     @staticmethod
     def load():
-        print(config.DATASET_PATH)
-        Dataset.data = pandas.read_csv(config.DATASET_PATH).sample(frac=0.1, random_state=42)
-        Dataset.data.reset_index(drop=True, inplace=True)
-        Dataset.data.drop(columns=['id'], inplace=True)
-        Dataset.data['id'] = Dataset.data.index
-        Dataset.data['key'] = Dataset.data['keys'].map(lambda x: list(ast.literal_eval(x).keys())[0])
+        Dataset.data = pandas.read_csv(config.SAMPLE_DATASET_PATH)
 
     @staticmethod
     def get():
@@ -33,9 +29,16 @@ class Dataset:
 
     @staticmethod
     def files_exist():
-        gtzan_dir = os.path.join(config.DATA_DIR, "gtzan")
+        return os.path.isfile(config.SAMPLE_DATASET_PATH)
+
+    @staticmethod
+    def fma_files_exist():
+        mp3_dir = os.path.join(config.DATA_DIR, "fma_small")
+        wav_dir = os.path.join(config.DATA_DIR, "fma_small_wav")
         return (
-            os.path.isdir(gtzan_dir)
+            os.path.isdir(mp3_dir)
+            and os.path.isdir(wav_dir)
+            and os.path.isdir(os.path.join(config.DATA_DIR, "fma_metadata"))
         )
 
     @staticmethod

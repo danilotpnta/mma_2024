@@ -69,3 +69,8 @@ lightning_logs/version_26/hparams.yaml
 joined.mp3
 dataset__/data/gtzan/
 dataset_/downloads/gtzan.zip
+
+
+#Images
+dashboard/data/gtzan/images
+dashboard/data/gtzan/genres
