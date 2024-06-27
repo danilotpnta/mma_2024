@@ -90,3 +90,8 @@ div.wraap > div:hover {
 .own-w-90 {
     width: 90%;
 }
+
+.gallery-image:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s;
+}
