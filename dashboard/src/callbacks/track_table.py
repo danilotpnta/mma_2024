@@ -15,7 +15,7 @@ from PIL import Image
 def update_table_selection(filters):
     filtered_ids = Collection.get_filter_selection_ids()
     data_selected = Dataset.get().iloc[filtered_ids]
-    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
+    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness', 'id']].to_dict('records')
     return table_rows
 
 @callback(
@@ -30,13 +30,15 @@ def update_table_selection(filters):
     prevent_initial_call=True
 )
 def clicktosim(clickData, radio_button_value):
+    print("table update")
+    print(clickData)
     if not len(clickData):
         return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!'
     track_id = clickData[0]['id']
     d = Dataset.get()
     selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
     
-    album_cover_path = f"{config.ROOT_DIR}/{selected_track['album_cover_path']}"
+    album_cover_path = f"{config.ROOT_DIR}/{selected_track['filename'].replace('wav', 'png')}"
     try:
         album_cover = Image.open(album_cover_path)
     except:

@@ -13,7 +13,7 @@ feature_colors = {
 
 def create_filter_view(filters: List[Tuple[str, str]]=[]):
     buttons = [dbc.Button(
-        f"{feature}:{value}", color=feature_colors[feature],
+        f"{feature}:{value[1]}", color=feature_colors[feature],
         className='filter-button') for feature, value in filters
         ]
     

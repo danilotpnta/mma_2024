@@ -19,9 +19,9 @@ def create_scatterplot_figure(projection, sample_ids=[]):
     data['marker_size'] = 10
 
     if len(sample_ids) > 0:
-        data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 5
+        data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 1
 
-    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='marker_size', size_max=8)
+    fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col, color='genre', custom_data=['id'], size='marker_size', size_max=8, color_discrete_map=config.GENRE_COLORS)
     
     
     fig.update_layout(dragmode='select')

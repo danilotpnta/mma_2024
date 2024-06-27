@@ -15,17 +15,18 @@ from widgets import (
     numerical_histogram,
     gallery,
     filter_view,
-    button
+    button,
+    navbar
 )
 
-# import callbacks.scatterplot_3d
-# import callbacks.scatterplot_2d
 import callbacks.projection_radio_buttons
 import callbacks.histograms
 import callbacks.scatterplots
 import callbacks.trackinfo_bars
 import callbacks.track_table
 import callbacks.gallery
+import callbacks.navbar
+
 
 def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
@@ -48,7 +49,7 @@ def run_dashboard():
     
     # deselect_button = button.create_deselect_button()
     test_widget = html.H1("Test", id='image-click-output')
-
+    navbar_widget = navbar.create_navbar(projection_radio_buttons_widget,)
     gallery_widget = gallery.create_gallery()
 
     view_3d = dbc.Stack([
@@ -89,11 +90,12 @@ def run_dashboard():
         filter_view_widget,
         html.Hr(),
         gallery_comp,
-        dcc.Store(id='invisible-store')
+        dcc.Store(id='invisible-store'),
+        dcc.Store(id='song-data')
     ])
 
     app.layout = dbc.Container([
-        projection_radio_buttons_widget,
+        navbar_widget,
         dbc.Row([
             dbc.Col(left_tab, className='shadow-sm p-3 mb-5 bg-white rounded'),
             dbc.Col(right_component_wrapper, className='shadow-sm p-3 mb-5 bg-white rounded')

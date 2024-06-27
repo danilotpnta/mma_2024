@@ -17,7 +17,7 @@ def create_table_grid():
             {"field": "title", 'headerName': "Track Title"},
             {"field": "artist", 'headerName': "Artist"},
             {"field": "genre", 'headerName': "Genre"},
-            {"field": "tempo", 'headerName': "Tempo (bpm)", 'valueFormatter': {"function":"d3.format(',.2f')(params.value)"}},
+            {"field": "tempo", 'headerName': "Tempo (bpm)", 'valueFormatter': {"function":"d3.format(',.2f')(params.value)", "filter": "agNumberColumnFilter"}},
             {"field": "key", 'headerName': "Key"},
             {"field": "loudness", 'headerName': "Loudness (dB)"},
             {"field": "id", 'headerName': "sample_id", "suppressToolPanel": "True", "hide": "True"}

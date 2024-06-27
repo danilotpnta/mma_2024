@@ -25,18 +25,18 @@ class Collection:
 
     @staticmethod
     def filter_indices_category(feature_name: str, category: str) -> List[int]:
-        filtered_data = Collection.data[Collection.data[feature_name].isin([category])]
+        filtered_data = Collection.data[Collection.data[feature_name].isin([category[0]])]
         return filtered_data.index.tolist()
 
     @staticmethod
     def update_filter(feature_name: str, category: str, indices: List[int] = None):
-        present_categories = [j for i,j in Collection.filters if i == feature_name]
-        if category in present_categories:
+        present_categories = [j[0] for i,j in Collection.filters if i == feature_name]
+        if category[0] in present_categories:
             Collection.remove_filter(feature_name, category, indices=indices)
-            present_categories.remove(category)
+            present_categories.remove(category[0])
         else:
             Collection.add_filter(feature_name, category, indices=indices)
-            present_categories.append(category)
+            present_categories.append(category[0])
             
         selected_ids = Collection.get_filter_selection_ids()
         print(f'Length of selected ids after selecting a {feature_name}: {len(selected_ids)}')

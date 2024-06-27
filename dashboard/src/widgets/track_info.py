@@ -11,12 +11,12 @@ def create_track_info():
                             style={'width': '100%', 'height': 'auto'},
                             src='', className='border border-dark rounded')
 
-    track_title = html.Tr([html.Td(html.Strong('Title'), style={'width': '40%'}), html.Td(id='track-title', children='')])
-    artist = html.Tr([html.Td(html.Strong('Artist')), html.Td(id='artist', children='')])
-    genre = html.Tr([html.Td(html.Strong('Genre')), html.Td(id='genre', children=create_barplot('genre'))])
-    tempo = html.Tr([html.Td(html.Strong('Tempo (bpm)')), html.Td(id='tempo', children='')])
+    track_title = html.Tr([html.Td(html.Strong('Title'), style={'width': '40%'}), html.Td(id='track-title', children='No song selected')])
+    artist = html.Tr([html.Td(html.Strong('Artist')), html.Td(id='artist', children='No song selected')])
+    genre = html.Tr([html.Td(html.Strong('Genre')), html.Td(id='genre', children=create_barplot('genre'), style={'width': '40%'})])
+    tempo = html.Tr([html.Td(html.Strong('Tempo (bpm)')), html.Td(id='tempo', children='No song selected')])
     key = html.Tr([html.Td(html.Strong('Key')), html.Td(id='key', children=create_barplot('key'))])
-    loudness = html.Tr([html.Td(html.Strong('Loudness')), html.Td(children='-40dB')])
+    loudness = html.Tr([html.Td(html.Strong('Loudness (dB)')), html.Td(id='loudness', children='No song selected')])
 
     table_body = [html.Tbody([track_title, artist, genre, tempo, key, loudness])]
 
@@ -30,7 +30,7 @@ def create_track_info():
                 striped=True,
                 className='table'
             ), 
-            width={"size": 6}
+            width={"size": 7}
         )
     ])
     
