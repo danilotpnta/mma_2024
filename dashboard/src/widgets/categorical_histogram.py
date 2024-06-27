@@ -9,10 +9,10 @@ def create_histogram(selected_category='genre'):
     histogram = draw_histogram(selected_category)
     return html.Div([
         dcc.Graph(figure=histogram,
-                #   responsive=True,
                   config={
                       'displaylogo': False,
-                      'displayModeBar': False
+                      'displayModeBar': False,
+                      'autosizable': False
                   },
                   id={
                       'type': 'histogram',
@@ -21,7 +21,7 @@ def create_histogram(selected_category='genre'):
                   clear_on_unhover=True),
         dcc.Tooltip(id=f"{selected_category}_histogram-tooltip",
                     loading_text="LOADING"),
-    ], className='border-widget stretchy-widget histogram-container')
+    ], className='mb-2')
 
 
 def count_occurences(df, selected_category):
@@ -61,7 +61,7 @@ def draw_histogram(selected_category, sample_ids=[]):
     fig.update_layout(
         hovermode="x unified",
         xaxis=dict(
-            tickangle=340,
+            tickangle=300,
             automargin=False, 
             fixedrange=True
         ),
@@ -73,7 +73,7 @@ def draw_histogram(selected_category, sample_ids=[]):
             tickfont=dict(size=12)
         ),
         bargap=0.2, # gap between bars of adjacent location coordinates
-        margin=dict(l=60, r=60, t=10, b=40)
+        margin=dict(l=60, r=60, t=10, b=80),
     )
     
     return fig

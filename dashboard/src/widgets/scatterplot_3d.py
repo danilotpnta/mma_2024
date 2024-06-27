@@ -30,11 +30,11 @@ def create_scatterplot_figure(projection, sample_ids=[]):
         data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 1
     fig = px.scatter_3d(data_frame=data, x=x_col, y=y_col, z=z_col,
                         color='genre', custom_data=['id', 'title', 'artist', 'genre', 'album_cover_path'], 
-                        size='marker_size', opacity=0.6, size_max=12)
+                        size='marker_size', opacity=0.6, size_max=12, color_discrete_map=config.GENRE_COLORS)
     
     fig.update_traces(hovertemplate=hover_temp)
-
     fig.update_traces(marker=dict(opacity=1, line=dict(width=0)))
+    fig.update_layout(margin=dict(l=0, r=0, b=0, t=30))
 
     return fig
 
@@ -42,10 +42,10 @@ def create_scatterplot(projection):
     return dcc.Graph(
         figure=create_scatterplot_figure(projection),
         id="scatterplot-3D",
-        className="stretchy-widget border-widget border",
+        className="rounded-bottom shadow-sm p-3",
         config={
             'displaylogo': False,
             'modeBarButtonsToRemove': ['autoscale'],
             'displayModeBar': True,
-        }
+        },
     )

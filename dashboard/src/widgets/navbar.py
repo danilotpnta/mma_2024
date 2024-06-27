@@ -24,12 +24,13 @@ def create_navbar(projection_radio_buttons_widget):
             dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
             dbc.Collapse(
                 dbc.Row([
-                        dbc.Col(projection_radio_buttons_widget),
+                        dbc.Col(projection_radio_buttons_widget, width=6),
                         dbc.Col(offcanvas),
-                        dbc.Col(deselect_widget)
+                        dbc.Col(deselect_widget, width=6)
                     ],
                         className='ms-auto flex-nowrap',
-                        justify='start'),
+                        justify='start',
+                        align='center'),
                 id="navbar-collapse",
                 is_open=False,
                 navbar=True,

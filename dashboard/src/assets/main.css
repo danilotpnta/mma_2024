@@ -95,3 +95,29 @@ div.wraap > div:hover {
     transform: scale(1.1);
     transition: transform 0.5s;
 }
+
+audio::-webkit-media-controls-panel {
+    background-color: white;
+  }
+
+  audio {
+    width: 100%;
+    border-width: 0px 1px 1px 1px;
+    border-radius: 0 0 10px 10px;
+    border-style: solid;
+    border-color: rgb(222, 226, 230);
+  }
+
+  .album-cover {
+    border-width: 0px 1px 1px 1px;
+    border-radius: 0 0 10px 10px;
+    border-style: solid;
+    border-color: rgb(222, 226, 230);
+  }
+
+
+  table {
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:6px;
+}

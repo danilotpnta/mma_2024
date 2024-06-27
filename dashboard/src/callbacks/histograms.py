@@ -52,13 +52,17 @@ def hist_is_clicked(data_selected, _, radio_button_value, scatterplot_2d_old, sc
 
     hist_dict[feature]['data'][0]["marker"].update({"pattern": {"shape": ["x" if c in clicked_categories else "" for c in data_aggr]}})
     figure_scatter_2d = scatterplot_2d.create_scatterplot_figure(radio_button_value, set(selected_ids))
-    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids))
+    figure_scatter_3d = scatterplot_3d.create_scatterplot_figure(radio_button_value, set(selected_ids)).to_dict()
 
-    f_view = filter_view.create_filter_view(Collection.filters)
+    f_view = filter_view.draw_filter_view(Collection.filters)
     
     fig_2d = Patch()
     fig_2d['data'] = figure_scatter_2d['data']
     fig_3d = Patch()
+    for i in range(len(figure_scatter_3d['data'])):
+        print(figure_scatter_3d['data'][i]['marker'])
+        figure_scatter_3d['data'][i]['marker']['opacity'] = scatterplot_3d_old['data'][i]['marker']['opacity']
+        figure_scatter_3d['data'][i]['marker']['symbol'] = scatterplot_3d_old['data'][i]['marker']['symbol']
     fig_3d['data'] = figure_scatter_3d['data']
     
     # using old layout to maintain selection window after update

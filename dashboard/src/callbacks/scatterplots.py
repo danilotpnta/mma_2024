@@ -1,4 +1,4 @@
-from dash import Dash, html, Output, Input, callback, State, ALL, callback_context, no_update
+from dash import Dash, html, Output, Input, callback, State, ALL, callback_context, no_update, Patch
 from Dataset import Dataset
 from widgets import scatterplot_2d
 from widgets import gallery, categorical_histogram, numerical_histogram
@@ -11,12 +11,13 @@ import plotly.graph_objs as go
 @callback(
     Output("grid", "rowData"),
     Output({"type": 'histogram', 'feature': ALL}, "figure"),
+    Output('scatterplot-3D', 'figure', allow_duplicate=True),
     Input("scatterplot-2D", "selectedData"),
-    State('scatterplot-2D', 'figure'),
+    State('scatterplot-3D', 'figure'),
     State({"type": 'histogram', 'feature': ALL}, "figure"),
     prevent_initial_call=True
 )
-def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genre_hist, key_hist, tempo_hist, loudness_hist):
+def scatterplot_2d_is_selected(data_selected, scatter_3d, _):#genre_hist, key_hist, tempo_hist, loudness_hist):
     print('Scatterplot is selected')
 
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
@@ -25,13 +26,6 @@ def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genr
     hist_dict = {feature_key_from_state_string(k): v for k, v in callback_context.states.items() if 'scatter' not in k}
 
     genre_histogram = categorical_histogram.draw_histogram('genre', data_selected['id'])
-    
-    # print("a", genre_histogram['data'][0], "\n", "b", hist_dict['genre']['data'], "\n")
-    # # maintain selection pattern on markers
-    # if len(genre_histogram['data']) > 2:
-    #     for i in range(1, len(genre_histogram['data']), 2):
-    #         genre_histogram['data'][i]['marker']['pattern'].update({'shape': hist_dict['genre']['data'][i]["marker"]['pattern']['shape']})
-    # else:
     genre_histogram['data'][0]['marker'].update({'pattern': hist_dict['genre']['data'][0]["marker"]['pattern']})
     
     key_histogram = categorical_histogram.draw_histogram('key', data_selected['id'])
@@ -45,7 +39,14 @@ def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genr
     loudness_histogram = numerical_histogram.draw_histogram('loudness', loudness_nbins, data_selected['id'])
     loudness_histogram['data'][0].update({'marker': hist_dict['loudness']['data'][0]["marker"]})
     
-    return table_rows, [genre_histogram, tempo_histogram, key_histogram, loudness_histogram]
+    fig_3d = Patch()
+    for i, trace in enumerate(scatter_3d['data']):
+        scatter_3d['data'][i]['marker']['opacity'] = [0.1 if i[0] in data_selected['id'] else 1 for i in trace['customdata']]
+        scatter_3d['data'][i]['marker']['symbol'] = ['square' if i[0] in data_selected['id'] else 'circle' for i in trace['customdata']]
+    
+    fig_3d['data'] = scatter_3d['data']
+    
+    return table_rows, [genre_histogram, tempo_histogram, key_histogram, loudness_histogram], fig_3d
 
 
 @callback(
@@ -70,9 +71,6 @@ def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genr
     prevent_initial_call=True)
 def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_figure_2d, current_figure_3d, prev_click):
     print(f"2D clicked")
-    print(clickData)
-    print(n_clicks)
-    print(prev_click)
     if clickData is None:
         curr_click = prev_click[0]
     else:
@@ -118,7 +116,8 @@ def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_fi
     Output("grid", "rowData", allow_duplicate=True),
     Output(f'scatterplot-2D', 'figure', allow_duplicate=True),
     Output(f'scatterplot-3D', 'figure', allow_duplicate=True),
-    Output("prev-scatter-click", 'data', allow_duplicate=True)],
+    Output("prev-scatter-click", 'data', allow_duplicate=True),
+    Output("song-data", 'data', allow_duplicate=True)],
     [Input(f'scatterplot-3D', 'clickData'),
     Input({'type': 'gallery-card', 'index': ALL}, 'n_clicks'),
     State('projection-radio-buttons', 'value'),
@@ -128,9 +127,6 @@ def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_fi
     prevent_initial_call=True)
 def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_figure_2d, current_figure_3d, prev_click):
     print(f"3D clicked")
-    print(clickData)
-    print(n_clicks)
-    print(prev_click)
     if clickData is None:
         curr_click = prev_click[1]
     else:
@@ -141,14 +137,14 @@ def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_fi
     # if (clickData == None and sum(n_clicks) < 1):
     if( (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[1])): #or (('3D' != prev_click[1]) and (prev_click[1] != None)):
         print("3D cancelled")
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
     # clickData can be None if gallery-card is updated, but n_clicks might be [], [None, ..., n] or [1, None, ..., n]
     if clickData is None:
         
         # If n_clicks is []
         if len(n_clicks) == 0:
-            return 'assets/album_cover.png', '', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
+            return 'assets/album_cover.png', '', '', '', '', '', '', 'No tracks selected yet!', [], no_update, no_update, no_update
 
         # Get track id from gallery-card
         track_id = callback_context.triggered_id['index']
@@ -158,10 +154,10 @@ def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_fi
         track_id = clickData['points'][0]['customdata'][0]
     elif sum(n_clicks) > 0:
         track_id = callback_context.triggered_id['index']
-    # else:
-    #     return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+    else:
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
-    return *update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d), [prev_click[0], curr_click]
+    return *update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d), [prev_click[0], curr_click], track_id
 
 
 def update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d):

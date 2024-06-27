@@ -22,5 +22,5 @@ def draw_filter_view(filters: List[Tuple[str, str]]=[]):
 def create_filter_view(filters: List[Tuple[str, str]]=[]):
     buttons = draw_filter_view(filters)
     
-    filter_view = html.Div(children=buttons, id='filter-view', className='d-flex flex-wrap gap-2')
+    filter_view = html.Div(children=buttons, id='filter-view', className='d-flex flex-wrap gap-2 mx-2')
     return filter_view

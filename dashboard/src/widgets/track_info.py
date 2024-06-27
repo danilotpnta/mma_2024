@@ -13,8 +13,8 @@ def create_track_info():
 
 def create_track_info_widget():
     album_cover = html.Img(id='album-cover',
-                            style={'width': '80%', 'height': 'auto'},
-                            src='assets/album_cover.png', className='border border-dark rounded')
+                            style={'width': '100%', 'height': 'auto'},
+                            src='assets/album_cover.png', className='border-top rounded-top')
     
     audio_widget = html.Audio(id='audio-player', src='', controls=True)
 
@@ -23,26 +23,30 @@ def create_track_info_widget():
     genre = html.Tr([html.Td(html.Strong('Genre')), html.Td(id='genre', children=create_barplot('genre'), style={'width': '40%'})])
     tempo = html.Tr([html.Td(html.Strong('Tempo (bpm)')), html.Td(id='tempo', children='No song selected')])
     key = html.Tr([html.Td(html.Strong('Key')), html.Td(id='key', children=create_barplot('key'))])
-    loudness = html.Tr([html.Td(html.Strong('Loudness (dB)')), html.Td(id='loudness', children='No song selected')])
+    loudness = html.Tr([html.Td(html.Strong('Loudness (dB)')), html.Td(id='loudness', children='No song selected')], className='border-white')
     
     table_body = [html.Tbody([track_title, artist, genre, tempo, key, loudness])]
 
-    row = dbc.Row([
+    row = dbc.Row(
+        [
         dbc.Col([album_cover,
                  audio_widget],
                 width={"size": 4},
-                className='mx-auto'),
-        dbc.Col(
+                # className='rounded'
+                ),
+        dbc.Col([
+            html.H3("Song Details"),
             dbc.Table(
                 table_body,
                 hover=True,
                 responsive=False,
-                striped=True,
-                className='table'
-            ), 
-            width={"size": 7, 'offset': 1}
-        )
-    ])
+                className='table border rounded'
+            )],
+            width={"size": 8}
+            )
+        ],
+        # className=''
+    )
     
     return row
 

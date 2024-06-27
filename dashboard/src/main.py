@@ -55,27 +55,26 @@ def run_dashboard():
 
     view_3d = dbc.Stack([
         scatterplot_3d_widget,
-        html.Hr(),
         track_info_widget
-    ], gap=3)
+    ], gap=4)
     
     view_2d = dbc.Stack([
         scatterplot_2d_widget,
-        html.Hr(),
         track_table_widget
-    ], gap=3)
+    ], gap=4)
 
     left_tab = dcc.Tabs([
-        dcc.Tab(label='3-D plot view', children=view_3d),
-        dcc.Tab(label='2-D plot view', children=view_2d),
-    ])
+        dcc.Tab(label='3-D plot view', children=view_3d, className='p-1 rounded-start', selected_className='border p-1 rounded-start'),
+        dcc.Tab(label='2-D plot view', children=view_2d, className='p-1 rounded-end', selected_className='border p-1 rounded-end'),
+        ],
+    )
     
     right_tab = dcc.Tabs([
-        dcc.Tab(label='genre distribution', children=genre_dist),
-        dcc.Tab(label='tempo distribution', children=tempo_dist),
-        dcc.Tab(label='key distribution', children=key_dist),
-        dcc.Tab(label='loudness distribution', children=loudness_dist)
-    ])
+        dcc.Tab(label='genre', children=genre_dist, className='p-1 rounded-start', selected_className='border p-1 rounded-start'),
+        dcc.Tab(label='tempo', children=tempo_dist, className='p-1', selected_className='border p-1'),
+        dcc.Tab(label='key', children=key_dist, className='p-1', selected_className='border p-1'),
+        dcc.Tab(label='loudness', children=loudness_dist, className='p-1 rounded-end', selected_className='border p-1 rounded-end'),
+    ], className='mb-2')
     
     gallery_comp = dbc.Card(
         [
@@ -85,22 +84,24 @@ def run_dashboard():
     )
     
     right_component_wrapper = dbc.Stack([
-        # deselect_button,
-        right_tab,
-        filter_view_widget,
-        html.Hr(),
+        html.Div([
+            right_tab,
+            filter_view_widget
+            ],
+                 className='mb-2 pb-2 rounded-bottom shadow-sm'),
         gallery_comp,
         dcc.Store(id='invisible-store'),
         dcc.Store(id='song-data'),
+        dcc.Store(id='song-data-for-js'),
         dcc.Store(id='prev-scatter-click', data=[[None], [None]])
-    ])
+    ], gap=4)
 
     app.layout = dbc.Container([
         navbar_widget,
         dbc.Row([
-            dbc.Col(left_tab, className='shadow-sm p-3 mb-5 bg-white rounded'),
-            dbc.Col(right_component_wrapper, className='shadow-sm p-3 mb-5 bg-white rounded')
-        ], className='top-row'),
+            dbc.Col(left_tab, width=7),
+            dbc.Col(right_component_wrapper, width=5)
+        ], className='top-row mt-2'),
         ], fluid=True, id="container")
     
     

@@ -10,16 +10,18 @@ def create_histogram(selected_category, nbins):
         dcc.Graph(figure=histogram,
                   config={
                       'displaylogo': False,
-                      'displayModeBar': False
+                      'displayModeBar': False,
+                      'autosizable': False
                   },
                     id={
                       'type': 'histogram',
                       'feature': selected_category,
                   },
-                  clear_on_unhover=True),
+                  clear_on_unhover=True,
+                  ),
         dcc.Tooltip(id=f"{selected_category}_histogram-tooltip",
                     loading_text="LOADING"),
-    ], className='border-widget stretchy-widget histogram-container')
+    ], className='mb-2')
 
 
 def draw_histogram(selected_category, nbins, sample_ids=[]):
@@ -68,7 +70,7 @@ def draw_histogram(selected_category, nbins, sample_ids=[]):
         ),
         xaxis_title_text=xaxis_title_text, # xaxis label
         bargap=0.2, # gap between bars of adjacent location coordinates
-        margin=dict(l=60, r=60, t=10, b=40)
+        margin=dict(l=60, r=60, t=10, b=40),
     )
     
     return fig

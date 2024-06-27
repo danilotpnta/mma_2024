@@ -39,14 +39,14 @@ def create_scatterplot_figure(projection, sample_ids=[]):
     fig.update_layout(dragmode='select')
     fig.update_layout(legend=dict(itemsizing='constant'))
     fig.update_traces(marker=dict(opacity=1, line=dict(width=0)))
-
+    fig.update_layout(margin=dict(l=0, r=0, b=0, t=30))
     return fig
 
 def create_scatterplot(projection):
     return dcc.Graph(
             figure=create_scatterplot_figure(projection),
             id='scatterplot-2D',
-            className='stretchy-widget border-widget border',
+            className="stretchy-widget border-widget border-bottom rounded-bottom shadow-sm p-3",
             config={
                 'displaylogo': False,
                 'modeBarButtonsToRemove': ['autoscale'],

@@ -8,19 +8,19 @@ import config
 clientside_callback(
     ClientsideFunction(namespace='clientside', function_name='resize_track_info_bars'),
     Output('invisible-store', 'data'),
-    Input('song-data', 'data'),
+    Input('song-data-for-js', 'data'),
     State('invisible-store', 'data'),
     prevent_initial_call=True
 )
 
 @callback(
-    Output('song-data', 'data'),
-    Input('scatterplot-3D', 'clickData'),
+    Output('song-data-for-js', 'data'),
+    # Input('scatterplot-3D', 'clickData'),
+    Input('song-data', 'data'),
     prevent_initial_call=True
 )
-def store_click_data(clickData):
+def store_click_data(track_id):
     print("Updating track info bars")
-    track_id = clickData['points'][0]['customdata'][0]
     d = Dataset.get()
     selected_track = d.loc[d['id'] == track_id]
     
