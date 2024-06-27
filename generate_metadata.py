@@ -161,7 +161,7 @@ def generate_metadata(folder: str):
     )
 
     # Saving
-    df.to_csv(save_loc, index_label="index")
+    df.to_csv(save_loc, index_label="id")
 
     print(f"\nDataset processing finished! Dataframe saved to '{save_loc}'!\n")
 
