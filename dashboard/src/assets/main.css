@@ -2,11 +2,12 @@
     display: flex;
     border-radius: 10px;
     overflow: hidden;
+    width: 18vw;
 }
 
 .wraap .cool {    
-    -webkit-transition: all .5s;
-    transition: all .5s;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
 }
 
 .cool {
@@ -46,6 +47,10 @@ div.wraap > div:hover {
     background-color: teal;
 }
 
+.own-w-5 {
+    width: 5%;
+}
+
 .own-w-10 {
     width: 10%;
 }
@@ -76,6 +81,10 @@ div.wraap > div:hover {
 
 .own-w-80 {
     width: 80%;
+}
+
+.own-w-84 {
+    width: 84%;
 }
 
 .own-w-90 {
