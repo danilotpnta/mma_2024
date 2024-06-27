@@ -14,7 +14,8 @@ from widgets import (
     categorical_histogram,
     numerical_histogram,
     gallery,
-    filter_view
+    filter_view,
+    button
 )
 
 # import callbacks.scatterplot_3d
@@ -24,6 +25,7 @@ import callbacks.histograms
 import callbacks.scatterplots
 import callbacks.trackinfo_bars
 import callbacks.track_table
+import callbacks.gallery
 
 def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
@@ -43,14 +45,17 @@ def run_dashboard():
     track_info_widget = track_info.create_track_info()
     track_table_widget = track_table.create_table()
     filter_view_widget =  filter_view.create_filter_view()
-
+    
+    # deselect_button = button.create_deselect_button()
+    test_widget = html.H1("Test", id='image-click-output')
 
     gallery_widget = gallery.create_gallery()
 
     view_3d = dbc.Stack([
         scatterplot_3d_widget,
         html.Hr(),
-        track_info_widget
+        track_info_widget,
+        test_widget
     ], gap=3)
     
     view_2d = dbc.Stack([
@@ -63,7 +68,7 @@ def run_dashboard():
         dcc.Tab(label='3-D plot view', children=view_3d),
         dcc.Tab(label='2-D plot view', children=view_2d),
     ])
-
+    
     right_tab = dcc.Tabs([
         dcc.Tab(label='genre distribution', children=genre_dist),
         dcc.Tab(label='tempo distribution', children=tempo_dist),
@@ -79,6 +84,7 @@ def run_dashboard():
     )
     
     right_component_wrapper = dbc.Stack([
+        # deselect_button,
         right_tab,
         filter_view_widget,
         html.Hr(),
