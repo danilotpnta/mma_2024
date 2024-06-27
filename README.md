@@ -47,7 +47,7 @@ python generate_metadata.py --data_loc [YOUR_FOLDER_HERE] # Folder containing th
 
 ```
 
-_Note:_ This process is quite slow and can take a long time depending on how large the dataset in question is. In addition, as this framework relies on Shazam, it is likely that some of the metadata fails to download if too many requests are made. We have tried to alleviate this, though, by adding a timer to somewhat solve this.
+_Note:_ This process is quite slow and can take a long time depending on how large the dataset in question is. In addition, as this framework relies on Shazam, it is likely that some of the metadata fails to download if too many requests are made. We have tried to alleviate this, though, by adding a timer to delay the downloading when needed.
 
 
 ## **Running**
