@@ -29,7 +29,7 @@ def create_scatterplot_figure(projection, sample_ids=[]):
     if len(sample_ids) > 0:
         data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 1
     fig = px.scatter_3d(data_frame=data, x=x_col, y=y_col, z=z_col,
-                        color='genre', custom_data=['title', 'id', 'artist', 'genre', 'album_cover_path'], 
+                        color='genre', custom_data=['id', 'title', 'artist', 'genre', 'album_cover_path'], 
                         size='marker_size', opacity=0.6, size_max=12)
     
     fig.update_traces(hovertemplate=hover_temp)

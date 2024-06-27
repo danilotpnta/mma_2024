@@ -22,16 +22,16 @@ def create_scatterplot_figure(projection, sample_ids=[]):
         data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 1
 
     hover_temp = """
-    <b>%{customdata[0]}</b>
+    <b>%{customdata[1]}</b>
     <br>
     <b>Artist:</b>%{customdata[2]}
     <br>
     <b>Genre:</b>%{customdata[3]}
     <br>
-    <b>ID:</b>%{customdata[1]}"""
+    <b>ID:</b>%{customdata[0]}"""
 
     fig = plotly.express.scatter(data_frame=data, x=x_col, y=y_col,
-                                 color='genre', custom_data=['title', 'id', 'artist', 'genre', 'album_cover_path'],
+                                 color='genre', custom_data=['id', 'title', 'artist', 'genre', 'album_cover_path'],
                                  size='marker_size', size_max=8, color_discrete_map=config.GENRE_COLORS)
     
     fig.update_traces(hovertemplate=hover_temp)
