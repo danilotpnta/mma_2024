@@ -50,6 +50,7 @@ def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genr
 
 @callback(
     [Output('album-cover', 'src', allow_duplicate=True),
+    Output('audio-player', 'src', allow_duplicate=True),
     Output('track-title', 'children', allow_duplicate=True),
     Output('artist', 'children', allow_duplicate=True),
     Output('tempo', 'children', allow_duplicate=True),
@@ -82,14 +83,14 @@ def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_fi
     if( (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[0])): #or (('2D' != prev_click[1]) and (prev_click[1] != None)):
     # if (clickData == None and sum(n_clicks) < 1):
         print("2D Clicked cancelled 2")
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
     # clickData can be None if gallery-card is updated, but n_clicks might be [], [None, ..., n] or [1, None, ..., n]
     if clickData is None:
         
         # If n_clicks is []
         if len(n_clicks) == 0:
-            return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
+            return 'assets/album_cover.png', '', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
         
         # Get track id from gallery-card
         track_id = callback_context.triggered_id['index']
@@ -101,12 +102,13 @@ def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_fi
         track_id = callback_context.triggered_id['index']
     
     else:
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
     return *update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d), [curr_click, prev_click[1]]
 
 @callback(
     [Output('album-cover', 'src', allow_duplicate=True),
+    Output('audio-player', 'src', allow_duplicate=True),
     Output('track-title', 'children', allow_duplicate=True),
     Output('artist', 'children', allow_duplicate=True),
     Output('tempo', 'children', allow_duplicate=True),
@@ -139,14 +141,14 @@ def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_fi
     # if (clickData == None and sum(n_clicks) < 1):
     if( (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[1])): #or (('3D' != prev_click[1]) and (prev_click[1] != None)):
         print("3D cancelled")
-        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
 
     # clickData can be None if gallery-card is updated, but n_clicks might be [], [None, ..., n] or [1, None, ..., n]
     if clickData is None:
         
         # If n_clicks is []
         if len(n_clicks) == 0:
-            return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
+            return 'assets/album_cover.png', '', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
 
         # Get track id from gallery-card
         track_id = callback_context.triggered_id['index']
@@ -173,6 +175,8 @@ def update_track(track_id, radio_button_value, current_figure_2d, current_figure
     except:
         album_cover = Image.open('src/assets/album_cover.png')
     
+    audio_file_path = f"{config.BASE_URL}/{selected_track['filepath']}"
+
     track_title = selected_track['title']
     artist = selected_track['artist']
     tempo = f"{selected_track['tempo']:.2f}"
@@ -195,4 +199,4 @@ def update_track(track_id, radio_button_value, current_figure_2d, current_figure
         new_figure['layout']['uirevision'] = True
         new_figures.append(new_figure)
 
-    return album_cover, track_title, artist, tempo, loudness, gallery_children, gallery_card_header, [selected_track], *new_figures
+    return album_cover, audio_file_path, track_title, artist, tempo, loudness, gallery_children, gallery_card_header, [selected_track], *new_figures

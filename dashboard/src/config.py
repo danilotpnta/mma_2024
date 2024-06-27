@@ -18,6 +18,7 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 # DATASET_PATH = os.path.join(DATA_DIR, "dataset.csv")
 # DATASET_PATH = os.path.join(DATA_DIR, "gtzan/metadata_aug.csv")
 DATASET_PATH = os.path.join(DATA_DIR, "metadata.csv")
+BASE_URL = "https://amsuni-my.sharepoint.com/:f:/r/personal/oliver_neut_student_uva_nl/Documents/Audio-MMA"
 
 PROSONO_LOGO = "assets/ProSono.png"
 
