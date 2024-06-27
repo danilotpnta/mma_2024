@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from dash import html, dcc
 from Dataset import Dataset
 import pandas as pd
+import config
 
 def create_histogram(selected_category='genre'):
     histogram = draw_histogram(selected_category)
@@ -33,11 +34,17 @@ def count_occurences(df, selected_category):
 def draw_histogram(selected_category, sample_ids=[]):
     df = Dataset.get()
     class_counts = count_occurences(df, selected_category)
+    # color_map = None
+    # go_color_map = None
+    # if selected_category == 'genre':
+    #     color_map = config.GENRE_COLORS
+    #     go_color_map = [config.GENRE_COLORS[genre] for genre in class_counts[selected_category]]
     if len(sample_ids):
         stacked_bar_counts = count_occurences(df[df['id'].isin(sample_ids)], selected_category)['count']
         class_counts['condition'] = stacked_bar_counts
         class_counts = class_counts.fillna(0)
         fig = go.Figure()
+        # fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['count'], name='Total', marker_color=go_color_map))
         fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['count'], name='Total'))
         fig.add_trace(go.Bar(x=class_counts[selected_category], y=class_counts['condition'], name='Selection'))
         fig.update_layout(barmode='overlay')
@@ -47,6 +54,7 @@ def draw_histogram(selected_category, sample_ids=[]):
             x=0.99
         ))
     else:
+        # fig = px.histogram(class_counts, x=selected_category, y='count', color=selected_category, color_discrete_map=color_map)
         fig = px.histogram(class_counts, x=selected_category, y='count')
 
     fig.update_traces(hovertemplate='Count: %{y}<extra></extra>')
