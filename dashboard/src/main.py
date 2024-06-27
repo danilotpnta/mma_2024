@@ -1,10 +1,18 @@
-from dash import Dash, dcc, html, Output, Input, callback
+import os
+import config
+import argparse
+import callbacks.navbar
+import callbacks.histograms
+import callbacks.track_table
+import callbacks.scatterplots
+import callbacks.trackinfo_bars
+import callbacks.projection_radio_buttons
 import dash_bootstrap_components as dbc
+
 from Dataset import Dataset
 from Collection import Collection
-import config
 from utils.similar_tracks import get_similar_tracks
-
+from dash import Dash, dcc, html, Output, Input, callback
 from widgets import (
     projection_radio_buttons,
     scatterplot_3d,
@@ -18,15 +26,9 @@ from widgets import (
     navbar,
 )
 
-import callbacks.projection_radio_buttons
-import callbacks.histograms
-import callbacks.scatterplots
-import callbacks.trackinfo_bars
-import callbacks.track_table
-import callbacks.navbar
-
 
 def run_dashboard():
+
     external_stylesheets = [dbc.themes.BOOTSTRAP]
     app = Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -52,10 +54,6 @@ def run_dashboard():
         projection_radio_buttons_widget,
     )
     gallery_widget = gallery.create_gallery()
-
-    audio_widget = html.Audio(
-        id="audio-player", src="your-audio-file.mp3", controls=True
-    )
 
     audio_widget = html.Audio(
         id="audio-player", src="your-audio-file.mp3", controls=True
@@ -130,11 +128,6 @@ def main():
         type=str,
         default="gtzan",
         help="The folder containing the .wav files (in '/dashboard/data/[your_dataset_name]').",
-    )
-    parser.add_argument(
-        "--generate_metadata",
-        action="store_true",
-        help="Whether to generate the metadata automatically.",
     )
 
     parsed_args = parser.parse_args()

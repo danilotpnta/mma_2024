@@ -1,5 +1,5 @@
-from widgets import scatterplot_3d, scatterplot_2d
 from dash import callback, Output, Input
+from widgets import scatterplot_3d, scatterplot_2d
 
 
 @callback(
@@ -12,4 +12,6 @@ def projection_radio_is_clicked(radio_button_value):
 
     print("Radio button clicked")
 
-    return scatterplot_3d.create_scatterplot_figure(radio_button_value), scatterplot_2d.create_scatterplot_figure(radio_button_value)
+    return scatterplot_3d.create_scatterplot_figure(
+        radio_button_value
+    ), scatterplot_2d.create_scatterplot_figure(radio_button_value)
