@@ -6,12 +6,6 @@ import requests
 from tqdm import tqdm
 
 
-# Variables for loading remote datasets
-DATASET_URLS = {
-    "gtzan": "https://huggingface.co/datasets/danilotpnta/GTZAN_genre_classification/resolve/main/gtzan.zip",
-}
-
-
 # Helper functions
 def download_url(url, output_path):
 
@@ -84,15 +78,17 @@ class Dataset:
 
             # Download and extract the dataset
             try:
-                url = DATASET_URLS[folder]
+                url = config.DATASET_URLS[folder]
 
             except Exception as e:
                 print(
                     f"Dataset '{folder}' not found online. If this is a local dataset, please place the folder in 'dashboard/data'!"
                 )
 
-            download_url(url, config.DATA_DIR)
-            extract_zip(config.DATA_DIR, config.DATA_DIR)
+            zip_path = os.path.join(config.DATA_DIR, f"{folder}.zip")
+            download_url(url, zip_path)
+            extract_zip(zip_path, config.DATA_DIR)
+            os.remove(zip_path)  # Clean up the zip file after extraction
 
         else:
             print("Dataset already present. Skipping step...")
