@@ -24,7 +24,6 @@ import callbacks.histograms
 import callbacks.scatterplots
 import callbacks.trackinfo_bars
 import callbacks.track_table
-import callbacks.gallery
 import callbacks.navbar
 
 
