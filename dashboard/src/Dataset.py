@@ -74,14 +74,6 @@ class Dataset:
     @staticmethod
     def download(folder: str):
 
-        try:
-            url = DATASET_URLS[folder]
-
-        except Exception as e:
-            print(
-                f"Dataset '{folder}' not found online. If this is a local dataset, please place the folder in 'dashboard/data'!"
-            )
-
         # Check if the dataset is already downloaded and extracted
         data_folder = os.path.join(config.DATA_DIR, folder)
         dataset_present = (
@@ -91,6 +83,14 @@ class Dataset:
         if not dataset_present:
 
             # Download and extract the dataset
+            try:
+                url = DATASET_URLS[folder]
+
+            except Exception as e:
+                print(
+                    f"Dataset '{folder}' not found online. If this is a local dataset, please place the folder in 'dashboard/data'!"
+                )
+
             download_url(url, config.DATA_DIR)
             extract_zip(config.DATA_DIR, config.DATA_DIR)
 
