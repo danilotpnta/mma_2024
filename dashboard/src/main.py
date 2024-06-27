@@ -108,6 +108,11 @@ def main():
         default="gtzan",
         help="The folder containing the .wav files (in '/dashboard/data/[your_dataset_name]').",
     )
+    parser.add_argument(
+        "--generate_metadata",
+        action="store_true",
+        help="Whether to generate the metadata automatically.",
+    )
 
     parsed_args = parser.parse_args()
 
@@ -121,8 +126,9 @@ def main():
     # Check if the metadata file exist
     if not Dataset.metadata_exist(parsed_args.dataset):
 
-        print(f"File {metadata_csv} missing.")
-        print("Creating dataset...")
+        raise AssertionError(
+            f"File {metadata_csv} is not found. Please generate this first!"
+        )
 
     Dataset.load(metadata_csv)
     Collection.load()
