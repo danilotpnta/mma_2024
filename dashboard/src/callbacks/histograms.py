@@ -1,9 +1,9 @@
-from widgets import scatterplot_3d, scatterplot_2d, filter_view
-from dash import callback, Output, Input, State, MATCH, callback_context, ALL, Patch
-from Dataset import Dataset
 import numpy as np
+from Dataset import Dataset
 from Collection import Collection
 from utils.utils import feature_key_from_state_string
+from widgets import scatterplot_3d, scatterplot_2d, filter_view
+from dash import callback, Output, Input, State, MATCH, callback_context, ALL, Patch
 
 
 @callback(
@@ -42,7 +42,7 @@ def hist_is_clicked(
     if hist_type == "categorical":
         clicked_category = data_selected["points"][0]["x"]
 
-        # compatibilty for numerical hists
+        # Compatibilty for numerical hists
         clicked_category_bin = clicked_category
         indices = None
         # data_aggr = [i["x"] for i in hist_dict[feature]["data"]][0]
@@ -83,7 +83,7 @@ def hist_is_clicked(
     fig_3d = Patch()
     fig_3d["data"] = figure_scatter_3d["data"]
 
-    # using old layout to maintain selection window after update
+    # Using old layout to maintain selection window after update
     return list(hist_dict.values()), fig_2d, fig_3d, f_view
 
 
