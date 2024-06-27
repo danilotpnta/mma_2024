@@ -48,76 +48,151 @@ def scatterplot_2d_is_selected(data_selected, scatterplot_fig, histograms):#genr
     return table_rows, [genre_histogram, tempo_histogram, key_histogram, loudness_histogram]
 
 
-for dim in ['2D', '3D']:
-    @callback(
-        [Output('album-cover', 'src', allow_duplicate=True),
-        Output('track-title', 'children', allow_duplicate=True),
-        Output('artist', 'children', allow_duplicate=True),
-        Output('tempo', 'children', allow_duplicate=True),
-        Output('loudness', 'children', allow_duplicate=True),
-        Output("gallery", "children", allow_duplicate=True),
-        Output("gallery-card-header", "children", allow_duplicate=True),
-        Output("grid", "rowData", allow_duplicate=True),
-        Output(f'scatterplot-2D', 'figure', allow_duplicate=True),
-        Output(f'scatterplot-3D', 'figure', allow_duplicate=True),],
-        [Input(f'scatterplot-{dim}', 'clickData'),
-         Input({'type': 'gallery-card', 'index': ALL}, 'n_clicks'),
-        State('projection-radio-buttons', 'value'),
-        State(f'scatterplot-2D', 'figure'),
-        State(f'scatterplot-3D', 'figure')],
-        prevent_initial_call=True)
-    def update_selected_track(clickData, n_clicks, radio_button_value, current_figure_2d, current_figure_3d):
-        print(f"Update selected track {dim}")
-        print(f'n_clicks  {n_clicks }')
-        if clickData is None:
-            if len(n_clicks) == 0:
-                return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
-            
-            n_clicks = [0 if x is None else x for x in n_clicks]
-            if sum(n_clicks) > 0:
-                track_id = callback_context.triggered_id['index']
+@callback(
+    [Output('album-cover', 'src', allow_duplicate=True),
+    Output('track-title', 'children', allow_duplicate=True),
+    Output('artist', 'children', allow_duplicate=True),
+    Output('tempo', 'children', allow_duplicate=True),
+    Output('loudness', 'children', allow_duplicate=True),
+    Output("gallery", "children", allow_duplicate=True),
+    Output("gallery-card-header", "children", allow_duplicate=True),
+    Output("grid", "rowData", allow_duplicate=True),
+    Output(f'scatterplot-2D', 'figure', allow_duplicate=True),
+    Output(f'scatterplot-3D', 'figure', allow_duplicate=True),
+    Output("prev-scatter-click", 'data', allow_duplicate=True)],
+    [Input(f'scatterplot-2D', 'clickData'),
+    Input({'type': 'gallery-card', 'index': ALL}, 'n_clicks'),
+    State('projection-radio-buttons', 'value'),
+    State(f'scatterplot-2D', 'figure'),
+    State(f'scatterplot-3D', 'figure'),
+    State("prev-scatter-click", 'data')],
+    prevent_initial_call=True)
+def update_selected_track_2D(clickData, n_clicks, radio_button_value, current_figure_2d, current_figure_3d, prev_click):
+    print(f"2D clicked")
+    print(clickData)
+    print(n_clicks)
+    print(prev_click)
+    if clickData is None:
+        curr_click = prev_click[0]
+    else:
+        curr_click = clickData['points'][0]['customdata'][0]
+
+    # If [None, ..., n] and the previously registered click is the same as the current click (also if current click is None)
+    n_clicks = [0 if x is None else x for x in n_clicks]
+    if( (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[0])): #or (('2D' != prev_click[1]) and (prev_click[1] != None)):
+    # if (clickData == None and sum(n_clicks) < 1):
+        print("2D Clicked cancelled 2")
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+
+    # clickData can be None if gallery-card is updated, but n_clicks might be [], [None, ..., n] or [1, None, ..., n]
+    if clickData is None:
+        
+        # If n_clicks is []
+        if len(n_clicks) == 0:
+            return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
+        
+        # Get track id from gallery-card
+        track_id = callback_context.triggered_id['index']
+    
+    # clickData is set, but n_clicks is [] or [None, ..., n]
+    elif sum(n_clicks) == 0:
+        track_id = clickData['points'][0]['customdata'][0]
+    elif sum(n_clicks) > 0:
+        track_id = callback_context.triggered_id['index']
+    
+    else:
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+
+    return *update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d), [curr_click, prev_click[1]]
+
+@callback(
+    [Output('album-cover', 'src', allow_duplicate=True),
+    Output('track-title', 'children', allow_duplicate=True),
+    Output('artist', 'children', allow_duplicate=True),
+    Output('tempo', 'children', allow_duplicate=True),
+    Output('loudness', 'children', allow_duplicate=True),
+    Output("gallery", "children", allow_duplicate=True),
+    Output("gallery-card-header", "children", allow_duplicate=True),
+    Output("grid", "rowData", allow_duplicate=True),
+    Output(f'scatterplot-2D', 'figure', allow_duplicate=True),
+    Output(f'scatterplot-3D', 'figure', allow_duplicate=True),
+    Output("prev-scatter-click", 'data', allow_duplicate=True)],
+    [Input(f'scatterplot-3D', 'clickData'),
+    Input({'type': 'gallery-card', 'index': ALL}, 'n_clicks'),
+    State('projection-radio-buttons', 'value'),
+    State(f'scatterplot-2D', 'figure'),
+    State(f'scatterplot-3D', 'figure'),
+    State("prev-scatter-click", 'data')],
+    prevent_initial_call=True)
+def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_figure_2d, current_figure_3d, prev_click):
+    print(f"3D clicked")
+    print(clickData)
+    print(n_clicks)
+    print(prev_click)
+    if clickData is None:
+        curr_click = prev_click[1]
+    else:
+        curr_click = clickData['points'][0]['customdata'][0]
+
+    # If [None, ..., n] and the previously registered click is the same as the current click (also if current click is None)
+    n_clicks = [0 if x is None else x for x in n_clicks]
+    # if (clickData == None and sum(n_clicks) < 1):
+    if( (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[1])): #or (('3D' != prev_click[1]) and (prev_click[1] != None)):
+        print("3D cancelled")
+        return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+
+    # clickData can be None if gallery-card is updated, but n_clicks might be [], [None, ..., n] or [1, None, ..., n]
+    if clickData is None:
+        
+        # If n_clicks is []
+        if len(n_clicks) == 0:
+            return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
+        
+        # Get track id from gallery-card
+        track_id = callback_context.triggered_id['index']
+    
+    # clickData is set, but n_clicks is [] or [None, ..., n]
+    elif sum(n_clicks) == 0:
+        track_id = clickData['points'][0]['customdata'][0]
+    elif sum(n_clicks) > 0:
+        track_id = callback_context.triggered_id['index']
+    # else:
+    #     return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
+
+    return *update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d), [prev_click[0], curr_click]
+
+
+def update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d):
+    print("Updating track")
+    d = Dataset.get()
+    selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
+    
+    album_cover_path = f"{config.ROOT_DIR}/{selected_track['filename'].replace('wav', 'png')}"
+    try:
+        album_cover = Image.open(album_cover_path)
+    except:
+        album_cover = Image.open('src/assets/album_cover.png')
+    
+    track_title = selected_track['title']
+    artist = selected_track['artist']
+    tempo = f"{selected_track['tempo']:.2f}"
+    loudness = f"{selected_track['loudness']:.2f}"
+
+    similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
+    gallery_children = gallery.create_gallery_children(similar_tracks_ids)
+    gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(f'{track_title} - {artist}')])
+
+    new_figures = []
+    for current_figure in [current_figure_2d, current_figure_3d]:
+        new_figure = go.Figure(data=current_figure['data'], layout=current_figure['layout'])
+
+        for genre in new_figure.data:
+            if [track_id] in genre.customdata:
+                genre.marker.symbol = ['x' if i[0] == track_id else 'circle' for i in genre.customdata]
             else:
-                return no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update, no_update
-        else:
-            print("track selected in plot")
-            track_id = clickData['points'][0]['customdata'][0]
-        
-        return update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d)
-            
-    
-            
-            
-    def update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d):
-        
-        d = Dataset.get()
-        selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
-        
-        album_cover_path = f"{config.ROOT_DIR}/{selected_track['filename'].replace('wav', 'png')}"
-        try:
-            album_cover = Image.open(album_cover_path)
-        except:
-            album_cover = Image.open('src/assets/album_cover.png')
-        
-        track_title = selected_track['title']
-        artist = selected_track['artist']
-        tempo = f"{selected_track['tempo']:.2f}"
-        loudness = f"{selected_track['loudness']:.2f}"
+                genre.marker.symbol = 'circle'
+                
+        new_figure['layout']['uirevision'] = True
+        new_figures.append(new_figure)
 
-        similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
-        gallery_children = gallery.create_gallery_children(similar_tracks_ids)
-        gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(f'{track_title} - {artist}')])
-
-        new_figures = []
-        for current_figure in [current_figure_2d, current_figure_3d]:
-            new_figure = go.Figure(data=current_figure['data'], layout=current_figure['layout'])
-
-            for genre in new_figure.data:
-                if [track_id] in genre.customdata:
-                    genre.marker.symbol = ['x' if i[0] == track_id else 'circle' for i in genre.customdata]
-                else:
-                    genre.marker.symbol = 'circle'
-                    
-            new_figure['layout']['uirevision'] = True
-            new_figures.append(new_figure)
-    
-        return album_cover, track_title, artist, tempo, loudness, gallery_children, gallery_card_header, [selected_track], *new_figures
+    return album_cover, track_title, artist, tempo, loudness, gallery_children, gallery_card_header, [selected_track], *new_figures

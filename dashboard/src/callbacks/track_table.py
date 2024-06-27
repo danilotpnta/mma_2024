@@ -1,4 +1,4 @@
-from dash import callback, Output, Input, html, State
+from dash import callback, Output, Input, html, State, Patch, no_update
 from utils.similar_tracks import get_similar_tracks
 from Dataset import Dataset
 from Collection import Collection
@@ -24,16 +24,20 @@ def update_table_selection(filters):
      Output('artist', 'children', allow_duplicate=True),
      Output('tempo', 'children', allow_duplicate=True),
      Output("gallery", "children", allow_duplicate=True),
-     Output("gallery-card-header", "children", allow_duplicate=True)],
+     Output("gallery-card-header", "children", allow_duplicate=True),
+     Output('scatterplot-3D', 'figure', allow_duplicate=True),
+    Output('scatterplot-2D', 'figure', allow_duplicate=True)],
     Input("grid", "selectedRows"),
     State('projection-radio-buttons', 'value'),
+    State('scatterplot-3D', 'figure'),
+    State('scatterplot-2D', 'figure'),
     prevent_initial_call=True
 )
-def clicktosim(clickData, radio_button_value):
+def clicktosim(clickData, radio_button_value, scatter_3d, scatter_2d):
     print("table update")
     print(clickData)
     if not len(clickData):
-        return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!'
+        return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!', no_update, no_update
     track_id = clickData[0]['id']
     d = Dataset.get()
     selected_track = d.loc[d['id'] == track_id].to_dict('records')[0]
@@ -51,5 +55,18 @@ def clicktosim(clickData, radio_button_value):
     similar_tracks_ids = get_similar_tracks(track_id, proj=radio_button_value)
     gallery_children = gallery.create_gallery_children(similar_tracks_ids)
     gallery_card_header = html.Span(['Tracks similar to: ', html.Strong(f'{track_title} - {artist}')])
-
-    return album_cover, track_title, artist, tempo, gallery_children, gallery_card_header
+    
+    for plot in [scatter_3d, scatter_2d]:
+        for genre in plot['data']:
+            if [track_id] in genre['customdata']:
+                genre['marker']['symbol'] = ['x' if i[0] == track_id else 'circle' for i in genre['customdata']]
+            else:
+                genre['marker']['symbol'] = 'circle'
+    
+    scatter_3d_marker = Patch()
+    scatter_2d_marker = Patch()
+    
+    scatter_3d_marker['data'] = scatter_3d['data']
+    scatter_2d_marker['data'] = scatter_2d['data']
+    
+    return album_cover, track_title, artist, tempo, gallery_children, gallery_card_header, scatter_3d_marker, scatter_2d_marker

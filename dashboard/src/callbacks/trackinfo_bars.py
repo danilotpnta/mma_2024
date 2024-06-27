@@ -19,7 +19,7 @@ clientside_callback(
     prevent_initial_call=True
 )
 def store_click_data(clickData):
-    print("point clicked")
+    print("Updating track info bars")
     track_id = clickData['points'][0]['customdata'][0]
     d = Dataset.get()
     selected_track = d.loc[d['id'] == track_id]

@@ -91,7 +91,8 @@ def run_dashboard():
         html.Hr(),
         gallery_comp,
         dcc.Store(id='invisible-store'),
-        dcc.Store(id='song-data')
+        dcc.Store(id='song-data'),
+        dcc.Store(id='prev-scatter-click', data=[[None], [None]])
     ])
 
     app.layout = dbc.Container([
