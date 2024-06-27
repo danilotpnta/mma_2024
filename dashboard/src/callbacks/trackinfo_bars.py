@@ -35,7 +35,7 @@ def store_click_data(clickData):
         feature_dict = ast.literal_eval(feature.iloc[0])
         for k, v in feature_dict.items():
             feature_value.append(k)
-            feature_probabilities.append(v)
+            feature_probabilities.append(float(v))
 
         features_list.append([feature_value[:3], feature_probabilities[:3]])
 

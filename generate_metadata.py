@@ -27,6 +27,19 @@ def get_session():
     return thread_local.session
 
 
+# To combine predictions into one dictionary
+def combine_dictionaries(dict_list):
+
+    combined_dict = {}
+    for d in dict_list:
+
+        u = {d["label"]: d["score"]}
+
+        combined_dict.update(u)
+
+    return combined_dict
+
+
 def process_file(filename, dir_img, default_img):
 
     try:
@@ -82,7 +95,7 @@ def process_file(filename, dir_img, default_img):
             "album_cover_path": cover_path,
             "genre": genre,
             "pred_genres": predictions,
-            "sorted_pred_genres": predictions,
+            "sorted_pred_genres": combine_dictionaries(predictions),
             "tempo": tempo,
             "title": title,
             "artist": artists,
