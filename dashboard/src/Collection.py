@@ -10,10 +10,11 @@ class Collection:
     tempo_selection = None
     key_selection = None
     loudness_selection = None
-    filters: List[Tuple[str, str]] = None
+    filters: List[Tuple[str, str]] = []
 
     @staticmethod
     def load():
+
         Collection.data = Dataset.get()
         Collection.plot_2d_selection = set()
         Collection.genre_selection = set()
@@ -23,6 +24,7 @@ class Collection:
 
     @staticmethod
     def filter_indices_category(feature_name: str, category: str) -> List[int]:
+
         filtered_data = Collection.data[
             Collection.data[feature_name].isin([category[0]])
         ]
@@ -30,6 +32,7 @@ class Collection:
 
     @staticmethod
     def update_filter(feature_name: str, category: str, indices: List[int] = None):
+
         present_categories = [j[0] for i, j in Collection.filters if i == feature_name]
         if category[0] in present_categories:
             Collection.remove_filter(feature_name, category, indices=indices)
@@ -46,6 +49,7 @@ class Collection:
 
     @staticmethod
     def add_filter(feature_name: str, category: str, indices: List[int] = None):
+
         Collection.filters.append((feature_name, category))
 
         if feature_name == "genre":
@@ -53,18 +57,22 @@ class Collection:
                 feature_name, category
             )
             Collection.genre_selection.update(filtered_indices)
+
         elif feature_name == "key":
             filtered_indices = Collection.filter_indices_category(
                 feature_name, category
             )
             Collection.key_selection.update(filtered_indices)
+
         elif feature_name == "tempo":
             Collection.tempo_selection.update(indices)
+
         elif feature_name == "loudness":
             Collection.loudness_selection.update(indices)
 
     @staticmethod
     def remove_filter(feature_name: str, category: str, indices: List[int] = None):
+
         remove_idx = Collection.filters.index((feature_name, category))
         Collection.filters.pop(remove_idx)
         if feature_name == "genre":
@@ -72,13 +80,16 @@ class Collection:
                 feature_name, category
             )
             Collection.genre_selection.difference_update((filtered_indices))
+
         elif feature_name == "key":
             filtered_indices = Collection.filter_indices_category(
                 feature_name, category
             )
             Collection.key_selection.difference_update((filtered_indices))
+
         elif feature_name == "tempo":
             Collection.tempo_selection.difference_update((indices))
+
         elif feature_name == "loudness":
             Collection.loudness_selection.difference_update((indices))
 
@@ -124,14 +135,18 @@ class Collection:
 
     @staticmethod
     def get_filter_selection_ids():
+
         result = set(Collection.data.index.tolist())
         for filter in Collection.filters:
             if filter[0] == "genre":
                 result = result & Collection.genre_selection
+
             elif filter[0] == "tempo":
                 result = result & Collection.tempo_selection
+
             elif filter[0] == "key":
                 result = result & Collection.key_selection
+
             elif filter[0] == "loudness":
                 result = result & Collection.loudness_selection
 

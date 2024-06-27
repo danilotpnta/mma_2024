@@ -1,10 +1,9 @@
+import os
+import config
 import dash_bootstrap_components as dbc
 from dash import html
 from Dataset import Dataset
-
 from utils.image_encoder import encode_image
-
-import config
 
 
 def create_gallery():
@@ -18,17 +17,23 @@ def create_gallery_children(track_ids):
     image_rows = []
     image_id = 0
     for i in range(0, len(track_ids), config.IMAGE_GALLERY_ROW_SIZE):
+
         image_cols = []
         for j in range(config.IMAGE_GALLERY_ROW_SIZE):
+
             if i + j >= len(track_ids):
                 break
+
             track_id = track_ids[i + j]
             album_cover_path = d.loc[
                 d["id"] == track_ids[i + j], "album_cover_path"
             ].values[0]
 
+            album_cover_path = os.path.join("dashboard", album_cover_path)
+
             try:
                 image = open(album_cover_path, "rb").read()
+
             except:
                 print("Unable to open album cover")
                 image = open("dashboard/src/assets/album_cover.png", "rb").read()
