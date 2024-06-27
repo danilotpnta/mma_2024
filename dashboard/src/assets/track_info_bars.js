@@ -31,7 +31,7 @@ window.dash_clientside = Object.assign({}, window.dash_clientside, {
 });
 
 function choose(value) {
-    var choices = ['own-w-10', 'own-w-20', 'own-w-30', 'own-w-40', 'own-w-50', 'own-w-60', 'own-w-70', 'own-w-80', 'own-w-84', 'own-w-90', 'own-w-90']
+    var choices = ['own-w-5', 'own-w-10', 'own-w-20', 'own-w-30', 'own-w-40', 'own-w-50', 'own-w-60', 'own-w-70', 'own-w-80', 'own-w-84', 'own-w-90', 'own-w-90']
     nearest_number = Math.round(value / 10)
     console.log(value, nearest_number, choices[nearest_number], choices[10])
     return choices[nearest_number];

@@ -30,6 +30,7 @@ def create_navbar(projection_radio_buttons_widget):
         ),
         color="white",
         dark=False,
+        className='border-bottom'
     )
 
     return navbar

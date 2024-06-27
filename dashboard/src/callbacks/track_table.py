@@ -15,7 +15,7 @@ from PIL import Image
 def update_table_selection(filters):
     filtered_ids = Collection.get_filter_selection_ids()
     data_selected = Dataset.get().iloc[filtered_ids]
-    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness']].to_dict('records')
+    table_rows = data_selected[['title', 'artist', 'genre', 'tempo', 'key', 'loudness', 'id']].to_dict('records')
     return table_rows
 
 @callback(
@@ -30,6 +30,8 @@ def update_table_selection(filters):
     prevent_initial_call=True
 )
 def clicktosim(clickData, radio_button_value):
+    print("table update")
+    print(clickData)
     if not len(clickData):
         return 'assets/album_cover.png', '', '', '', '', 'No tracks selected yet!'
     track_id = clickData[0]['id']
