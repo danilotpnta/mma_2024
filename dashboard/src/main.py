@@ -15,7 +15,6 @@ from widgets import (
     numerical_histogram,
     gallery,
     filter_view,
-    button,
     navbar
 )
 
@@ -47,15 +46,17 @@ def run_dashboard():
     filter_view_widget =  filter_view.create_filter_view()
     
     # deselect_button = button.create_deselect_button()
-    test_widget = html.H1("Test", id='image-click-output')
+    # test_widget = html.H1("Test", id='image-click-output')
     navbar_widget = navbar.create_navbar(projection_radio_buttons_widget,)
     gallery_widget = gallery.create_gallery()
+
+    audio_widget = html.Audio(id='audio-player', src='your-audio-file.mp3', controls=True)
+
 
     view_3d = dbc.Stack([
         scatterplot_3d_widget,
         html.Hr(),
-        track_info_widget,
-        test_widget
+        track_info_widget
     ], gap=3)
     
     view_2d = dbc.Stack([
