@@ -1,3 +1,4 @@
+import ast
 import umap
 import torch
 import torchaudio
@@ -230,8 +231,6 @@ def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Cl
 # For testing and data refinement
 if __name__ == "__main__":
 
-    import ast
-
     path = "metadata.csv"
     df = pd.read_csv(path)
 
@@ -242,6 +241,8 @@ if __name__ == "__main__":
         embeddings.append(embed)
 
     embeddings = np.array(embeddings)
+
+    print("Getting projections...")
     df_tsne = get_projections_tsne(embeddings)
     df_umap = get_projections_umap(embeddings)
 
@@ -251,4 +252,5 @@ if __name__ == "__main__":
     df["x_tsne"], df["y_tsne"], df["z_tsne"] = list(xt), list(yt), list(zt)
     df["x_umap"], df["y_umap"], df["z_umap"] = list(xu), list(yu), list(zu)
 
-    df.to_csv("metadata_new.csv")
+    print("Saving...")
+    df.to_csv("metadata_new_full.csv")  # Adjust name

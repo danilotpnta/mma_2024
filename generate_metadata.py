@@ -116,7 +116,7 @@ def generate_metadata(folder: str):
     # Directories
     dir_wav = os.path.join("dashboard/data", folder)
     dir_img = os.path.join(dir_wav, "images")
-    save_loc = os.path.join(dir_wav, f"metadata_{folder}.csv")
+    save_loc = os.path.join(dir_wav, f"metadata.csv")
     default_img = "data/album_cover.jpg"  # In case an image can't be downloaded
 
     # Creating the image directory
@@ -145,10 +145,6 @@ def generate_metadata(folder: str):
                 results.append(result)
 
     df = pd.DataFrame(results, columns=columns)
-
-    # Re-sort based on the original ordering
-    df["name"] = pd.Categorical(df["name"], categories=filepaths, ordered=True)
-    df = df.sort_values("name")
     df = df.reset_index(drop=True)
 
     # Getting the embeddings
@@ -157,6 +153,12 @@ def generate_metadata(folder: str):
 
     df["x_tsne"], df["y_tsne"], df["z_tsne"] = list(xt), list(yt), list(zt)
     df["x_umap"], df["y_umap"], df["z_umap"] = list(xu), list(yu), list(zu)
+
+    # Renaming columns to remove the "dashboard" part
+    df["filepath"] = df["filepath"].str.replace("dashboard/", "", regex=False)
+    df["album_cover_path"] = df["album_cover_path"].str.replace(
+        "dashboard/", "", regex=False
+    )
 
     # Saving
     df.to_csv(save_loc, index_label="index")
