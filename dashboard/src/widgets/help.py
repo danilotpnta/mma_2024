@@ -6,9 +6,7 @@ def create_help_widget():
         [
             dbc.Button("Help", id="open-offcanvas", n_clicks=0),
             dbc.Offcanvas(
-                html.Div(
-                    [
-                        html.H2("Quick Guide to Using the Genre Classification Dashboard"),
+                html.Div([
     html.P("Welcome to the Genre Classification Dashboard! Here's a brief guide to help you navigate and make the most of the features available:"),
     
     html.H3("Overview"),
@@ -82,7 +80,7 @@ def create_help_widget():
                     ]
                 ),
                 id="offcanvas",
-                title="Title",
+                title="Quick Guide to Using the Prosono Dashboard",
                 is_open=False,
             ),
         ]
