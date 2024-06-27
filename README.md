@@ -23,11 +23,31 @@ conda activate mma_2024
 
 ```
 
+Alternatively, you can use a virtual environment instead through the following commands:
+
+```sh
+
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+```
+
 ### **Data**
 
-The data is automatically downloaded when running the code, meaning that nothing needs to be done relating to this!
+We have created a custom version of the GTZAN dataset which already contains everything needed (i.e., the cover arts and metadata). This is downloaded automatically during startup.
 
-_Note:_ The dataset used ([FMA](https://github.com/mdeff/fma), the small version) is ~7 GB large. This process may take a while.
+Besides that, any audio dataset can be used, as long as it is located in the `dashboard/data/[your_dataset_name]` folder and all files are in `.wav` (the sampling rate and lengths are automatically adjusted).
+
+To generate the metadata automatically, run the following:
+
+```sh
+
+python generate_metadata.py --data_loc [YOUR_FOLDER_HERE] # Folder containing the .wav files in `dashboard/data`
+
+```
+
+_Note:_ This process is quite slow and can take a long time depending on how large the dataset in question is, hence why it is split up from the rest of the dashboard startup process. In addition, as this framework relies on Shazam, it is likely that some of the metadata fails to download if too many requests are made. We have tried to alleviate this, though, by adding a timer to delay the downloading when needed.
 
 
 ## **Running**

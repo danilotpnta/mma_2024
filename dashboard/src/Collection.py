@@ -1,6 +1,7 @@
 from Dataset import Dataset
 from typing import List, Tuple
 
+
 class Collection:
 
     data = None
@@ -10,7 +11,6 @@ class Collection:
     key_selection = None
     loudness_selection = None
     filters: List[Tuple[str, str]] = None
-    
 
     @staticmethod
     def load():
@@ -20,88 +20,96 @@ class Collection:
         Collection.tempo_selection = set()
         Collection.key_selection = set()
         Collection.loudness_selection = set()
-        Collection.filters = []
-
 
     @staticmethod
     def filter_indices_category(feature_name: str, category: str) -> List[int]:
-        filtered_data = Collection.data[Collection.data[feature_name].isin([category[0]])]
+        filtered_data = Collection.data[
+            Collection.data[feature_name].isin([category[0]])
+        ]
         return filtered_data.index.tolist()
 
     @staticmethod
     def update_filter(feature_name: str, category: str, indices: List[int] = None):
-        present_categories = [j[0] for i,j in Collection.filters if i == feature_name]
+        present_categories = [j[0] for i, j in Collection.filters if i == feature_name]
         if category[0] in present_categories:
             Collection.remove_filter(feature_name, category, indices=indices)
             present_categories.remove(category[0])
         else:
             Collection.add_filter(feature_name, category, indices=indices)
             present_categories.append(category[0])
-            
+
         selected_ids = Collection.get_filter_selection_ids()
-        print(f'Length of selected ids after selecting a {feature_name}: {len(selected_ids)}')
+        print(
+            f"Length of selected ids after selecting a {feature_name}: {len(selected_ids)}"
+        )
         return present_categories, selected_ids
 
     @staticmethod
     def add_filter(feature_name: str, category: str, indices: List[int] = None):
         Collection.filters.append((feature_name, category))
 
-        if feature_name == 'genre': 
-            filtered_indices = Collection.filter_indices_category(feature_name, category)
+        if feature_name == "genre":
+            filtered_indices = Collection.filter_indices_category(
+                feature_name, category
+            )
             Collection.genre_selection.update(filtered_indices)
-        elif feature_name == 'key':
-            filtered_indices = Collection.filter_indices_category(feature_name, category)
+        elif feature_name == "key":
+            filtered_indices = Collection.filter_indices_category(
+                feature_name, category
+            )
             Collection.key_selection.update(filtered_indices)
-        elif feature_name == 'tempo':
+        elif feature_name == "tempo":
             Collection.tempo_selection.update(indices)
-        elif feature_name == 'loudness':
+        elif feature_name == "loudness":
             Collection.loudness_selection.update(indices)
-
 
     @staticmethod
     def remove_filter(feature_name: str, category: str, indices: List[int] = None):
         remove_idx = Collection.filters.index((feature_name, category))
         Collection.filters.pop(remove_idx)
-        if feature_name == 'genre': 
-            filtered_indices = Collection.filter_indices_category(feature_name, category)
+        if feature_name == "genre":
+            filtered_indices = Collection.filter_indices_category(
+                feature_name, category
+            )
             Collection.genre_selection.difference_update((filtered_indices))
-        elif feature_name == 'key':
-            filtered_indices = Collection.filter_indices_category(feature_name, category)
+        elif feature_name == "key":
+            filtered_indices = Collection.filter_indices_category(
+                feature_name, category
+            )
             Collection.key_selection.difference_update((filtered_indices))
-        elif feature_name == 'tempo':
+        elif feature_name == "tempo":
             Collection.tempo_selection.difference_update((indices))
-        elif feature_name == 'loudness':
+        elif feature_name == "loudness":
             Collection.loudness_selection.difference_update((indices))
 
-    
     @staticmethod
     def get_genre_selection():
         return Collection.data.loc[list(Collection.genre_selection)]
-    
+
     @staticmethod
     def get_genre_selection_ids():
         return list(Collection.genre_selection)
-    
+
     @staticmethod
     def get_tempo_selection():
         return Collection.data.loc[list(Collection.tempo_selection)]
-    
+
     @staticmethod
     def get_tempo_selection_ids():
         return list(Collection.tempo_selection)
-    
+
     @staticmethod
     def get_key_selection():
         return Collection.data.loc[list(Collection.key_selection)]
-    
+
     @staticmethod
     def get_key_selection_ids():
         return list(Collection.key_selection)
-    
+
     @staticmethod
     def get_loudness_selection():
         return Collection.data.loc[list(Collection.loudness_selection)]
-    
+
     @staticmethod
     def get_loudness_selection_ids():
         return list(Collection.loudness_selection)
@@ -109,29 +117,32 @@ class Collection:
     @staticmethod
     def get_plot_2d_selection():
         return Collection.data.loc[list(Collection.plot_2d_selection)]
-    
+
     @staticmethod
     def get_plot_2d_selection_ids():
         return list(Collection.plot_2d_selection)
-    
+
     @staticmethod
     def get_filter_selection_ids():
         result = set(Collection.data.index.tolist())
         for filter in Collection.filters:
-            if filter[0] == 'genre':
+            if filter[0] == "genre":
                 result = result & Collection.genre_selection
-            elif filter[0] == 'tempo':
+            elif filter[0] == "tempo":
                 result = result & Collection.tempo_selection
-            elif filter[0] == 'key':
+            elif filter[0] == "key":
                 result = result & Collection.key_selection
-            elif filter[0] == 'loudness':
+            elif filter[0] == "loudness":
                 result = result & Collection.loudness_selection
 
         return list(result)
 
-    
     @staticmethod
     def get_total_selection_ids():
-        return list(Collection.genre_selection & Collection.tempo_selection &
-              Collection.key_selection & Collection.loudness_selection & Collection.plot_2d_selection)
-    
+        return list(
+            Collection.genre_selection
+            & Collection.tempo_selection
+            & Collection.key_selection
+            & Collection.loudness_selection
+            & Collection.plot_2d_selection
+        )
