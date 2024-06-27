@@ -6,9 +6,14 @@ import plotly.express as px
 import numpy as np
 
 def create_track_info():
+    track_info_widget = create_track_info_widget()
 
+    return html.Div([track_info_widget], id='track-info')
+
+
+def create_track_info_widget():
     album_cover = html.Img(id='album-cover',
-                            style={'width': '100%', 'height': 'auto'},
+                            style={'width': '80%', 'height': 'auto'},
                             src='assets/album_cover.png', className='border border-dark rounded')
     
     audio_widget = html.Audio(id='audio-player', src='', controls=True)
@@ -25,7 +30,8 @@ def create_track_info():
     row = dbc.Row([
         dbc.Col([album_cover,
                  audio_widget],
-                width={"size": 4}),
+                width={"size": 4},
+                className='mx-auto'),
         dbc.Col(
             dbc.Table(
                 table_body,
@@ -39,6 +45,7 @@ def create_track_info():
     ])
     
     return row
+
 
 
 def create_barplot(feature):

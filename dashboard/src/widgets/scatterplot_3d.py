@@ -16,10 +16,23 @@ def create_scatterplot_figure(projection, sample_ids=[]):
     
     data = Dataset.get()
     data['marker_size'] = 10
+
+    hover_temp = '''
+    <b>%{customdata[0]}</b>
+    <br>
+    <b>Artist:</b>%{customdata[2]}
+    <br>
+    <b>Genre:</b>%{customdata[3]}
+    <br>
+    <b>ID:</b>%{customdata[1]}'''
     
     if len(sample_ids) > 0:
         data.loc[~data['id'].isin(sample_ids), 'marker_size'] = 1
-    fig = px.scatter_3d(data_frame=data, x=x_col, y=y_col, z=z_col, color='genre', custom_data=['id'], size='marker_size', color_discrete_map=config.GENRE_COLORS)
+    fig = px.scatter_3d(data_frame=data, x=x_col, y=y_col, z=z_col,
+                        color='genre', custom_data=['title', 'id', 'artist', 'genre', 'album_cover_path'], 
+                        size='marker_size', opacity=0.6, size_max=12)
+    
+    fig.update_traces(hovertemplate=hover_temp)
 
     fig.update_traces(marker=dict(opacity=1, line=dict(width=0)))
 

@@ -147,7 +147,7 @@ def update_selected_track_3D(clickData, n_clicks, radio_button_value, current_fi
         # If n_clicks is []
         if len(n_clicks) == 0:
             return 'assets/album_cover.png', '', '', '', '', '', 'No tracks selected yet!', [], current_figure_2d, current_figure_3d
-        
+
         # Get track id from gallery-card
         track_id = callback_context.triggered_id['index']
     

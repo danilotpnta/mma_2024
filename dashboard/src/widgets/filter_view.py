@@ -11,11 +11,16 @@ feature_colors = {
 }
 
 
-def create_filter_view(filters: List[Tuple[str, str]]=[]):
+def draw_filter_view(filters: List[Tuple[str, str]]=[]):
     buttons = [dbc.Button(
         f"{feature}:{value[1]}", color=feature_colors[feature],
         className='filter-button') for feature, value in filters
         ]
+
+    return buttons
+
+def create_filter_view(filters: List[Tuple[str, str]]=[]):
+    buttons = draw_filter_view(filters)
     
     filter_view = html.Div(children=buttons, id='filter-view', className='d-flex flex-wrap gap-2')
     return filter_view
