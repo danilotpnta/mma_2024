@@ -1,9 +1,8 @@
 import os
 import pandas
-from src.dataloaders import cub_loader, gtzan_loader
+import ast
+from src.dataloaders import gtzan_loader
 from src import config
-from src.utils import feature_engineering,feature_engineering_
-
 
 class Dataset:
 
@@ -13,16 +12,12 @@ class Dataset:
 
     @staticmethod
     def load():
-        Dataset.data = pandas.read_csv(
-            config.AUGMENTED_DATASET_PATH, index_col="image_id"
-        )
-        Dataset.count = Dataset.data["class_id"].value_counts()
-        Dataset.data["species_name"] = Dataset.data["class_name"].apply(
-            lambda x: x.split()[-1]
-        )
-        Dataset.attr_data = pandas.read_csv(
-            config.ATTRIBUTE_DATA_PATH, index_col="image_id"
-        )
+        print(config.DATASET_PATH)
+        Dataset.data = pandas.read_csv(config.DATASET_PATH).sample(frac=0.1, random_state=42)
+        Dataset.data.reset_index(drop=True, inplace=True)
+        Dataset.data.drop(columns=['id'], inplace=True)
+        Dataset.data['id'] = Dataset.data.index
+        Dataset.data['key'] = Dataset.data['keys'].map(lambda x: list(ast.literal_eval(x).keys())[0])
 
     @staticmethod
     def get():
@@ -38,14 +33,6 @@ class Dataset:
 
     @staticmethod
     def files_exist():
-        return (
-            os.path.isfile(config.AUGMENTED_DATASET_PATH)
-            and os.path.isdir(config.IMAGES_DIR)
-            and os.path.isfile(config.ATTRIBUTE_DATA_PATH)
-        )
-    
-    @staticmethod
-    def gtzan_files_exist():
         gtzan_dir = os.path.join(config.DATA_DIR, "gtzan")
         return (
             os.path.isdir(gtzan_dir)
@@ -53,8 +40,4 @@ class Dataset:
 
     @staticmethod
     def download():
-        cub_loader.load()
-        feature_engineering.generate_projection_data()
-        feature_engineering_.generate_projection_data()
-        cub_loader.cleanup()
         gtzan_loader.load()

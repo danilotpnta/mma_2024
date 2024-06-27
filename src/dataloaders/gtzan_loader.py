@@ -65,12 +65,12 @@ def load():
     if not dataset_extracted:
 
         # Ensure directories exist
-        # if not os.path.isdir(config.DATASET_DIR):
-        #     os.mkdir(config.DATASET_DIR)
-        # shutil.rmtree(config.DATA_DIR, ignore_errors=True)
-        # os.mkdir(config.DATA_DIR)
-        # if not os.path.isdir(config.DOWNLOADS_DIR):
-        #     os.mkdir(config.DOWNLOADS_DIR)
+        if not os.path.isdir(config.DATASET_DIR):
+            os.mkdir(config.DATASET_DIR)
+        shutil.rmtree(config.DATA_DIR, ignore_errors=True)
+        os.mkdir(config.DATA_DIR)
+        if not os.path.isdir(config.DOWNLOADS_DIR):
+            os.mkdir(config.DOWNLOADS_DIR)
         
         # Download the dataset
         download_url(url, download_path)

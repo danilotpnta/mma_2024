@@ -1,160 +1,97 @@
-.border-widget{
-    border-radius: 0.375rem;
-    border: 1px solid #babfc7;
-}
-
-
-#header {
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    position: absolute;
-    top: 15px;
-    left: 0;
-    width: 100%;
-    padding-left: 100px;
-    padding-right: 100px;
-}
-
-.tab-content{
-    height: 100%;
-    display: contents;
-}
-
-.tab-parent{
-    height: 100%;
-}
-
-.radio-buttons{
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    display: inline;
-}
-
-#left-tab-radio-buttons{
-    margin-left: 16px;
-}
-
-#container {
-    height: 100vh;
-    padding: 65px 100px;
-}
-
-#wordcloud {
-    cursor:pointer;
-    height: 100%;
-    width: 100%;
-}
-
-.wordcloud-container{
-    overflow: clip;
+.wraap {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 18vw;
 }
 
-.wordcloud-container > div{
-    overflow: clip;
-    height: 100%;
-    max-height: 100%;
-    width: 100%;
-    max-width: 100%;
+.wraap .cool {    
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.cool {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#histogram {
-    width: 100%;
-    height: 100%;
+div.wraap > div:hover {
+    width: 90%;
 }
 
-#heatmap {
-    position: relative; 
+.genre_1 {
+    background-color: aqua;
 }
 
-#heatmap-container {
-    overflow: scroll; 
-    position: relative;
+.genre_2 {
+    background-color:blue;
 }
 
-.main-col {
-    height: 100%;
-    padding: 0;
+.genre_3 {
+    background-color: brown;
 }
 
-.top-row {
-    height: 70%;
+.key_1 {
+    background-color: red;
 }
 
-.bottom-row {
-    height: 30%;
+.key_2 {
+    background-color: orange;
 }
 
-.stretchy-widget {
-    width: 100%;
-    height: 100%;
+.key_3 {
+    background-color: teal;
 }
 
-.gallery{
-    overflow-y: scroll;
-    overflow-x: clip;
+.own-w-5 {
+    width: 5%;
 }
 
-.header-button {
-    background-color: white;
-    margin-left: 10px;
+.own-w-10 {
+    width: 10%;
 }
 
-.gallery-image{
-    border: 2px solid #636363;
-    width: 100px;
-    height: 100px;
+.own-w-20 {
+    width: 20%;
 }
 
-.gallery-card {
-    cursor:pointer;
+.own-w-30 {
+    width: 30%;
 }
 
-.gallery-col {
-    text-align: center;
+.own-w-40 {
+    width: 40%;
 }
 
-.gallery-row{
-    padding-bottom: 20px;
-    padding-top: 20px;
+.own-w-50 {
+    width: 50%;
 }
 
-.gallery-text {
-  color: #656565;
+.own-w-60 {
+    width: 60%;
 }
 
-html, body {
-    overflow: clip;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.own-w-70 {
+    width: 70%;
 }
 
-.wc-canvas-hover-label {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0);
-    color: rgba(0, 0, 0, 0);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    display: none;
+.own-w-80 {
+    width: 80%;
 }
 
-.wc-canvas-hover{
-    border: 1px solid rgba(100, 100, 100, 1);
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    display: none;
+.own-w-84 {
+    width: 84%;
 }
 
-/* removes all plot legend toggles*/
-.legendtoggle {
-   display: none;
+.own-w-90 {
+    width: 90%;
 }
-.legendtext {
-   cursor: default;
+
+.gallery-image:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s;
 }

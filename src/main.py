@@ -5,135 +5,126 @@ import sys
 dirpath = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(dirpath)
 
-# The rest of the code
-from dash import Dash, dcc
-from src import config
-from src.Dataset import Dataset
-from src.widgets import (
-    projection_radio_buttons,
-    gallery,
-    scatterplot,
-    wordcloud,
-    graph,
-    heatmap,
-    histogram,
-    help_popup,
-)
-from src.widgets.table import create_table
+
+from dash import Dash, dcc, html, Output, Input, callback
 import dash_bootstrap_components as dbc
+from Dataset import Dataset
+from Collection import Collection
+import config
+from utils.similar_tracks import get_similar_tracks
 
-import callbacks.table
-import callbacks.scatterplot
+from widgets import (
+    projection_radio_buttons,
+    scatterplot_3d,
+    scatterplot_2d,
+    track_info,
+    track_table,
+    categorical_histogram,
+    numerical_histogram,
+    gallery,
+    filter_view,
+    navbar
+)
+
 import callbacks.projection_radio_buttons
-import callbacks.heatmap
-import callbacks.wordcloud
-import callbacks.histogram
-import callbacks.gallery
-import callbacks.deselect_button
-import callbacks.help_button
-import callbacks.graph
+import callbacks.histograms
+import callbacks.scatterplots
+import callbacks.trackinfo_bars
+import callbacks.track_table
+import callbacks.navbar
 
-from src.utils import key_extractor
 
-def run_ui():
-
+def run_dashboard():
     external_stylesheets = [dbc.themes.BOOTSTRAP]
     app = Dash(__name__, external_stylesheets=external_stylesheets)
 
-    help_popup_widget = help_popup.create_help_popup()
-    projection_radio_buttons_widget = (
-        projection_radio_buttons.create_projection_radio_buttons()
-    )
-    table_widget = create_table()
-    scatterplot_widget = scatterplot.create_scatterplot(config.DEFAULT_PROJECTION)
-    wordcloud_widget = wordcloud.create_wordcloud()
-    gallery_widget = gallery.create_gallery()
-    graph_widget = graph.create_graph()
-    heatmap_widget = heatmap.create_heatmap()
-    histogram_widget = histogram.create_histogram()
+    projection_radio_buttons_widget = (projection_radio_buttons.create_projection_radio_buttons())
 
-    right_tab = dcc.Tabs(
+    scatterplot_3d_widget = scatterplot_3d.create_scatterplot(config.DEFAULT_PROJECTION)
+    scatterplot_2d_widget = scatterplot_2d.create_scatterplot(config.DEFAULT_PROJECTION)
+
+    
+    genre_dist = categorical_histogram.create_histogram('genre')
+    tempo_dist = numerical_histogram.create_histogram('tempo', nbins=30)
+    key_dist = categorical_histogram.create_histogram('key')
+    loudness_dist = numerical_histogram.create_histogram('loudness', nbins=20)
+
+    track_info_widget = track_info.create_track_info()
+    track_table_widget = track_table.create_table()
+    filter_view_widget =  filter_view.create_filter_view()
+    
+    # deselect_button = button.create_deselect_button()
+    # test_widget = html.H1("Test", id='image-click-output')
+    navbar_widget = navbar.create_navbar(projection_radio_buttons_widget,)
+    gallery_widget = gallery.create_gallery()
+
+    audio_widget = html.Audio(id='audio-player', src='your-audio-file.mp3', controls=True)
+
+
+    view_3d = dbc.Stack([
+        scatterplot_3d_widget,
+        html.Hr(),
+        track_info_widget
+    ], gap=3)
+    
+    view_2d = dbc.Stack([
+        scatterplot_2d_widget,
+        html.Hr(),
+        track_table_widget
+    ], gap=3)
+
+    left_tab = dcc.Tabs([
+        dcc.Tab(label='3-D plot view', children=view_3d),
+        dcc.Tab(label='2-D plot view', children=view_2d),
+    ])
+    
+    right_tab = dcc.Tabs([
+        dcc.Tab(label='genre distribution', children=genre_dist),
+        dcc.Tab(label='tempo distribution', children=tempo_dist),
+        dcc.Tab(label='key distribution', children=key_dist),
+        dcc.Tab(label='loudness distribution', children=loudness_dist)
+    ])
+    
+    gallery_comp = dbc.Card(
         [
-            dcc.Tab(label="wordcloud", children=wordcloud_widget),
-            dcc.Tab(label="sample images", children=gallery_widget),
-            dcc.Tab(label="histogram", children=histogram_widget),
-            dcc.Tab(label="graph", children=graph_widget),
-            dcc.Tab(label="heatmap", children=[heatmap_widget]),
+            dbc.CardHeader("No tracks selected yet!", id='gallery-card-header'),
+            dbc.CardBody([gallery_widget])
         ]
     )
+    
+    right_component_wrapper = dbc.Stack([
+        # deselect_button,
+        right_tab,
+        filter_view_widget,
+        html.Hr(),
+        gallery_comp,
+        dcc.Store(id='invisible-store'),
+        dcc.Store(id='song-data')
+    ])
 
-    app.layout = dbc.Container(
-        [
-            help_popup_widget,
-            dbc.Stack(
-                [
-                    projection_radio_buttons_widget,
-                    dbc.Button(
-                        "Deselect everything",
-                        id="deselect-button",
-                        class_name="btn btn-outline-primary ms-auto header-button",
-                    ),
-                    dbc.Button(
-                        "Help",
-                        id="help-button",
-                        class_name="btn btn-outline-primary header-button",
-                    ),
-                ],
-                id="header",
-                direction="horizontal",
-            ),
-            dbc.Row(
-                [
-                    dbc.Col(scatterplot_widget, width=6, className="main-col"),
-                    dbc.Col(right_tab, width=6, className="main-col"),
-                ],
-                className="top-row",
-                justify="between",
-            ),
-            dbc.Row(
-                [dbc.Col(table_widget, className="main-col")], className="bottom-row"
-            ),
-        ],
-        fluid=True,
-        id="container",
-    )
-
-    app.run(debug=True, use_reloader=False)
+    app.layout = dbc.Container([
+        navbar_widget,
+        dbc.Row([
+            dbc.Col(left_tab, className='shadow-sm p-3 mb-5 bg-white rounded'),
+            dbc.Col(right_component_wrapper, className='shadow-sm p-3 mb-5 bg-white rounded')
+        ], className='top-row'),
+        ], fluid=True, id="container")
+    
+    
+    app.run(debug=True, use_reloader=True)
 
 
 def main():
-
-    # if not Dataset.files_exist():
-    #     print(
-    #         "File",
-    #         config.AUGMENTED_DATASET_PATH,
-    #         "missing or file",
-    #         config.ATTRIBUTE_DATA_PATH,
-    #         "missing or directory",
-    #         config.IMAGES_DIR,
-    #         "missing",
-    #     )
-    #     print("Creating dataset.")
-    #     Dataset.download()
-
-    if not Dataset.gtzan_files_exist():
+    if not Dataset.files_exist():
+        print("File", config.DATASET_PATH, "missing")
         print("Creating dataset.")
         Dataset.download()
-    
     Dataset.load()
-
-    # if len(Dataset.get()) != config.DATASET_SAMPLE_SIZE:
-    #     print("Sample size changed in the configuration. Recalculating features.")
-    #     Dataset.download()
-    #     Dataset.load()
+    Collection.load()
 
     print("Starting Dash")
-    run_ui()
+    run_dashboard()
 
-def main2():
-    key_extractor.extract_keys()
 
 if __name__ == "__main__":
-
-    # main()
-    main2()
+    main()
