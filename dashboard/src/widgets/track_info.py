@@ -9,7 +9,9 @@ def create_track_info():
 
     album_cover = html.Img(id='album-cover',
                             style={'width': '100%', 'height': 'auto'},
-                            src='', className='border border-dark rounded')
+                            src='assets/album_cover.png', className='border border-dark rounded')
+    
+    audio_widget = html.Audio(id='audio-player', src='', controls=True)
 
     track_title = html.Tr([html.Td(html.Strong('Title'), style={'width': '40%'}), html.Td(id='track-title', children='No song selected')])
     artist = html.Tr([html.Td(html.Strong('Artist')), html.Td(id='artist', children='No song selected')])
@@ -17,11 +19,13 @@ def create_track_info():
     tempo = html.Tr([html.Td(html.Strong('Tempo (bpm)')), html.Td(id='tempo', children='No song selected')])
     key = html.Tr([html.Td(html.Strong('Key')), html.Td(id='key', children=create_barplot('key'))])
     loudness = html.Tr([html.Td(html.Strong('Loudness (dB)')), html.Td(id='loudness', children='No song selected')])
-
+    
     table_body = [html.Tbody([track_title, artist, genre, tempo, key, loudness])]
 
     row = dbc.Row([
-        dbc.Col(album_cover, width={"size": 2, 'offset': 2}),
+        dbc.Col([album_cover,
+                 audio_widget],
+                width={"size": 4}),
         dbc.Col(
             dbc.Table(
                 table_body,
@@ -30,7 +34,7 @@ def create_track_info():
                 striped=True,
                 className='table'
             ), 
-            width={"size": 7}
+            width={"size": 7, 'offset': 1}
         )
     ])
     
