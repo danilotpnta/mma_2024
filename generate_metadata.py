@@ -185,10 +185,22 @@ def generate_metadata(folder: str):
 
     # Getting the embeddings
     print("\nSong processing finished! Generating the embeddings...")
-    xt, yt, zt, xu, yu, zu = get_all_projections(df)
+    xt, yt, zt, x2t, y2t, xu, yu, zu, x2u, y2u = get_all_projections(df)
 
-    df["x_tsne"], df["y_tsne"], df["z_tsne"] = list(xt), list(yt), list(zt)
-    df["x_umap"], df["y_umap"], df["z_umap"] = list(xu), list(yu), list(zu)
+    df["x_tsne"], df["y_tsne"], df["z_tsne"], df["x_2tsne"], df["y_2tsne"] = (
+        list(xt),
+        list(yt),
+        list(zt),
+        list(x2t),
+        list(y2t),
+    )
+    df["x_umap"], df["y_umap"], df["z_umap"], df["x_2umap"], df["y_2umap"] = (
+        list(xu),
+        list(yu),
+        list(zu),
+        list(x2u),
+        list(y2u),
+    )
 
     # Renaming columns to remove the "dashboard" part
     df["filepath"] = df["filepath"].str.replace("dashboard/", "", regex=False)

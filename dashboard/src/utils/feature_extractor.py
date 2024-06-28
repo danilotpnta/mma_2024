@@ -111,6 +111,15 @@ def get_projections_tsne(
         perplexity = 5
 
     # Perform t-SNE with adjusted parameters
+    tsne_2d = TSNE(
+        n_components=2,
+        perplexity=perplexity,
+        learning_rate=lr,
+        n_iter=n_iter,
+        random_state=42,
+    )
+    embeddings_2d = tsne_2d.fit_transform(embeddings)
+
     tsne = TSNE(
         n_components=3,
         perplexity=perplexity,
@@ -122,6 +131,8 @@ def get_projections_tsne(
 
     # Extract the components
     df = pd.DataFrame(embeddings_3d, columns=["c1", "c2", "c3"])
+    df_2d = pd.DataFrame(embeddings_2d, columns=["c4", "c5"])
+    df = pd.concat([df, df_2d], axis=1)
 
     return df
 
@@ -142,6 +153,14 @@ def get_projections_umap(
         raise ValueError("Embeddings contain NaN or infinite values")
 
     # Perform UMAP with adjusted parameters
+    umap_2d = umap.UMAP(
+        n_neighbors=n_neighbors,
+        min_dist=min_dist,
+        n_components=2,
+        random_state=42,
+    )
+    embeddings_2d = umap_2d.fit_transform(embeddings)
+
     umap_model = umap.UMAP(
         n_neighbors=n_neighbors,
         min_dist=min_dist,
@@ -152,6 +171,8 @@ def get_projections_umap(
 
     # Extract the components
     df = pd.DataFrame(embeddings_3d, columns=["c1", "c2", "c3"])
+    df_2d = pd.DataFrame(embeddings_2d, columns=["c4", "c5"])
+    df = pd.concat([df, df_2d], axis=1)
 
     return df
 
@@ -185,10 +206,22 @@ def get_all_projections(
     df_umap = get_projections_umap(embeddings)
     print("Done!")
 
-    xt, yt, zt = df_tsne["c1"], df_tsne["c2"], df_tsne["c3"]
-    xu, yu, zu = df_umap["c1"], df_umap["c2"], df_umap["c3"]
+    xt, yt, zt, x2t, y2t = (
+        df_tsne["c1"],
+        df_tsne["c2"],
+        df_tsne["c3"],
+        df_tsne["c4"],
+        df_tsne["c5"],
+    )
+    xu, yu, zu, x2u, y2u = (
+        df_umap["c1"],
+        df_umap["c2"],
+        df_umap["c3"],
+        df_umap["c4"],
+        df_umap["c5"],
+    )
 
-    return xt, yt, zt, xu, yu, zu
+    return xt, yt, zt, x2t, y2t, xu, yu, zu, x2u, y2u
 
 
 def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Clf"):
