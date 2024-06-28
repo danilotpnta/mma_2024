@@ -261,13 +261,21 @@ def predict_genre(file_path: str, model_name: str = "danilotpnta/HuBERT-Genre-Cl
     return genre, predictions
 
 
+def string_to_np_array(string):
+
+    cleaned_string = string.strip("[]")  # Step 1: Remove brackets
+    elements = cleaned_string.split()  # Step 2: Split into elements
+
+    return np.array(elements, dtype=float)  # Step 3: Convert to NumPy array
+
+
 # For testing and data refinement
 if __name__ == "__main__":
 
     path = "metadata.csv"
     df = pd.read_csv(path)
 
-    df["embeddings"] = df["embeddings"].apply(lambda x: np.array(ast.literal_eval(x)))
+    df["embeddings"] = df["embeddings"].apply(lambda x: string_to_np_array(x))
 
     embeddings = []
     for embed in list(df["embeddings"]):
@@ -279,11 +287,35 @@ if __name__ == "__main__":
     df_tsne = get_projections_tsne(embeddings)
     df_umap = get_projections_umap(embeddings)
 
-    xt, yt, zt = df_tsne["c1"], df_tsne["c2"], df_tsne["c3"]
-    xu, yu, zu = df_umap["c1"], df_umap["c2"], df_umap["c3"]
+    xt, yt, zt, x2t, y2t = (
+        df_tsne["c1"],
+        df_tsne["c2"],
+        df_tsne["c3"],
+        df_tsne["c4"],
+        df_tsne["c5"],
+    )
+    xu, yu, zu, x2u, y2u = (
+        df_umap["c1"],
+        df_umap["c2"],
+        df_umap["c3"],
+        df_umap["c4"],
+        df_umap["c5"],
+    )
 
-    df["x_tsne"], df["y_tsne"], df["z_tsne"] = list(xt), list(yt), list(zt)
-    df["x_umap"], df["y_umap"], df["z_umap"] = list(xu), list(yu), list(zu)
+    df["x_tsne"], df["y_tsne"], df["z_tsne"], df["x_2tsne"], df["y_2tsne"] = (
+        list(xt),
+        list(yt),
+        list(zt),
+        list(x2t),
+        list(y2t),
+    )
+    df["x_umap"], df["y_umap"], df["z_umap"], df["x_2umap"], df["y_2umap"] = (
+        list(xu),
+        list(yu),
+        list(zu),
+        list(x2u),
+        list(y2u),
+    )
 
     print("Saving...")
-    df.to_csv("metadata_new_full.csv")  # Adjust name
+    df.to_csv("metadata_new.csv")  # Adjust name
