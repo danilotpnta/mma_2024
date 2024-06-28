@@ -1,10 +1,18 @@
-from dash import Dash, dcc, html, Output, Input, callback
+import os
+import config
+import argparse
+import callbacks.navbar
+import callbacks.histograms
+import callbacks.track_table
+import callbacks.scatterplots
+import callbacks.trackinfo_bars
+import callbacks.projection_radio_buttons
 import dash_bootstrap_components as dbc
+
 from Dataset import Dataset
 from Collection import Collection
-import config
 from utils.similar_tracks import get_similar_tracks
-
+from dash import Dash, dcc, html, Output, Input, callback
 from widgets import (
     projection_radio_buttons,
     scatterplot_3d,
@@ -15,15 +23,8 @@ from widgets import (
     numerical_histogram,
     gallery,
     filter_view,
-    navbar
+    navbar,
 )
-
-import callbacks.projection_radio_buttons
-import callbacks.histograms
-import callbacks.scatterplots
-import callbacks.trackinfo_bars
-import callbacks.track_table
-import callbacks.navbar
 
 
 def run_dashboard():
@@ -109,17 +110,39 @@ def run_dashboard():
 
 
 def main():
-    if not Dataset.files_exist():
-        print("File", config.DATASET_PATH, "missing")
-        print("Creating dataset.")
-        Dataset.download()
 
-    Dataset.load()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="gtzan",
+        help="The folder containing the .wav files (in '/dashboard/data/[your_dataset_name]').",
+    )
+
+    parsed_args = parser.parse_args()
+
+    # Getting the dataset directories
+    data_folder = os.path.join(config.DATA_DIR, parsed_args.dataset)
+    metadata_csv = os.path.join(data_folder, "metadata.csv")
+
+    # Download the dataset if needed
+    Dataset.download(parsed_args.dataset)
+
+    # Check if the metadata file exist
+    if not Dataset.metadata_exist(parsed_args.dataset):
+
+        raise AssertionError(
+            f"File {metadata_csv} is not found. Please generate this first!"
+        )
+
+    Dataset.load(metadata_csv)
     Collection.load()
 
     print("Starting Dash")
     run_dashboard()
 
 
+# Execution
 if __name__ == "__main__":
+
     main()
