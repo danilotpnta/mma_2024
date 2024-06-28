@@ -40,6 +40,26 @@ def combine_dictionaries(dict_list):
     return combined_dict
 
 
+# To make the top 3 probabilities add up to 100%
+def normalize_keys(key_dict):
+
+    # Get the base
+    total = 0
+    for key in key_dict.keys():
+
+        total += key_dict[key]
+
+    # Convert
+    if total == 0:
+        total = 1
+
+    for key in key_dict.keys():
+
+        key_dict[key] = key_dict[key] * 100 / total
+
+    return key_dict
+
+
 def process_file(filename, dir_img, default_img):
 
     try:
@@ -48,6 +68,7 @@ def process_file(filename, dir_img, default_img):
 
         # Key Extraction
         top_3_keys = extract_keys(y, sr)
+        top_3_keys = normalize_keys(top_3_keys)
         top_key = list(top_3_keys.keys())[0]
 
         # Song Metadata
