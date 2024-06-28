@@ -55,7 +55,7 @@ def normalize_keys(key_dict):
 
     for key in key_dict.keys():
 
-        key_dict[key] = key_dict[key] * 100 / total
+        key_dict[key] = round(key_dict[key] * 100 / total, 2)
 
     return key_dict
 
