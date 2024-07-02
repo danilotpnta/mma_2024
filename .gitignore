@@ -42,3 +42,4 @@ __pycache__/
 conversion_errors.log
 
 dashboard/data/gtzan/metadata.csv
+src/assets/genres/
