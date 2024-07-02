@@ -3,8 +3,12 @@
 Repository for the course in Multimedia Analytics at University of Amsterdam 2024
 
 
-<video loop autoplay muted playsinline style="width:100%;">
+<!-- <video loop autoplay muted playsinline style="width:100%;">
     <source src="dashboard/src/assets/demo.mp4">
+</video> -->
+
+<video autoplay="true" loop="true" muted="" playsinline="">
+    <source src="dashboard/src/assets/demo.mp4" type="video/mp4">
 </video>
 
 
