@@ -56,7 +56,8 @@ To run the code, you use the following:
 
 ```sh
 
-python src/main.py
+cd mma_2024
+python dashboard/src/main.py
 
 ```
 
