@@ -28,9 +28,9 @@ def create_gallery_children(track_ids):
             album_cover_path = d.loc[
                 d["id"] == track_ids[i + j], "album_cover_path"
             ].values[0]
-
+            # print(album_cover_path)
             album_cover_path = os.path.join("dashboard", album_cover_path)
-
+            # print(album_cover_path)
             try:
                 image = open(album_cover_path, "rb").read()
 
