@@ -4,8 +4,7 @@ Repository for the course in Multimedia Analytics at University of Amsterdam 202
 
 
 <video loop autoplay muted playsinline style="width:100%;">
-    <source src="dashboard/src/assets/demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+    <source src="dashboard/src/assets/demo.mp4">
 </video>
 
 
