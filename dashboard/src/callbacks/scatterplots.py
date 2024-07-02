@@ -307,8 +307,11 @@ def update_track(track_id, radio_button_value, current_figure_2d, current_figure
         album_cover = Image.open("dashboard/src/assets/album_cover.png")
 
     # audio_file_path = f"{config.BASE_URL}/{selected_track['filepath']}"
-    audio_file_path = f"{config.ROOT_DIR}/{selected_track['filepath']}"
-    # print(f"{config.ROOT_DIR}/{selected_track['filepath']}")
+    # audio_file_path = f"{config.ROOT_DIR}/{selected_track['filepath']}"
+
+    genre = selected_track['genre'].lower()
+    audio_file_name = selected_track['filepath'].split('/')[-1]
+    audio_file_path = f"assets/genres/{genre}/{audio_file_name}"
     print(audio_file_path)
 
     track_title = selected_track["title"]
