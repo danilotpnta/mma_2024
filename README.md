@@ -3,6 +3,12 @@
 Repository for the course in Multimedia Analytics at University of Amsterdam 2024
 
 
+<video loop autoplay muted playsinline style="width:100%;">
+    <source src="dashboard/src/assets/demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+
 ## **Setup**
 
 ### **Requirements**
@@ -33,6 +39,21 @@ pip install -r requirements.txt
 
 ```
 
+## **Running**
+
+To run the code, you use the following:
+
+```sh
+
+cd mma_2024
+python dashboard/src/main.py
+
+```
+
+After the Dash server is running, open http://127.0.0.1:8050/ on your browser.
+
+
+
 ### **Data**
 
 We have created a custom version of the GTZAN dataset which already contains everything needed (i.e., the cover arts and metadata). This is downloaded automatically during startup.
@@ -50,15 +71,3 @@ python generate_metadata.py --data_loc [YOUR_FOLDER_HERE] # Folder containing th
 _Note:_ This process is quite slow and can take a long time depending on how large the dataset in question is, hence why it is split up from the rest of the dashboard startup process. In addition, as this framework relies on Shazam, it is likely that some of the metadata fails to download if too many requests are made. We have tried to alleviate this, though, by adding a timer to delay the downloading when needed.
 
 
-## **Running**
-
-To run the code, you use the following:
-
-```sh
-
-cd mma_2024
-python dashboard/src/main.py
-
-```
-
-After the Dash server is running, open http://127.0.0.1:8050/ on your browser.
