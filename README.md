@@ -5,11 +5,11 @@ Repository for the course in Multimedia Analytics at University of Amsterdam 202
 
 <video>
     <source src="dashboard/src/assets/demo.mp4">
-</video> -->
-<!-- 
-<video autoplay="true" loop="true" muted="" playsinline="">
+</video> 
+
+<!-- <video autoplay="true" loop="true" muted="" playsinline="">
     <source src="dashboard/src/assets/demo.mp4" type="video/mp4">
-</video>
+</video> -->
 
 
 ## **Setup**
