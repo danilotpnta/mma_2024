@@ -43,3 +43,4 @@ conversion_errors.log
 
 dashboard/data/gtzan/metadata.csv
 src/assets/genres/
+dashboard/src/assets/genres/
