@@ -2,10 +2,11 @@
 
 Repository for the course in Multimedia Analytics at University of Amsterdam 2024
 
+<div align="center">   
+<video
+    src="https://github.com/danilotpnta/mma_2024/assets/70687643/1ecca6a8-ee29-4e84-b012-37a8fe3e05c0" loop autoplay muted playsinline></video>
+</div>
 
-<video loop autoplay muted playsinline style="width:100%;">
-    <source src="https://github.com/danilotpnta/mma_2024/blob/main/dashboard/src/assets/demo.mp4?raw=true">
-</video>
 
 
 ## **Setup**
