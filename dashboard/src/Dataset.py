@@ -44,8 +44,8 @@ def create_symlinks(source_dir, target_dir):
             if not os.path.exists(target_file):
                 os.symlink(source_file, target_file)
                 # print(f"Symlink created: {target_file} -> {source_file}")
-            else:
-                print(f"Symlink already exists: {target_file} -> {source_file}")
+            # else:
+            #     print(f"Symlink already exists: {target_file} -> {source_file}")
 
 class Dataset:
     data = None
