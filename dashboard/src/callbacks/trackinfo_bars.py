@@ -22,7 +22,7 @@ clientside_callback(
 )
 def store_click_data(clickData):
 
-    print("Updating track info bars...")
+    # print("Updating track info bars...")
     track_id = clickData["points"][0]["customdata"][0]
     d = Dataset.get()
     selected_track = d.loc[d["id"] == track_id]
@@ -33,7 +33,7 @@ def store_click_data(clickData):
         feature_probabilities = []
 
         feature_string = selected_track[column].values[0]
-        print(f"Feature string from column '{column}': {feature_string}")
+        # print(f"Feature string from column '{column}': {feature_string}")
 
         try:
             # Evaluate the string representation of tuples
