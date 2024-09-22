@@ -30,7 +30,7 @@ def hist_is_clicked(
     }
     data_selected = data_selected[list(hist_dict.keys()).index(feature)]
 
-    print(f"{feature} hist is clicked")
+    # print(f"{feature} hist is clicked")
     # print(callback_context.triggered_id)
     # print(callback_context.triggered_prop_ids)
 

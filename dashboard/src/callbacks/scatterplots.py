@@ -30,7 +30,7 @@ from dash import (
 def scatterplot_2d_is_selected(
     data_selected, scatterplot_fig, histograms
 ):  # genre_hist, key_hist, tempo_hist, loudness_hist):
-    print("Scatterplot is selected")
+    # print("Scatterplot is selected")
 
     data_selected = scatterplot_2d.get_data_selected_on_scatterplot(data_selected)
     table_rows = data_selected[
@@ -115,10 +115,10 @@ def update_selected_track_2D(
     current_figure_3d,
     prev_click,
 ):
-    print(f"2D clicked")
-    print(clickData)
-    print(n_clicks)
-    print(prev_click)
+    # print(f"2D clicked")
+    # print(clickData)
+    # print(n_clicks)
+    # print(prev_click)
     if clickData is None:
         curr_click = prev_click[0]
     else:
@@ -130,7 +130,7 @@ def update_selected_track_2D(
         (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[0])
     ):  # or (('2D' != prev_click[1]) and (prev_click[1] != None)):
         # if (clickData == None and sum(n_clicks) < 1):
-        print("2D Clicked cancelled 2")
+        # print("2D Clicked cancelled 2")
         return (
             no_update,
             no_update,
@@ -228,10 +228,10 @@ def update_selected_track_3D(
     current_figure_3d,
     prev_click,
 ):
-    print(f"3D clicked")
-    print(clickData)
-    print(n_clicks)
-    print(prev_click)
+    # print(f"3D clicked")
+    # print(clickData)
+    # print(n_clicks)
+    # print(prev_click)
     if clickData is None:
         curr_click = prev_click[1]
     else:
@@ -243,7 +243,7 @@ def update_selected_track_3D(
     if (
         (sum(n_clicks) < 1) and (len(n_clicks) > 0) and (curr_click == prev_click[1])
     ):  # or (('3D' != prev_click[1]) and (prev_click[1] != None)):
-        print("3D cancelled")
+        # print("3D cancelled")
         return (
             no_update,
             no_update,
@@ -295,12 +295,12 @@ def update_selected_track_3D(
 
 
 def update_track(track_id, radio_button_value, current_figure_2d, current_figure_3d):
-    print("Updating track")
+    # print("Updating track")
     d = Dataset.get()
     selected_track = d.loc[d["id"] == track_id].to_dict("records")[0]
 
     album_cover_path = f"{config.ROOT_DIR}/{selected_track['album_cover_path']}"
-    print(album_cover_path)
+    # print(album_cover_path)
     try:
         album_cover = Image.open(album_cover_path)
     except:
@@ -312,7 +312,7 @@ def update_track(track_id, radio_button_value, current_figure_2d, current_figure
     genre = selected_track['genre'].lower()
     audio_file_name = selected_track['filepath'].split('/')[-1]
     audio_file_path = f"assets/genres/{genre}/{audio_file_name}"
-    print(audio_file_path)
+    # print(audio_file_path)
 
     track_title = selected_track["title"]
     artist = selected_track["artist"]

@@ -41,8 +41,8 @@ def update_table_selection(filters):
 )
 def clicktosim(clickData, radio_button_value, scatter_3d, scatter_2d):
 
-    print("table update")
-    print(clickData)
+    # print("table update")
+    # print(clickData)
     if not len(clickData):
         return (
             "assets/album_cover.png",
@@ -59,7 +59,7 @@ def clicktosim(clickData, radio_button_value, scatter_3d, scatter_2d):
     selected_track = d.loc[d["id"] == track_id].to_dict("records")[0]
 
     album_cover_path = f"{config.ROOT_DIR}/{selected_track['album_cover_path']}"
-    print(album_cover_path)
+    # print(album_cover_path)
     try:
         album_cover = Image.open(album_cover_path)
     except:

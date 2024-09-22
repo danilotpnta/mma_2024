@@ -42,9 +42,9 @@ class Collection:
             present_categories.append(category[0])
 
         selected_ids = Collection.get_filter_selection_ids()
-        print(
-            f"Length of selected ids after selecting a {feature_name}: {len(selected_ids)}"
-        )
+        # print(
+        #     f"Length of selected ids after selecting a {feature_name}: {len(selected_ids)}"
+        # )
         return present_categories, selected_ids
 
     @staticmethod

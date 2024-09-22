@@ -41,7 +41,7 @@ def create_deselect_button():
 )
 def deselect_all(n_clicks, radio_button_value, _):
 
-    print(n_clicks)
+    # print(n_clicks)
     if n_clicks is None:
         return no_update, no_update, no_update
     else:
