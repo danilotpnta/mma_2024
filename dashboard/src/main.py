@@ -117,7 +117,7 @@ def run_dashboard():
         id="container",
     )
 
-    app.run(debug=False, use_reloader=True, port=7864)
+    app.run(debug=False, use_reloader=True, host='0.0.0.0', port=7864)
 
 
 def main():

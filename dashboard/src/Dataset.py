@@ -107,7 +107,7 @@ class Dataset:
         # Check if the symlinks are created
         source_dir = os.path.join(config.DATA_DIR, folder, "genres")
         target_dir = os.path.join("dashboard", "src", "assets", "genres")
-        symlink_created = any(os.path.islink(os.path.join(target_dir, f)) for f in os.listdir(source_dir) if os.path.isfile(os.path.join(source_dir, f)))
+        symlink_created = os.path.exists(target_dir) and any(os.path.islink(os.path.join(target_dir, f)) for f in os.listdir(target_dir) if os.path.isfile(os.path.join(target_dir, f)))
 
         if not symlink_created:
             print("Symlinks not found. Creating symlinks...")
